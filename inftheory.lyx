@@ -1,0 +1,8276 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass extarticle
+\use_default_options true
+\begin_modules
+theorems-ams-bytype
+enumitem
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_package amsmath 2
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Information Theory for Machine Learning
+\end_layout
+
+\begin_layout Author
+Massimiliano Tomassoli
+\begin_inset Newline newline
+\end_inset
+
+(reverse(
+\emph on
+5102mnhuik
+\emph default
+)@gmail.com)
+\end_layout
+
+\begin_layout Date
+05/22/16
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+\begin_inset FormulaMacro
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+{\mathrm{argmin}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+\begin_inset FormulaMacro
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+{\mathrm{argmax}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+\begin_inset FormulaMacro
+\newcommand{\var}{\mathrm{\mathrm{Var}}}
+{\mathrm{Var}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\cov}{\mathrm{\mathrm{Cov}}}
+{\mathrm{Cov}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+\begin_inset FormulaMacro
+\newcommand{\length}{\mathrm{length}}
+{\mathrm{length}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Students of 
+\emph on
+Machine Learning 
+\emph default
+are usually introduced to 
+\emph on
+Information Theory 
+\emph default
+through brief tutorials which are too superficial to really understand what's
+ going on.
+ One could always read a book, but this might prove too much of an effort
+ for someone who doesn't intend to specialize in Information Theory.
+\end_layout
+
+\begin_layout Standard
+This tutorial represents a compromise between 
+\emph on
+brevity 
+\emph default
+and 
+\emph on
+thoroughness
+\emph default
+ and wants to be a 
+\emph on
+reasoned
+\emph default
+ exposition where everything follows logically from what precedes it.
+ I hope I succeeded in that.
+\end_layout
+
+\begin_layout Standard
+Because of the intended audience of this tutorial, some theorems are presented
+ without a proof but are thoroughly explained to give a solid intuition
+ of why they're true.
+\end_layout
+
+\begin_layout Standard
+To make this tutorial self-contained, I took the liberty of proving some
+ classical results such as the 
+\emph on
+Inclusion Exclusion Principle
+\emph default
+ and 
+\emph on
+Jensen's Inequality
+\emph default
+ as I needed them to prove other results.
+\end_layout
+
+\begin_layout Standard
+Moreover, I decided to conclude this tutorial with two sections about the
+ celebrated 
+\emph on
+EM Algorithm
+\emph default
+ which I think everyone should know even if they're just interested in,
+ say, 
+\emph on
+Deep Learning
+\emph default
+.
+ I didn't throw in the EM Algorithm just for the fun of it: there's an interesti
+ng, if not strong, connection with Information Theory.
+\end_layout
+
+\begin_layout Part
+The theory
+\end_layout
+
+\begin_layout Section
+Mean or Expected Value
+\end_layout
+
+\begin_layout Standard
+Before we dive into 
+\emph on
+Information Theory
+\emph default
+, we'd better review the definition and some important properties of the
+ 
+\emph on
+mean
+\emph default
+ or 
+\emph on
+expected value
+\emph default
+.
+ We'll be focusing on the case of 
+\emph on
+finite
+\emph default
+ 
+\emph on
+discrete
+\emph default
+ random variables here, i.e.
+ random variables which take only a finite number of values.
+ For the 
+\emph on
+infinite 
+\emph default
+case there are some subtleties about convergence.
+ Also, for the 
+\emph on
+continuous
+\emph default
+ case one just have to replace all the sums with integrals.
+\end_layout
+
+\begin_layout Definition
+\begin_inset CommandInset label
+LatexCommand label
+name "mean_def"
+
+\end_inset
+
+Let 
+\begin_inset Formula $X$
+\end_inset
+
+ be a discrete random variable with distribution 
+\begin_inset Formula $p$
+\end_inset
+
+.
+ The mean of 
+\begin_inset Formula $X$
+\end_inset
+
+ is defined as
+\begin_inset Formula 
+\[
+\mathbb{E}_{X\sim p}[X]=\sum_{x}p(x)x.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Remark
+When there is no ambiguity, we can drop the distribution, the variable,
+ or both:
+\begin_inset Formula 
+\[
+\mathbb{E}_{X\sim p}[X]=\mathbb{E}_{X}[X]=\mathbb{E}_{p}[X]=\mathbb{E}[X].
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Definition
+With a slight abuse of notation, if 
+\begin_inset Formula $X$
+\end_inset
+
+ is a random variable, we also see 
+\begin_inset Formula $X$
+\end_inset
+
+ as the set of values which 
+\begin_inset Formula $X$
+\end_inset
+
+ can take so that we can write, for instance, 
+\begin_inset Formula $\forall x\in X,\;p(x)\in[0,1]$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Definition
+If 
+\begin_inset Formula $X$
+\end_inset
+
+ is a random variable and 
+\begin_inset Formula $f$
+\end_inset
+
+ a function, then 
+\begin_inset Formula $Z=f(X)$
+\end_inset
+
+ is a random variable such that, for all 
+\begin_inset Formula $z$
+\end_inset
+
+,
+\begin_inset Formula 
+\[
+p(z)=P(Z=z)=P(f(X)=z)=P(X\in f^{-1}(z))=\sum_{x:f(x)=z}p(x).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+\begin_inset CommandInset label
+LatexCommand label
+name "prop:E(f(X))"
+
+\end_inset
+
+Let 
+\begin_inset Formula $X$
+\end_inset
+
+ be a random variable of distribution 
+\begin_inset Formula $p$
+\end_inset
+
+ and let 
+\begin_inset Formula $f$
+\end_inset
+
+ be a function.
+ The mean of the random variable 
+\begin_inset Formula $f(X)$
+\end_inset
+
+ can be evaluated as follows
+\begin_inset Formula 
+\[
+\mathbb{E}_{f(X)}[f(X)]=\mathbb{E}_{X}[f(X)]=\sum_{x}p(x)f(x).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Let 
+\begin_inset Formula $Z=f(X)$
+\end_inset
+
+ and let 
+\begin_inset Formula $q$
+\end_inset
+
+ be the distribution of 
+\begin_inset Formula $Z$
+\end_inset
+
+.
+ Then, 
+\begin_inset Formula 
+\begin{align*}
+\mathbb{E}_{f(X)}[f(X)] & =\mathbb{E}_{Z}[Z]\\
+ & =\sum_{z}q(z)z\\
+ & =\sum_{z}\left(\sum_{x:f(x)=z}p(x)\right)z\\
+ & =\sum_{z}\sum_{x:f(x)=z}p(x)z\\
+ & =\sum_{z}\sum_{x:f(x)=z}p(x)f(x)\\
+ & =\sum_{x}p(x)f(x)=\mathbb{E}_{X}[f(X)].
+\end{align*}
+
+\end_inset
+
+Note that the double sum can be replaced with a single sum over 
+\begin_inset Formula $x$
+\end_inset
+
+ because 
+\begin_inset Formula $\{x_{1},x_{2},\ldots,x_{n}\}=\bigcup_{z}\{x|f(x)=z\}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Definition
+We can generalize definition
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "mean_def"
+
+\end_inset
+
+ by considering a list of random variables 
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\mathbb{E}_{X_{1},\ldots X_{n}}[f(X_{1},\ldots,X_{n})]=\sum_{x_{1}}\cdots\sum_{x_{n}}p(x_{1},\ldots,x_{n})f(x_{1},\ldots,x_{n}).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Definition
+If 
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+ are random variables, we can define a corresponding 
+\series bold
+vector
+\series default
+ random variable as
+\begin_inset Formula 
+\[
+X=(X_{1},\ldots,X_{n})=[X_{1}\cdots X_{n}]^{t}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+\begin_inset CommandInset label
+LatexCommand label
+name "prop:vector-random-variables"
+
+\end_inset
+
+If 
+\begin_inset Formula $X=(X_{1},\ldots,X_{n})$
+\end_inset
+
+ and 
+\begin_inset Formula $Y=(Y_{1},\ldots,Y_{m})$
+\end_inset
+
+ are vector random variables, i.e.
+ vectors of random variables, then
+\begin_inset Formula 
+\begin{align*}
+p(\ldots,x,\ldots) & =p(\ldots,x_{1},\ldots,x_{n},\ldots)\\
+p(\ldots,x,\ldots|\ldots,y,\ldots) & =p(\ldots,x_{1},\ldots,x_{n},\ldots|\ldots,y_{1},\ldots,y_{m},\ldots),
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $x=(x_{1},\ldots,x_{n})$
+\end_inset
+
+ and 
+\begin_inset Formula $y=(y_{1},\ldots,y_{n})$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+Let's try not to be too technical.
+ We'll indicate 
+\emph on
+events
+\emph default
+ by writing predicates between 
+\emph on
+curly braces
+\emph default
+.
+ For instance, the event 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $X$
+\end_inset
+
+ takes value 
+\begin_inset Formula $x$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ is written as 
+\begin_inset Formula $\{X=x\}$
+\end_inset
+
+.
+ Now note that
+\begin_inset Formula 
+\[
+p(x,y)=p(X=x,Y=y)=P(\{X=x\}\cap\{Y=y\}),
+\]
+
+\end_inset
+
+which means that 
+\begin_inset Formula $p(x,y)$
+\end_inset
+
+ is really the probability of the intersection of the two events 
+\begin_inset Formula $\{X=x\}$
+\end_inset
+
+ and 
+\begin_inset Formula $\{Y=y\}$
+\end_inset
+
+.
+ Therefore, since 
+\begin_inset Formula 
+\[
+X=x\iff X_{i}=x_{i},\;i=1,\ldots,n,
+\]
+
+\end_inset
+
+then
+\begin_inset Formula 
+\[
+\{X=x\}=\{X_{1}=x_{1}\}\cap\cdots\cap\{X_{n}=x_{n}\},
+\]
+
+\end_inset
+
+which means that
+\begin_inset Formula 
+\begin{align*}
+p(\ldots,x,\ldots) & =P(\cdots\cap\{X=x\}\cap\cdots)\\
+ & =P(\cdots\cap\{X_{1}=x_{1}\}\cap\cdots\cap\{X_{n}=x_{n}\}\cap\cdots)\\
+ & =P(\ldots,x_{1},\ldots,x_{n},\ldots).
+\end{align*}
+
+\end_inset
+
+So, basically, a 
+\emph on
+comma
+\emph default
+ in these expressions means 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+and
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+intersection
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The proof for 
+\begin_inset Formula $p(\ldots,x,\ldots|\ldots,y,\ldots)$
+\end_inset
+
+ is analogous.
+\end_layout
+
+\begin_layout Remark
+\begin_inset CommandInset label
+LatexCommand label
+name "rem:vector-random-variable"
+
+\end_inset
+
+Thanks to proposition
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "prop:vector-random-variables"
+
+\end_inset
+
+, we can always simplify notation by writing just 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $X$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $x$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ instead of 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+
+\begin_inset Formula $x_{1},\ldots,x_{n}$
+\end_inset
+
+
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+, respectively, and we can generalize results by doing the opposite.
+ For instance,
+\begin_inset Formula 
+\[
+\mathbb{E}_{X}[f(X)]=\sum_{x}p(x)f(x)
+\]
+
+\end_inset
+
+implies the generalization
+\begin_inset Formula 
+\[
+\mathbb{E}_{X_{1},\ldots,X_{n}}[f(X_{1},\ldots,X_{n})]=\sum_{x_{1}}\cdots\sum_{x_{n}}p(x_{1},\ldots,x_{n})f(x_{1},\ldots,x_{n}).
+\]
+
+\end_inset
+
+Note that, to be precise, the 
+\begin_inset Formula $f$
+\end_inset
+
+ in the generalization is not exactly the same as the 
+\begin_inset Formula $f$
+\end_inset
+
+ in the simple case, but we won't be afraid of abusing notation when convenient.
+\end_layout
+
+\begin_layout Definition
+\begin_inset CommandInset label
+LatexCommand label
+name "def:vector-random-variable"
+
+\end_inset
+
+The mean of a vector random variable 
+\begin_inset Formula $X=(X_{1},\ldots,X_{n})$
+\end_inset
+
+ is defined as
+\begin_inset Formula 
+\[
+\mathbb{E}[X]=(\mathbb{E}[X_{1}],\dots,\mathbb{E}[X_{n}]).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Definition
+In general, if 
+\begin_inset Formula $M$
+\end_inset
+
+ is an 
+\begin_inset Formula $m\times n$
+\end_inset
+
+ matrix random variable, then
+\begin_inset Formula 
+\begin{alignat*}{2}
+\left[\mathbb{E}[M]\right]_{ij} & =\mathbb{E}[M_{ij}] & \;\;\;\;i=1,\ldots,m,\;j=1,\ldots,n.
+\end{alignat*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Proposition
+The mean of a constant is equal to the constant itself.
+\end_layout
+
+\begin_layout Proof
+A constant 
+\begin_inset Formula $c$
+\end_inset
+
+ can be seen as a random variable 
+\begin_inset Formula $X$
+\end_inset
+
+ which takes the value 
+\begin_inset Formula $c$
+\end_inset
+
+ with probability 1.
+ Thus, 
+\begin_inset Formula 
+\[
+\mathbb{E}[c]=\mathbb{E}_{X}[X]=\sum_{x}p(x)x=c.
+\]
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Proposition
+\begin_inset Formula $\mathbb{E}[\cdot]$
+\end_inset
+
+ is linear.
+\end_layout
+
+\begin_layout Proof
+If 
+\begin_inset Formula $X$
+\end_inset
+
+ is a random variable, 
+\begin_inset Formula $a,b$
+\end_inset
+
+ two constants, and 
+\begin_inset Formula $f(x)=a+bx$
+\end_inset
+
+, then
+\begin_inset Formula 
+\begin{align*}
+\mathbb{E}_{X}[a+bX] & =\mathbb{E}_{X}[f(X)]\\
+ & =\sum_{x}p(x)f(x)\\
+ & =\sum_{x}p(x)(a+bx)\\
+ & =a\sum_{x}p(x)+b\sum_{x}p(x)x\\
+ & =a+b\mathbb{E}_{X}[X].
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Proposition
+\begin_inset CommandInset label
+LatexCommand label
+name "prop_drop_variables"
+
+\end_inset
+
+Let 
+\begin_inset Formula $X,Y$
+\end_inset
+
+ be two random variables.
+ Then
+\begin_inset Formula 
+\[
+\mathbb{E}_{X,Y}[f(X)]=\mathbb{E}_{X}[f(X)].
+\]
+
+\end_inset
+
+In general, we can drop any random variable the argument to the mean doesn't
+ depend on.
+\end_layout
+
+\begin_layout Proof
+This is easy:
+\begin_inset Formula 
+\begin{align*}
+\mathbb{E}_{X,Y}[f(X)] & =\sum_{x}\sum_{y}p(x,y)f(x)\\
+ & =\sum_{x}\sum_{y}p(x)p(y|x)f(x)\\
+ & =\sum_{x}p(x)f(x)\sum_{y}p(y|x)\\
+ & =\sum_{x}p(x)f(x)=\mathbb{E}_{X}[f(X)].
+\end{align*}
+
+\end_inset
+
+For the general case, we can consider an arbitrary sequence 
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+ of random variables and prove that we can drop the first variable which
+ doesn't appear in the argument to the mean.
+ Since 
+\begin_inset Formula $n$
+\end_inset
+
+ is finite, by repeating this process we must be left with a sequence 
+\begin_inset Formula $X_{i_{1}},X_{i_{2}},\ldots X_{i_{k}}$
+\end_inset
+
+ of random variables which all appear in the argument to the mean.
+\end_layout
+
+\begin_layout Remark
+Thanks to property
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "prop_drop_variables"
+
+\end_inset
+
+, we can adopt the convention that if 
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+ are random variables and 
+\begin_inset Formula $f$
+\end_inset
+
+ is a function which depends on all of them and them alone, then we can
+ write
+\begin_inset Formula 
+\[
+\mathbb{E}[f(X_{1},\ldots X_{n})]=\mathbb{E}_{X_{1},\ldots,X_{n}}[f(X_{1},\ldots,X_{n})].
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Remark
+Given the notation and the conventions we established, we can easily conclude
+ that, if 
+\begin_inset Formula $L$
+\end_inset
+
+ is linear, then 
+\begin_inset Formula $\mathbb{E}[\cdot]\circ L=L\circ\mathbb{E}[\cdot]$
+\end_inset
+
+.
+ Indeed,
+\begin_inset Formula 
+\begin{align*}
+(\mathbb{E}[\cdot]\circ L)(X)=\mathbb{E}[L(X)] & =\sum_{x}p(x)L(x)\\
+ & =\sum_{x}L(p(x)x)\\
+ & =L\left(\sum_{x}p(x)x\right)=L(\mathbb{E}[X])=(L\circ\mathbb{E}[\cdot])(X).
+\end{align*}
+
+\end_inset
+
+ For instance, if 
+\begin_inset Formula $L(X_{1},\ldots,X_{n})=\sum_{i=1}^{n}a_{i}X_{i}$
+\end_inset
+
+, where 
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+ are random variables and 
+\begin_inset Formula $a_{1},\ldots,a_{n}$
+\end_inset
+
+ constants, then
+\begin_inset Formula 
+\begin{align*}
+(\mathbb{E}[\cdot]\circ L)(X_{1},\ldots,X_{n}) & =\mathbb{E}\left[\sum_{i=1}^{n}a_{i}X_{i}\right]\\
+ & =\sum_{i=1}^{n}a_{i}\mathbb{E}[X_{i}]=(L\circ\mathbb{E}[\cdot])(X_{1},\ldots,X_{n}),
+\end{align*}
+
+\end_inset
+
+by defining 
+\begin_inset Formula $\mathbb{E}[\cdot](X_{1},\ldots,X_{n})=(\mathbb{E}[X_{1}],\ldots,\mathbb{E}[X_{n}])$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Remark
+We can clean things up by using vectors.
+ If 
+\begin_inset Formula $X$
+\end_inset
+
+=[
+\begin_inset Formula $X_{1},\ldots,X_{n}]^{T}$
+\end_inset
+
+ and 
+\begin_inset Formula $a=[a_{1},\ldots,a_{n}]^{T}$
+\end_inset
+
+, then our example becomes
+\begin_inset Formula 
+\begin{align*}
+(\mathbb{E}[\cdot]\circ L)(X) & =\mathbb{E}[a^{T}X]\\
+ & =a^{T}\mathbb{E}[X]=(L\circ\mathbb{E}[\cdot])(X).
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Definition
+Let 
+\begin_inset Formula $X,Y$
+\end_inset
+
+ be two random variables and 
+\begin_inset Formula $f$
+\end_inset
+
+ a function.
+ The 
+\emph on
+conditional
+\emph default
+ mean of 
+\begin_inset Formula $f(X,y)$
+\end_inset
+
+ with respect to 
+\begin_inset Formula $X$
+\end_inset
+
+ given 
+\begin_inset Formula $Y$
+\end_inset
+
+ is defined as
+\begin_inset Formula 
+\[
+\mathbb{E}_{X|Y}[f(X,y)]=\sum_{x}p(x|y)f(x,y),
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $y$
+\end_inset
+
+ is any fixed real number and not a random variable, so we could define
+ a new random variable as 
+\begin_inset Formula $Z=\mathbb{E}_{X|Y}[f(X,Y)]$
+\end_inset
+
+.
+ Note that we didn't write 
+\begin_inset Formula $y$
+\end_inset
+
+, but 
+\begin_inset Formula $Y$
+\end_inset
+
+ this time.
+ A more explicit way to write it would be 
+\begin_inset Formula $Z=\mathbb{E}_{X|Y}[f(X,\cdot)](Y)$
+\end_inset
+
+, which makes it clear that we're transforming the variable 
+\begin_inset Formula $Y$
+\end_inset
+
+ through the function 
+\begin_inset Formula $y\mapsto\mathbb{E}_{X|Y}[f(X,y)]$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proposition
+\begin_inset CommandInset label
+LatexCommand label
+name "prop:chain-rule-for-the-mean"
+
+\end_inset
+
+If 
+\begin_inset Formula $X,Y$
+\end_inset
+
+ are two random variables, then 
+\begin_inset Formula 
+\[
+\mathbb{E}_{X,Y}[f(X,Y)]=\mathbb{E}_{Y}\left[\mathbb{E}_{X|Y}[f(X,Y)]\right].
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+The proof is easy:
+\begin_inset Formula 
+\begin{align*}
+\mathbb{E}_{X,Y}[f(X,Y)] & =\sum_{x}\sum_{y}p(x,y)f(x,y)\\
+ & =\sum_{x}\sum_{y}p(x|y)p(y)f(x,y)\\
+ & =\sum_{y}p(y)\sum_{x}p(x|y)f(x,y)\\
+ & =\mathbb{E}_{Y}\left[\mathbb{E}_{X|Y}[f(X,Y)]\right].
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+If 
+\begin_inset Formula $X,Y,C$
+\end_inset
+
+ are random variables, then, for any fixed 
+\begin_inset Formula $c$
+\end_inset
+
+, 
+\begin_inset Formula 
+\[
+\mathbb{E}_{X,Y|C}[f(X,Y,c)]=\mathbb{E}_{Y|C}\left[\mathbb{E}_{X|Y,C}[f(X,Y,c)]\right].
+\]
+
+\end_inset
+
+This is just a generalization of proposition
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "prop:chain-rule-for-the-mean"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+This proof can be derived from the proof of proposition
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "prop:chain-rule-for-the-mean"
+
+\end_inset
+
+ just by adding 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $|C$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $|c$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $,c$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ in the right places:
+\begin_inset Formula 
+\begin{align*}
+\mathbb{E}_{X,Y|C}[f(X,Y,c)] & =\sum_{x}\sum_{y}p(x,y|c)f(x,y,c)\\
+ & =\sum_{x}\sum_{y}p(x|y,c)p(y|c)f(x,y,c)\\
+ & =\sum_{y}p(y|c)\sum_{x}p(x|y,c)f(x,y,c)\\
+ & =\mathbb{E}_{Y|C}\left[\mathbb{E}_{X|Y,C}[f(X,Y,c)]\right].
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Corollary
+\begin_inset CommandInset label
+LatexCommand label
+name "corollary-indip-product-mean"
+
+\end_inset
+
+If 
+\begin_inset Formula $X,Y$
+\end_inset
+
+ are independent random variables, then
+\begin_inset Formula 
+\[
+\mathbb{E}_{X,Y}[XY]=\mathbb{E}_{X}[X]\mathbb{E}_{Y}[Y].
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+First of all, because 
+\begin_inset Formula $X,Y$
+\end_inset
+
+ are independent, in general, for any fixed 
+\begin_inset Formula $y$
+\end_inset
+
+,
+\begin_inset Formula 
+\begin{align*}
+\mathbb{E}_{X|Y}[f(X,y)] & =\sum_{x}p(x|y)f(x,y)\\
+ & =\sum_{x}p(x)f(x,y)\\
+ & =\mathbb{E}_{X}[f(X,y)].
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+Now we can conclude the proof:
+\begin_inset Formula 
+\begin{align*}
+\mathbb{E}_{X,Y}[XY] & =\mathbb{E}_{Y}\left[\mathbb{E}_{X|Y}[XY]\right]\\
+ & =\mathbb{E}_{Y}\left[\mathbb{E}_{X}[XY]\right]\\
+ & =\mathbb{E}_{Y}\left[Y\mathbb{E}_{X}[X]\right]\\
+ & =\mathbb{E}_{X}[X]\mathbb{E}_{Y}[Y].
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Entropy
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Entropy
+\emph default
+ is a function which assigns single real numbers to 
+\emph on
+finite discrete distributions
+\emph default
+.
+ Some people refer directly to the distributions and others to the random
+ variables associated with them.
+ We'll be using whatever notation is more convenient for what we want to
+ say.
+ 
+\emph on
+Be flexible and learn not to be thrown off by different notations!
+\end_layout
+
+\begin_layout Standard
+In what follows, 
+\begin_inset Formula $X,Y,Z$
+\end_inset
+
+ are always 
+\emph on
+discrete 
+\emph default
+random variables, 
+\begin_inset Formula $p,q,r$
+\end_inset
+
+ are 
+\emph on
+finite discrete 
+\emph default
+distributions, and 
+\begin_inset Formula $x,y,z$
+\end_inset
+
+ are values taken by the variables 
+\begin_inset Formula $X,Y,Z$
+\end_inset
+
+, respectively.
+\end_layout
+
+\begin_layout Definition
+Information
+\end_layout
+
+\begin_layout Definition
+If 
+\begin_inset Formula $X$
+\end_inset
+
+ follows distribution 
+\begin_inset Formula $p$
+\end_inset
+
+, the 
+\emph on
+information
+\emph default
+ of 
+\begin_inset Formula $x$
+\end_inset
+
+ is defined as 
+\begin_inset Formula 
+\[
+I(x)=\log_{2}\frac{1}{p(x)}=-\log_{2}p(x).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The formula above says that values with high probability have low information,
+ whereas values with low probability have high information.
+ We'll see later why this makes sense.
+\end_layout
+
+\begin_layout Standard
+Note that 
+\begin_inset Formula $I$
+\end_inset
+
+ measures the 
+\emph on
+amount
+\emph default
+ of information.
+ We'll often say just 
+\begin_inset Quotes eld
+\end_inset
+
+information
+\begin_inset Quotes erd
+\end_inset
+
+ instead of 
+\begin_inset Quotes eld
+\end_inset
+
+amount of information
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Definition
+Entropy
+\end_layout
+
+\begin_layout Definition
+The 
+\emph on
+entropy 
+\emph default
+of 
+\begin_inset Formula $X$
+\end_inset
+
+ is defined as 
+\begin_inset Formula 
+\[
+H(X)=\mathbb{E}_{X}[I(X)]=-\sum_{x}p(x)\log_{2}p(x).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The entropy is the 
+\emph on
+mean 
+\emph default
+information of a random variable.
+ A variable may assume values 
+\begin_inset Formula $x_{1},x_{2},\ldots,x_{n}$
+\end_inset
+
+ and each value may have a different information so it makes sense to summarize
+ the information contained in all the values with the mean.
+\end_layout
+
+\begin_layout Standard
+As always, note that we didn't write 
+\begin_inset Formula $\mathbb{E}_{X}[I(x)]$
+\end_inset
+
+ with a lowercase 
+\begin_inset Formula $x$
+\end_inset
+
+.
+ While 
+\begin_inset Formula $I(x)$
+\end_inset
+
+ is just a real number, 
+\begin_inset Formula $I(X)$
+\end_inset
+
+ is a random variable obtained by applying the function 
+\begin_inset Formula $I$
+\end_inset
+
+ to the random variable 
+\begin_inset Formula $X$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Entropy and Codes
+\end_layout
+
+\begin_layout Standard
+Consider the following scenario.
+ We have a random variable 
+\begin_inset Formula $X$
+\end_inset
+
+ with distribution 
+\begin_inset Formula $p$
+\end_inset
+
+.
+ We take samples 
+\begin_inset Formula $x_{1},x_{2},\ldots$
+\end_inset
+
+ from 
+\begin_inset Formula $p$
+\end_inset
+
+ and send these values through a channel.
+ We send the samples as we generate them so this process may go on forever.
+\end_layout
+
+\begin_layout Standard
+To send the samples, we must encode them some way.
+ We can define a 
+\emph on
+code
+\emph default
+, i.e.
+ a function 
+\begin_inset Formula $C:X\to\Sigma^{*}$
+\end_inset
+
+ which maps values 
+\begin_inset Formula $x$
+\end_inset
+
+ to 
+\emph on
+words
+\emph default
+ over an alphabet 
+\begin_inset Formula $\Sigma$
+\end_inset
+
+, which is just a set of arbitrary 
+\emph on
+symbols
+\emph default
+.
+ The asterisk is the 
+\emph on
+Kleene star
+\emph default
+, which takes a set of symbols and returns the set of all the words (of
+ finite non-negative length) over those symbols.
+ For instance, 
+\begin_inset Formula 
+\[
+\{0,1\}^{*}=\{\epsilon,0,1,00,01,10,11,000,001,\ldots\}
+\]
+
+\end_inset
+
+ is the set of all the finite binary strings, including the empty string
+ (denoted by 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+extension
+\emph default
+ of 
+\begin_inset Formula $C$
+\end_inset
+
+ is defined as follows:
+\begin_inset Formula 
+\[
+C^{*}(x_{1},x_{2},\ldots,x_{n})=C(x_{1})C(x_{2})\cdots C(x_{n})
+\]
+
+\end_inset
+
+where the juxtaposition indicates 
+\emph on
+concatenation
+\emph default
+ of strings.
+ Basically, we encode sequences of samples 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ by concatenating the encoded samples.
+ We say that 
+\begin_inset Formula $C$
+\end_inset
+
+ is 
+\emph on
+uniquely decodable
+\emph default
+ if 
+\begin_inset Formula $C^{*}$
+\end_inset
+
+ is 
+\emph on
+injective
+\emph default
+.
+ Note that if 
+\begin_inset Formula $C^{*}$
+\end_inset
+
+ is not injective, then there are two different sequences of samples which
+ result in the same encoded string and thus, given the encoded string, we
+ can't recover the original sequence of samples (we can recover both sequences
+ but which one is the right one?).
+\end_layout
+
+\begin_layout Theorem
+\begin_inset CommandInset label
+LatexCommand label
+name "Shannon's-Source-Code"
+
+\end_inset
+
+Shannon's Source Code Theorem
+\end_layout
+
+\begin_layout Theorem
+Let 
+\begin_inset Formula $X$
+\end_inset
+
+ be a discrete random variable and 
+\begin_inset Formula $C:X\to\Sigma^{*}$
+\end_inset
+
+ a uniquely decodable code.
+ If C is optimal, i.e.
+ it minimizes 
+\begin_inset Formula $\mathbb{E}_{X}[\length(C(X))]$
+\end_inset
+
+, then
+\begin_inset Formula 
+\[
+\frac{H(X)}{\log_{2}|\Sigma|}\leq\mathbb{E}_{X}[\length(C(X))]<\frac{H(X)}{\log_{2}|\Sigma|}+1.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To understand theorem
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Shannon's-Source-Code"
+
+\end_inset
+
+ better, note that if we choose 
+\begin_inset Formula $\Sigma=\{0,1\}$
+\end_inset
+
+, i.e.
+ we encode the symbols as binary strings, then the inequality simplifies
+ to
+\begin_inset Formula 
+\[
+H(X)\leq\mathbb{E}_{X}[\length(C(X))]<H(X)+1.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can also be more explicit:
+\begin_inset Formula 
+\[
+H(X)\leq\min_{C}\mathbb{E}_{X}[\length(C(X))]<H(X)+1.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+So, we can't do better than 
+\begin_inset Formula $H(X)$
+\end_inset
+
+: no matter which code we choose, the expected length of the encoded symbols
+ will be at least 
+\begin_inset Formula $H(X)$
+\end_inset
+
+.
+ Note, though, that if the code is optimal then we can't do worse than 
+\begin_inset Formula $H(X)+1$
+\end_inset
+
+.
+ But where does that 
+\begin_inset Formula $+1$
+\end_inset
+
+ come from? Before finding that out, we must observe a few things.
+\end_layout
+
+\begin_layout Standard
+You should remember that 
+\begin_inset Formula $H(X)$
+\end_inset
+
+ is the expected information, so we can rewrite the formula above as
+\begin_inset Formula 
+\[
+\mathbb{E}_{X}[I(X)]\leq\min_{C}\mathbb{E}_{X}[\length(C(X))]<\mathbb{E}_{X}[H(X)]+1.
+\]
+
+\end_inset
+
+This suggests that 
+\begin_inset Formula $I(X)$
+\end_inset
+
+ has something to do with 
+\begin_inset Formula $\length(C(X))$
+\end_inset
+
+.
+ In fact, 
+\begin_inset Formula $I(x)$
+\end_inset
+
+ measures the information 
+\begin_inset Quotes eld
+\end_inset
+
+contained
+\begin_inset Quotes erd
+\end_inset
+
+ in 
+\begin_inset Formula $x$
+\end_inset
+
+ by counting the number of 
+\emph on
+bits
+\emph default
+ an optimal code uses to represent 
+\begin_inset Formula $x$
+\end_inset
+
+.
+ As we observed before, the definition 
+\begin_inset Formula $I(x)=\log_{2}\frac{1}{p(x)}$
+\end_inset
+
+ suggests that an optimal code will use short strings for frequent samples
+ and long strings for rare samples.
+ (As a side note, observe that if 
+\begin_inset Formula $X$
+\end_inset
+
+ was a 
+\emph on
+continuous
+\emph default
+ random variable then any sample 
+\begin_inset Formula $x$
+\end_inset
+
+ would be infinitely rare and our reasoning would fall apart!) This explains,
+ at least in part, why the information and the entropy contain a logarithm.
+\end_layout
+
+\begin_layout Standard
+If we choose a code which assigns each value 
+\begin_inset Formula $x$
+\end_inset
+
+ a string whose length is given by 
+\begin_inset Formula $I(x)$
+\end_inset
+
+, then the expected length of the encoded samples is 
+\begin_inset Formula $H(X)$
+\end_inset
+
+.
+ Unfortunately, 
+\begin_inset Formula $I(x)$
+\end_inset
+
+ is not always an integer, so the best we can do is take the smallest integer
+ greater than or equal to 
+\begin_inset Formula $I(x)$
+\end_inset
+
+, which is 
+\begin_inset Formula $\lceil I(x)\rceil$
+\end_inset
+
+.
+ We have the following:
+\begin_inset Formula 
+\begin{gather}
+I(x)\leq\lceil I(x)\rceil<I(x)+1\nonumber \\
+\mathbb{E}_{X}[I(X)]\leq\mathbb{E}_{X}\lceil I(X)\rceil<\mathbb{E}_{X}[I(X)+1]=\mathbb{E}_{X}[I(X)]+1\nonumber \\
+H(X)\leq\mathbb{E}_{X}\lceil I(X)\rceil<H(X)+1.\label{E[I(X)] inequality}
+\end{gather}
+
+\end_inset
+
+For this derivation to make sense, we should also prove that there exists
+ an actual (uniquely decodable) code 
+\begin_inset Formula $C$
+\end_inset
+
+ such that 
+\begin_inset Formula $\length(C(x))=\lceil I(x)\rceil$
+\end_inset
+
+, but, lucky for us, our main goal is just to understand things intuitively!
+\end_layout
+
+\begin_layout Subsection
+Can we do better?
+\end_layout
+
+\begin_layout Standard
+We saw that by encoding one sample at a time we may waste up to one bit
+ per sample on average since we need to round 
+\begin_inset Formula $I(x)$
+\end_inset
+
+ up to the nearest integer.
+ What would happen if we grouped samples in blocks of 
+\begin_inset Formula $n$
+\end_inset
+
+ samples and encoded a group at a time?
+\end_layout
+
+\begin_layout Standard
+The easiest way to do this is to define an 
+\begin_inset Formula $n$
+\end_inset
+
+-dimensional random variable 
+\begin_inset Formula $Z=(X_{1},X_{2},\ldots,X_{n})$
+\end_inset
+
+, where the 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ are independent copies of 
+\begin_inset Formula $X$
+\end_inset
+
+.
+ This makes sense because taking 
+\begin_inset Formula $n$
+\end_inset
+
+ samples from the same variable 
+\begin_inset Formula $X$
+\end_inset
+
+ is the same as taking a single sample from each one of 
+\begin_inset Formula $n$
+\end_inset
+
+ i.i.d (independent and identically distributed) variables 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ which follows the same distribution as 
+\begin_inset Formula $X$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Because 
+\begin_inset Formula $X_{1},X_{2},\ldots,X_{n}$
+\end_inset
+
+ are independent, 
+\begin_inset Formula $p(z)=p(x_{1})p(x_{2})\cdots p(x_{n})$
+\end_inset
+
+.
+ This means that
+\begin_inset Formula 
+\begin{align*}
+I(z) & =-\log_{2}p(z)\\
+ & =-\log_{2}\prod_{i=1}^{n}p(x_{i})\\
+ & =-\sum_{i=1}^{n}\log_{2}p(x_{i})\\
+ & =\sum_{i=1}^{n}I(x_{i}).
+\end{align*}
+
+\end_inset
+
+As a consequence,
+\begin_inset Formula 
+\begin{align*}
+H(Z) & =\mathbb{E}_{Z}[I(Z)]\\
+ & =\mathbb{E}_{Z}\left[\sum_{i=1}^{n}I(X_{i})\right]\\
+ & =\sum_{i=1}^{n}\mathbb{E}_{X_{i}}[I(X_{i})]\\
+ & =\sum_{i=1}^{n}H(X_{i})\\
+ & =nH(X)
+\end{align*}
+
+\end_inset
+
+thanks to the linearity of 
+\begin_inset Formula $\mathbb{E}[\cdot]$
+\end_inset
+
+ and the fact that the 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ are independent copies of 
+\begin_inset Formula $X$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Thanks to inequality
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "E[I(X)] inequality"
+
+\end_inset
+
+, we get the following:
+\begin_inset Formula 
+\begin{alignat*}{2}
+\begin{aligned}H(Z)\leq\vphantom{\mathbb{E}_{Z}\lceil I(Z)\rceil}\\
+nH(X)\leq\vphantom{\mathbb{E}_{Z}\lceil I(Z)\rceil}\\
+H(X)\leq\vphantom{\frac{\mathbb{E}_{Z}\lceil I(Z)\rceil}{n}}
+\end{aligned}
+ & \begin{gathered}\mathbb{E}_{Z}\lceil I(Z)\rceil\\
+\mathbb{E}_{Z}\lceil I(Z)\rceil\\
+\frac{\mathbb{E}_{Z}\lceil I(Z)\rceil}{n}
+\end{gathered}
+ & \begin{aligned} & \vphantom{\mathbb{E}_{Z}\lceil I(Z)\rceil}<H(Z)+1\\
+ & \vphantom{\mathbb{E}_{Z}\lceil I(Z)\rceil}<nH(X)+1\\
+ & \vphantom{\frac{\mathbb{E}_{Z}\lceil I(Z)\rceil}{n}}<H(X)+\frac{1}{n}.
+\end{aligned}
+ & \begin{gathered}\vphantom{\mathbb{E}_{Z}\lceil I(Z)\rceil}\iff\\
+\vphantom{\mathbb{E}_{Z}\lceil I(Z)\rceil}\iff\\
+\vphantom{\frac{\mathbb{E}_{Z}\lceil I(Z)\rceil}{n}}
+\end{gathered}
+\end{alignat*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since 
+\begin_inset Formula $\mathbb{E}_{Z}\lceil I(Z)\rceil$
+\end_inset
+
+ is the average number of bits sent for one block of 
+\begin_inset Formula $n$
+\end_inset
+
+ samples, by dividing by 
+\begin_inset Formula $n$
+\end_inset
+
+ we get the average number of bits sent per sample.
+\end_layout
+
+\begin_layout Standard
+As we can readily see, by encoding 
+\begin_inset Formula $n$
+\end_inset
+
+ samples at a time, we've narrowed the interval by 
+\begin_inset Formula $n$
+\end_inset
+
+ times.
+ This means that, at least in theory, we can get as close to 
+\begin_inset Formula $H(X)$
+\end_inset
+
+ as we like.
+ Equivalently, 
+\begin_inset Formula $\frac{\mathbb{E}_{Z}\lceil I(Z)\rceil}{n}\to H(X)$
+\end_inset
+
+ as 
+\begin_inset Formula $n\to+\infty$
+\end_inset
+
+.
+ This gives us another version of theorem
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Shannon's-Source-Code"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Theorem
+Shannon's Source Code Theorem (asymptotic version)
+\end_layout
+
+\begin_layout Theorem
+A sequence of 
+\begin_inset Formula $n$
+\end_inset
+
+ samples generated from a discrete random variable 
+\begin_inset Formula $X$
+\end_inset
+
+ with entropy 
+\begin_inset Formula $H(X)$
+\end_inset
+
+ can be compressed into 
+\begin_inset Formula $nH(X)$
+\end_inset
+
+ bits on average with negligible loss as 
+\begin_inset Formula $n\to\infty$
+\end_inset
+
+.
+ Conversely, no uniquely decodable code can do better without incurring
+ loss of information.
+\end_layout
+
+\begin_layout Standard
+Note that if 
+\begin_inset Formula $n$
+\end_inset
+
+ samples can be compressed into 
+\begin_inset Formula $nH(X)$
+\end_inset
+
+ bits then each sample is compressed into 
+\begin_inset Formula $H(X)$
+\end_inset
+
+ on average, thus the theorem is saying the same thing.
+ Also, some authors prefer to talk about 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $n$
+\end_inset
+
+ i.i.d.
+ random variables 
+\begin_inset Formula $X_{1},X_{2},\ldots,X_{n}$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ instead of 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $n$
+\end_inset
+
+ samples generated from a random variable 
+\begin_inset Formula $X$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ As we said before, they're just two different ways of saying the same thing.
+\end_layout
+
+\begin_layout Section
+Logarithm and probabilities
+\end_layout
+
+\begin_layout Standard
+Is there a way to justify the logarithm in the definition of the information
+ and, as a consequence, of the entropy without having to resort to codes
+ and lengths of binary strings?
+\end_layout
+
+\begin_layout Standard
+We know that 
+\begin_inset Formula $H(X)$
+\end_inset
+
+ wants to be a measure of the (amount of) information that we acquire, on
+ average, when we observe the value of the random variable 
+\begin_inset Formula $X$
+\end_inset
+
+.
+ For instance, let's take 
+\begin_inset Formula $X\sim Ber(\mu)$
+\end_inset
+
+, which means that 
+\begin_inset Formula $X=\{0,1\}$
+\end_inset
+
+ and
+\begin_inset Formula 
+\[
+p(x)=\begin{cases}
+\mu & \text{\text{if} }x=1\\
+1-\mu & \text{if }x=0
+\end{cases}
+\]
+
+\end_inset
+
+or, more concisely, 
+\begin_inset Formula $p(x)=\mu^{x}(1-\mu)^{1-x}$
+\end_inset
+
+.
+ To generate samples from 
+\begin_inset Formula $X$
+\end_inset
+
+ we could use a coin which lands heads with probability 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+If we flip the coin and observe the outcome, we have acquired, on average,
+ 
+\begin_inset Formula $H(X)$
+\end_inset
+
+ bits of information.
+ Now let's say we flip the coin again and observe the outcome.
+ What's the total amount of information we have acquired? Maybe 
+\begin_inset Formula $H(X)^{2}$
+\end_inset
+
+? Or maybe 
+\begin_inset Formula $2H(X)$
+\end_inset
+
+? The latter makes more sense because each toss gives us, on average, the
+ same amount of information and the two tosses are independent so they don't
+ interact in any way and adding them up seems the more reasonable thing
+ to do.
+\end_layout
+
+\begin_layout Standard
+Now let's consider 
+\begin_inset Formula $Z=(X_{1},X_{2})$
+\end_inset
+
+ where 
+\begin_inset Formula $X_{1}\sim Ber(\mu)$
+\end_inset
+
+, 
+\begin_inset Formula $X_{2}\sim Ber(\mu)$
+\end_inset
+
+ and 
+\begin_inset Formula $p(x_{1},x_{2})=p(x_{1})p(x_{2})$
+\end_inset
+
+, i.e.
+ the two random variables are independent.
+ Observing a sample from 
+\begin_inset Formula $Z$
+\end_inset
+
+ should give us, on average, the same amount of information as observing,
+ together, a sample from 
+\begin_inset Formula $X_{1}$
+\end_inset
+
+ and a sample from 
+\begin_inset Formula $X_{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+We can make things even simpler and reason about 
+\begin_inset Formula $I$
+\end_inset
+
+.
+ Let's assume that we flip the coin twice and we get the values 
+\begin_inset Formula $x_{1},x_{2}$
+\end_inset
+
+.
+ The amount of information we acquire is 
+\begin_inset Formula $I(z)=I(x_{1})+I(x_{2})$
+\end_inset
+
+, where 
+\begin_inset Formula $z=(x_{1},x_{2})$
+\end_inset
+
+ is the equivalent sample from 
+\begin_inset Formula $Z$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Another important assumption we must make is that the information of each
+ sample only depends on its probability, i.e.
+ 
+\begin_inset Formula $I(x)=f(p(x))$
+\end_inset
+
+ for some function 
+\begin_inset Formula $f$
+\end_inset
+
+.
+ In other words, 
+\begin_inset Formula $I(x_{1})=I(x_{2})\iff p(x_{1})=p(x_{2})$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Here's what we can conclude about 
+\begin_inset Formula $f$
+\end_inset
+
+ for now:
+\begin_inset Formula 
+\begin{alignat*}{2}
+I(z) & =I(x_{1})+I(x_{2}) & \iff\\
+f(p(z)) & =f(p(x_{1}))+f(p(x_{2})) & \iff\\
+f(p(x_{1})p(x_{2})) & =f(p(x_{1}))+f(p(x_{2})).
+\end{alignat*}
+
+\end_inset
+
+The values 
+\begin_inset Formula $p(x_{1})$
+\end_inset
+
+ and 
+\begin_inset Formula $p(x_{2})$
+\end_inset
+
+ are not completely arbitrary (
+\begin_inset Formula $p(x_{1}),p(x_{2})\in[0,1]$
+\end_inset
+
+ and 
+\begin_inset Formula $p(x_{1})+p(x_{2})\leq1$
+\end_inset
+
+) but, for simplicity, let's pretend they are.
+ We can conclude that 
+\begin_inset Formula 
+\[
+\forall x,y\in\mathbb{R},\;\;\;\;f(xy)=f(x)+f(y).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Another reasonable assumption is that 
+\begin_inset Formula $I(1)=0$
+\end_inset
+
+ because if, for instance, a coin lands heads with probability 
+\begin_inset Formula $1$
+\end_inset
+
+, then tossing the coin and observing the outcome (heads) doesn't tell us
+ anything we didn't already know.
+ This means that 
+\begin_inset Formula $f(1)=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+We should also assume that 
+\begin_inset Formula $f$
+\end_inset
+
+ is 
+\emph on
+strictly decreasing
+\emph default
+, i.e.
+ 
+\begin_inset Formula 
+\[
+x<y\implies f(x)>f(y)
+\]
+
+\end_inset
+
+ because the rarer and thus more surprising the event, the higher the amount
+ of information acquired by observing that event.
+\end_layout
+
+\begin_layout Standard
+It turns out that the logarithm is the only 
+\emph on
+strictly increasing
+\emph default
+ function 
+\begin_inset Formula $g:(0,+\infty)\to\mathbb{R}$
+\end_inset
+
+ such that 
+\begin_inset Formula $g(1)=0$
+\end_inset
+
+ and 
+\begin_inset Formula $\forall x,y\in\mathbb{R},\;\;g(xy)=g(x)+g(y)$
+\end_inset
+
+.
+ Since 
+\begin_inset Formula $-f$
+\end_inset
+
+ is strictly increasing, this means that
+\begin_inset Formula 
+\begin{alignat*}{2}
+-f(x) & =\log_{b}x & \iff\\
+f(x) & =-\log_{b}x & \implies\\
+I(x) & =-\log_{b}p(x).
+\end{alignat*}
+
+\end_inset
+
+We can choose 
+\begin_inset Formula $b=2$
+\end_inset
+
+ which corresponds to measuring the amount of information in bits.
+\end_layout
+
+\begin_layout Standard
+Intuitively, we can say that the logarithm makes sense because 
+\emph on
+probabilities multiply while amounts of information add up
+\emph default
+ and what better way to transform products into sums than using the logarithm?
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Jensen's-Inequality"
+
+\end_inset
+
+Jensen's Inequality
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Jensen's Inequality
+\emph default
+ is a very useful and powerful tool.
+ It has to do with 
+\emph on
+convex
+\emph default
+ and 
+\emph on
+concave
+\emph default
+ functions.
+\end_layout
+
+\begin_layout Definition
+If 
+\begin_inset Formula $x_{1},\ldots,x_{n}$
+\end_inset
+
+ are some points in a vector space (e.g.
+ 
+\begin_inset Formula $\mathbb{R}^{n}$
+\end_inset
+
+), then a 
+\emph on
+convex combination
+\emph default
+ is any point 
+\begin_inset Formula $x_{\alpha}$
+\end_inset
+
+ defined as follows:
+\begin_inset Formula 
+\[
+x_{\alpha}=\sum_{i=1}^{n}\alpha_{i}x_{i},\;\;\alpha>0,\alpha^{T}\alpha=1,
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $\alpha=(\alpha_{1},\ldots,\alpha_{n})$
+\end_inset
+
+ and 
+\begin_inset Formula $\alpha>0\iff\alpha_{i}>0,\;i=1,\ldots,n$
+\end_inset
+
+.
+ Note that 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ can be interpreted as a 
+\emph on
+finite discrete distribution
+\emph default
+.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Definition
+\begin_inset CommandInset label
+LatexCommand label
+name "def:convex-set"
+
+\end_inset
+
+A set is 
+\emph on
+convex
+\emph default
+ if any convex combination of any of its points is in the set.
+\end_layout
+
+\begin_layout Proposition
+A set is 
+\emph on
+convex
+\emph default
+ if and only if any convex combination of any pair of its points is in the
+ set.
+ See picture
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Example-of-convex-set"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+Basically, we want to prove that definition
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "def:convex-set"
+
+\end_inset
+
+ doesn't need to consider convex combinations of more than two points.
+ To do this, it's enough to prove that any convex combinations of three
+ or more points can be expressed as a convex combination of just two points.
+ This is easy:
+\begin_inset Formula 
+\[
+\sum_{i=1}^{n}\alpha_{i}x_{i}=\alpha_{1}x_{1}+(1-\alpha_{1})\left[\sum_{i=2}^{n}\frac{\alpha_{i}}{1-\alpha_{1}}x_{i}\right].
+\]
+
+\end_inset
+
+Note that since 
+\begin_inset Formula $\sum_{i=2}^{n}\frac{\alpha_{i}}{1-\alpha_{1}}x_{i}$
+\end_inset
+
+ is a convex combination of 
+\begin_inset Formula $x_{2},\ldots,x_{n}$
+\end_inset
+
+, then it's in the convex set and can be used to form a convex combination
+ with 
+\begin_inset Formula $x_{1}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename convexity.eps
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Example-of-convex-set"
+
+\end_inset
+
+Example of 
+\emph on
+convex
+\emph default
+ and 
+\emph on
+non
+\emph default
+-convex sets.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Definition
+A function is convex if and only if the 
+\emph on
+region
+\emph default
+ above its graph is a convex set.
+ See picture
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Example-of-convex-function"
+
+\end_inset
+
+ for the unidimensional case.
+\end_layout
+
+\begin_layout Proposition
+A function is convex if and only if all the planes tangent to it are completely
+ below it.
+ See picture
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:jensen's inequality"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Definition
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename convex_function.eps
+	scale 60
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Example-of-convex-function"
+
+\end_inset
+
+Example of a 
+\emph on
+convex 
+\emph default
+function.
+ Note that the region above the graph is a 
+\emph on
+convex set
+\emph default
+ (even if 
+\emph on
+unbounded
+\emph default
+).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We know that 
+\begin_inset Formula $\var[X]\geq0$
+\end_inset
+
+ for any random variable 
+\begin_inset Formula $X$
+\end_inset
+
+.
+ We can use this fact to prove a particular case of Jensen's Inequality:
+\begin_inset Formula 
+\begin{flalign*}
+0\leq\var[X] & =\mathbb{E}\left[(X-\mathbb{E}[X])^{2}\right]\\
+ & =\mathbb{E}\left[X^{2}-2X\mathbb{E}[X]+\mathbb{E}[X]^{2}\right]\\
+ & =\mathbb{E}\left[X^{2}\right]-2\mathbb{E}[X]\mathbb{E}[X]+\mathbb{E}[X]^{2}\\
+ & =\mathbb{E}\left[X^{2}\right]-\mathbb{E}[X]^{2}
+\end{flalign*}
+
+\end_inset
+
+which implies that
+\begin_inset Formula 
+\[
+\mathbb{E}\left[X^{2}\right]\geq\mathbb{E}[X]^{2}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that 
+\begin_inset Formula $f(x)=x^{2}$
+\end_inset
+
+ is a 
+\emph on
+strictly
+\emph default
+ convex function (
+\begin_inset Formula $f''(x)=\frac{d^{2}f}{dx^{2}}(x)=2>0)$
+\end_inset
+
+.
+ In general, if 
+\begin_inset Formula $f$
+\end_inset
+
+ is convex, then 
+\begin_inset Formula $\mathbb{E}[f(X)]\geq f(\mathbb{E}[X])$
+\end_inset
+
+.
+ The 
+\emph on
+equality
+\emph default
+ holds 
+\emph on
+if and only if
+\emph default
+ 
+\begin_inset Formula $f$
+\end_inset
+
+ is linear or 
+\begin_inset Formula $X$
+\end_inset
+
+ is constant (for instance, 
+\begin_inset Formula $X\sim Ber(1)$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+For an intuitive understanding of why the inequality holds, see picture
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:jensen-idea"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename jensen_idea.eps
+	scale 70
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:jensen-idea"
+
+\end_inset
+
+This figure shows Jensen's Inequality in action.
+\begin_inset Newline newline
+\end_inset
+
+First of all, note that 
+\begin_inset Formula $f$
+\end_inset
+
+ is 
+\emph on
+convex.
+
+\emph default
+ In this example, all the distributions are defined over the five points
+ 
+\begin_inset Formula $(x_{i},f(x_{i}))$
+\end_inset
+
+, 
+\begin_inset Formula $i=1,\ldots,5$
+\end_inset
+
+.
+ In particular, 
+\begin_inset Formula $U$
+\end_inset
+
+ is the 
+\emph on
+Uniform
+\emph default
+ distribution.
+\begin_inset Newline newline
+\end_inset
+
+Note that 
+\begin_inset Formula $v=\mathbb{E}_{X\sim U}[(X,f(X))]=(\mathbb{E}_{X\sim U}[X],\mathbb{E}_{X\sim U}[f(X)])$
+\end_inset
+
+ is a 
+\emph on
+convex combination
+\emph default
+ of the five points and, thus, 
+\begin_inset Formula $v$
+\end_inset
+
+ must be in the 
+\emph on
+convex set
+\emph default
+ shown in the figure.
+ (We chose 
+\begin_inset Formula $p=U$
+\end_inset
+
+, but this is true for 
+\emph on
+all 
+\emph default
+distributions.)
+\begin_inset Newline newline
+\end_inset
+
+Since 
+\begin_inset Formula $w=(\mathbb{E}_{X\sim U}[X],f(\mathbb{E}_{X\sim U}[X]))$
+\end_inset
+
+ must be on the 
+\emph on
+red
+\emph default
+ curve (a portion of 
+\begin_inset Formula $f$
+\end_inset
+
+) and 
+\begin_inset Formula $v_{x}=w_{x}$
+\end_inset
+
+, it follows that 
+\begin_inset Formula $v_{y}\geq w_{y}$
+\end_inset
+
+, i.e.
+ 
+\begin_inset Formula $\mathbb{E}_{X\sim U}[f(X)]\geq f(\mathbb{E}_{X\sim U}[X])$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+Now observe that if 
+\begin_inset Formula $X$
+\end_inset
+
+ is a 
+\emph on
+constant
+\emph default
+ then the five points are all equal, i.e.
+ they become a single point.
+ As a consequence, the convex set and the red portion of 
+\begin_inset Formula $f$
+\end_inset
+
+ collapse into a single point and the equality holds.
+\begin_inset Newline newline
+\end_inset
+
+Also, if 
+\begin_inset Formula $f$
+\end_inset
+
+ is 
+\emph on
+linear
+\emph default
+ than its graph is a straight line and, thus, the red portion of 
+\begin_inset Formula $f$
+\end_inset
+
+ coincides with the convex set.
+ Therefore, the equality holds once again.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Proof of Jensen's Inequality
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $X$
+\end_inset
+
+ be a random variable and 
+\begin_inset Formula $f:\mathbb{R}\to\mathbb{R}$
+\end_inset
+
+ a convex function.
+ Let's define a function 
+\begin_inset Formula $L(x)=ax+b$
+\end_inset
+
+, where 
+\begin_inset Formula $a$
+\end_inset
+
+ and 
+\begin_inset Formula $b$
+\end_inset
+
+ are real constants, such that 
+\begin_inset Formula $L(x)\leq f(x)$
+\end_inset
+
+ for all 
+\begin_inset Formula $x\in\mathbb{R}$
+\end_inset
+
+ and 
+\begin_inset Formula $L(\mathbb{E}[X])=f(\mathbb{E}[X])$
+\end_inset
+
+.
+ See figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:jensen's inequality"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename jensen_proof.eps
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:jensen's inequality"
+
+\end_inset
+
+
+\begin_inset Formula $L(x)\leq f(x)$
+\end_inset
+
+ for all 
+\begin_inset Formula $x\in\mathbb{R}$
+\end_inset
+
+ and 
+\begin_inset Formula $L(\mathbb{E}[X])=f(\mathbb{E}[X])$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since 
+\begin_inset Formula $f(x)\geq L(x)$
+\end_inset
+
+ for all 
+\begin_inset Formula $x\in\mathbb{R}$
+\end_inset
+
+, we can take the mean of both sides:
+\begin_inset Formula 
+\begin{flalign*}
+\mathbb{E}[f(X)] & \geq\mathbb{E}[L(X)]\\
+ & =\mathbb{E}[aX+b]\\
+ & =a\mathbb{E}[X]+b\\
+ & =L(\mathbb{E}[X])\\
+ & =f(\mathbb{E}[X]).
+\end{flalign*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If 
+\begin_inset Formula $X$
+\end_inset
+
+ is constant with 
+\begin_inset Formula $p(x_{0})=1$
+\end_inset
+
+, then 
+\begin_inset Formula $f(x_{0})=\mathbb{E}[f(X)]\geq f(\mathbb{E}[X])=f(x_{0})$
+\end_inset
+
+, therefore the equality holds.
+ Also, if 
+\begin_inset Formula $f$
+\end_inset
+
+ is linear, then 
+\begin_inset Formula $\mathbb{E}$
+\end_inset
+
+ and 
+\begin_inset Formula $f$
+\end_inset
+
+, both linear, can be exchanged and the equality holds again.
+\end_layout
+
+\begin_layout Standard
+It's easy to generalize the result to the case of 
+\begin_inset Formula $f:\mathbb{R}^{n}\to\mathbb{R}$
+\end_inset
+
+ by defining 
+\begin_inset Formula $L(x)=a^{T}x+b$
+\end_inset
+
+, where 
+\begin_inset Formula $a$
+\end_inset
+
+ is a fixed 
+\begin_inset Formula $n$
+\end_inset
+
+-dimensional vector and 
+\begin_inset Formula $b$
+\end_inset
+
+ is a fixed scalar:
+\begin_inset Formula 
+\begin{flalign*}
+\mathbb{E}[f(X)] & \geq\mathbb{E}[L(X)]\\
+ & =\mathbb{E}[a^{T}X+b]\\
+ & =\mathbb{E}\left[\sum_{i=1}^{n}a_{i}X_{i}+b\right]\\
+ & =\sum_{i=1}^{n}a_{i}\mathbb{E}[X_{i}]+b\\
+ & =a^{T}\mathbb{E}[X]+b\\
+ & =L(\mathbb{E}[X])\\
+ & =f(\mathbb{E}[X]).
+\end{flalign*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Maximum Entropy
+\end_layout
+
+\begin_layout Standard
+We've seen that 
+\begin_inset Formula $I(x)=0$
+\end_inset
+
+ when 
+\begin_inset Formula $p(x)=1$
+\end_inset
+
+.
+ This means that if 
+\begin_inset Formula $X$
+\end_inset
+
+ can take only one value 
+\begin_inset Formula $x_{0}$
+\end_inset
+
+ then 
+\begin_inset Formula $H(X)=\mathbb{E}_{X}[I(X)]=I(x_{0})=-\log_{2}p(x_{0})=-\log_{2}1=0$
+\end_inset
+
+.
+ But when is 
+\begin_inset Formula $H(X)$
+\end_inset
+
+ maximum?
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $X$
+\end_inset
+
+ be a random variable which takes values 
+\begin_inset Formula $x_{1},x_{2},\ldots,x_{n}$
+\end_inset
+
+ with probabilities 
+\begin_inset Formula $p_{1},p_{2},\ldots,p_{n}$
+\end_inset
+
+, respectively.
+ Then
+\begin_inset Formula 
+\[
+H(X)=\mathbb{E}_{X}[I(X)]=-\sum_{i=1}^{n}p_{i}\log_{2}p_{i}.
+\]
+
+\end_inset
+
+We want to find
+\begin_inset Formula 
+\[
+\argmax_{p_{1},p_{2},\ldots,p_{n}}-\sum_{i=1}^{n}p_{i}\log_{2}p_{i}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since 
+\begin_inset Formula $\log$
+\end_inset
+
+ is concave (i.e.
+ 
+\begin_inset Formula $-log$
+\end_inset
+
+ is convex) we can use Jensen's Inequality:
+\begin_inset Formula 
+\begin{align*}
+H(X) & =\mathbb{E}\left[\log_{2}\frac{1}{p(X)}\right]\\
+ & \leq\log_{2}\mathbb{E}\left[\frac{1}{p(X)}\right]\\
+ & =\log_{2}\sum_{i=1}^{n}p_{i}\frac{1}{p_{i}}\\
+ & =\log_{2}n.
+\end{align*}
+
+\end_inset
+
+Also, the equality holds when the random variable, i.e.
+ 
+\begin_inset Formula $\frac{1}{p(X)}$
+\end_inset
+
+, is constant, which means that 
+\begin_inset Formula $p_{1}=p_{2}=\ldots=p_{n}=\frac{1}{n}$
+\end_inset
+
+.
+ Note that we used proposition
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "prop:E(f(X))"
+
+\end_inset
+
+ in the derivation above.
+\end_layout
+
+\begin_layout Section
+Specifying the distribution
+\end_layout
+
+\begin_layout Standard
+Sometimes it's useful or even necessary to indicate the distribution of
+ a variable explicitly.
+ Let 
+\begin_inset Formula $X$
+\end_inset
+
+ be a discrete random variable and 
+\begin_inset Formula $p$
+\end_inset
+
+ a distribution for 
+\begin_inset Formula $X$
+\end_inset
+
+.
+ Then we may write:
+\begin_inset Formula 
+\begin{gather*}
+I(x)=I_{p}(x)=-\log_{2}p(x)\\
+H(X)=H(p)=\mathbb{E}_{X\sim p}[I(X)]=-\sum_{x}p(x)\log_{2}p(x).
+\end{gather*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Chain rule
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+chain rule
+\emph default
+ for the entropy is very simple and shouldn't surprise you.
+ It derives directly from what we could call the 
+\emph on
+information chain rule
+\emph default
+:
+\begin_inset Formula 
+\begin{equation}
+I(x,y)=I(x|y)+I(y)=I(y|x)+I(x).\label{eq:I_chain_rule}
+\end{equation}
+
+\end_inset
+
+This derives directly from
+\begin_inset Formula 
+\begin{equation}
+p(x,y)=p(x|y)p(y)=p(y|x)p(x).\label{eq:prob_chain_rule}
+\end{equation}
+
+\end_inset
+
+In fact, by taking the logarithm and negating 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:prob_chain_rule"
+
+\end_inset
+
+ we get
+\begin_inset Formula 
+\begin{gather*}
+-\log_{2}p(x,y)=-\log_{2}p(x|y)-\log_{2}p(y)=-\log_{2}p(y|x)-\log_{2}p(x)\\
+I(x,y)=I(x|y)+I(y)=I(y|x)+I(x).
+\end{gather*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now we can take the mean of equation
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:I_chain_rule"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{alignat*}{2}
+\mathbb{E}_{X,Y}[I(X,Y)] & =\mathbb{E}_{X,Y}[I(X|Y)]+\mathbb{E}_{X,Y}[I(Y)]\\
+ & =\mathbb{E}_{X,Y}[I(Y|X)]+\mathbb{E}_{X,Y}[I(X)] & \iff\\
+H(X,Y) & =H(X|Y)+H(Y)\\
+ & =H(Y|X)+H(X).
+\end{alignat*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Of course, if 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ are independent we simply have
+\begin_inset Formula 
+\begin{align*}
+I(x,y) & =I(x)+I(y)\\
+H(X,Y) & =H(X)+H(Y).
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $H(X,Y)$
+\end_inset
+
+ is usually called the 
+\emph on
+joint entropy
+\emph default
+ of 
+\begin_inset Formula $X,Y$
+\end_inset
+
+, while 
+\begin_inset Formula $H(X|Y)$
+\end_inset
+
+ is called the 
+\emph on
+conditional entropy
+\emph default
+.
+ Note that we can define the latter in two ways:
+\begin_inset Formula 
+\[
+H(X|Y)=\mathbb{E}_{X,Y}[I(X|Y)]=\mathbb{E}_{Y}[H(X|Y)]=\sum_{y}p(y)H(X|y).
+\]
+
+\end_inset
+
+Pay particular attention to the term 
+\begin_inset Formula $H(X|y)$
+\end_inset
+
+ and note that the 
+\begin_inset Formula $y$
+\end_inset
+
+ is lowercase.
+ This is short for 
+\begin_inset Formula $H(X|Y=y)$
+\end_inset
+
+ which means that 
+\begin_inset Formula $Y$
+\end_inset
+
+ is fixed and equal to 
+\begin_inset Formula $y$
+\end_inset
+
+.
+ Also, the first 
+\begin_inset Formula $H(X|Y)$
+\end_inset
+
+ is a scalar, while the one inside 
+\begin_inset Formula $\mathbb{E}_{Y}[\cdot]$
+\end_inset
+
+ is a random variable obtained by transforming 
+\begin_inset Formula $Y$
+\end_inset
+
+ through the function 
+\begin_inset Formula $y\mapsto H(X|y)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In accordance with the product rule for the mean, we must have
+\begin_inset Formula 
+\[
+H(X|y)=\mathbb{E}_{X|Y}[I(X|y)]=-\sum_{x}p(x|y)\log_{2}p(x|y).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This tells us the amount of information, after we've already observed that
+ 
+\begin_inset Formula $Y=y$
+\end_inset
+
+, acquired on average by observing the value of 
+\begin_inset Formula $X$
+\end_inset
+
+.
+ In general, this amount depends on the particular value 
+\begin_inset Formula $y$
+\end_inset
+
+ observed.
+ If we want a measure independent of 
+\begin_inset Formula $y$
+\end_inset
+
+, we can take the mean with respect to 
+\begin_inset Formula $Y$
+\end_inset
+
+ ending up with 
+\begin_inset Formula 
+\[
+H(X|Y)=\mathbb{E}_{Y}[\mathbb{E}_{X|Y}[I(X|Y)]]=\mathbb{E}_{X,Y}[I(X|Y)],
+\]
+
+\end_inset
+
+which tells us the amount of information, after we've already observed the
+ value of 
+\begin_inset Formula $Y$
+\end_inset
+
+ (whatever the value), acquired on average by observing the value of 
+\begin_inset Formula $X$
+\end_inset
+
+.
+ Note that this measure doesn't depend on the particular value of 
+\begin_inset Formula $Y$
+\end_inset
+
+.
+ In fact, we average over all the possible values of 
+\begin_inset Formula $Y$
+\end_inset
+
+ to compute a 
+\begin_inset Quotes eld
+\end_inset
+
+summary
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Cross Entropy
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Cross-Entropy"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+cross entropy
+\emph default
+ of two distributions 
+\begin_inset Formula $p,q$
+\end_inset
+
+ for the discrete random variable 
+\begin_inset Formula $X$
+\end_inset
+
+ is defined as
+\begin_inset Formula 
+\[
+H(p,q)=\mathbb{E}_{X\sim p}[I_{q}(X)]=-\sum_{x}p(x)\log_{2}q(x).
+\]
+
+\end_inset
+
+Note that this has nothing to do with the joint entropy 
+\begin_inset Formula $H(X,Y)$
+\end_inset
+
+!
+\end_layout
+
+\begin_layout Standard
+What's the meaning of cross entropy? 
+\begin_inset Formula $I_{q}(x)$
+\end_inset
+
+ is the information of 
+\begin_inset Formula $x$
+\end_inset
+
+ assuming that 
+\begin_inset Formula $X\sim q$
+\end_inset
+
+, so what's the meaning of taking the mean with respect to 
+\begin_inset Formula $p$
+\end_inset
+
+ rather than to 
+\begin_inset Formula $q$
+\end_inset
+
+? This time it's better to think about 
+\emph on
+codes
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+If 
+\begin_inset Formula $C_{q}:X\to\{0,1\}^{*}$
+\end_inset
+
+ is an optimal code for 
+\begin_inset Formula $X$
+\end_inset
+
+ assuming that 
+\begin_inset Formula $X\sim q$
+\end_inset
+
+, then 
+\begin_inset Formula $\length(C_{q}(x))\approx I_{q}(x)$
+\end_inset
+
+.
+ Now we can rewrite the cross entropy as
+\begin_inset Formula 
+\[
+H(p,q)=\mathbb{E}_{X\sim p}[\length(C_{q}(X))]
+\]
+
+\end_inset
+
+which is the number of bits required on average to transmit each sample
+ 
+\begin_inset Formula $x$
+\end_inset
+
+ from 
+\begin_inset Formula $X\sim p$
+\end_inset
+
+, using a code optimized for the case when 
+\begin_inset Formula $X\sim q$
+\end_inset
+
+.
+ It's clear that
+\begin_inset Formula 
+\[
+H(p)=H(p,p)\leq H(p,q)
+\]
+
+\end_inset
+
+because 
+\begin_inset Formula $C_{q}$
+\end_inset
+
+ is not the optimal code for 
+\begin_inset Formula $X\sim p$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In other words, 
+\begin_inset Formula $H(p,q)$
+\end_inset
+
+ is the expected number of bits (per sample) required to transmit samples
+ from 
+\begin_inset Formula $X\sim p$
+\end_inset
+
+ when using a code optimized for 
+\begin_inset Formula $X\sim q$
+\end_inset
+
+.
+ More concisely, 
+\begin_inset Formula $H(p,q)$
+\end_inset
+
+ is the number of bits required for 
+\begin_inset Formula $X\sim p$
+\end_inset
+
+ when optimizing for 
+\begin_inset Formula $X\sim q$
+\end_inset
+
+.
+ We could also choose better names for the 
+\emph on
+formal parameters
+\emph default
+ (this is programming lingo) for the cross entropy: 
+\begin_inset Formula $H(real,optimize\_for)$
+\end_inset
+
+.
+ That is, the transmitted values follows the 
+\begin_inset Formula $real$
+\end_inset
+
+ distribution, but we're optimizing for the 
+\begin_inset Formula $optimize\_for$
+\end_inset
+
+ distribution instead so, if 
+\begin_inset Formula $real\neq optimize\_for$
+\end_inset
+
+, we lose efficiency and waste bits.
+\end_layout
+
+\begin_layout Standard
+Please note that the following is false, in general:
+\begin_inset Formula 
+\begin{align*}
+H(q) & =H(q,q)\leq H(p,q) & \text{(THIS IS \textbf{\emph{WRONG}}!!!)}
+\end{align*}
+
+\end_inset
+
+As a counterexample, consider 
+\begin_inset Formula $p(x)\sim Ber(0.1)$
+\end_inset
+
+ and 
+\begin_inset Formula $q(x)\sim Ber(0.2)$
+\end_inset
+
+.
+ We have:
+\begin_inset Formula 
+\begin{gather*}
+H(q,q)=-\sum_{x}q(x)\log_{2}q(x)=-0.2\log_{2}0.2-0.8\log_{2}0.8\approx0.722\\
+H(p,q)=-\sum_{x}p(x)\log_{2}q(x)=-0.1\log_{2}0.2-0.9\log_{2}0.8\approx0.522.
+\end{gather*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Kullback-Leibler Divergence
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Kullback-Leibler-Divergence"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+Kullback-Leibler Divergence (KL Divergence)
+\emph default
+ is often used to measure the distance between two distributions, but it's
+ not a real distance.
+ In fact, it isn't symmetric, as we'll see.
+\end_layout
+
+\begin_layout Standard
+The KL Divergence between two distributions 
+\begin_inset Formula $p$
+\end_inset
+
+ and 
+\begin_inset Formula $q$
+\end_inset
+
+ of a variable 
+\begin_inset Formula $X$
+\end_inset
+
+ is defined as
+\begin_inset Formula 
+\[
+KL(p||q)=\sum_{x}p(x)\log_{2}\frac{p(x)}{q(x)}.
+\]
+
+\end_inset
+
+We can rewrite this in many ways:
+\begin_inset Formula 
+\begin{align*}
+KL(p||q) & =\mathbb{E}_{X\sim p}\left[\log_{2}\frac{p(X)}{q(X)}\right]\\
+ & =\mathbb{E}_{X\sim p}[\log_{2}p(X)-\log_{2}q(X)]\\
+ & =\mathbb{E}_{X\sim p}[I_{q}(X)-I_{p}(X)]\\
+ & =\mathbb{E}_{X\sim p}[I_{q}(X)]-\mathbb{E}_{X\sim p}[I_{p}(X)]\\
+ & =H(p,q)-H(p,p)\\
+ & =H(p,q)-H(p).
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The final expression, 
+\begin_inset Formula $KL(p||q)=H(p,q)-H(p)$
+\end_inset
+
+, tells us that 
+\begin_inset Formula $KL(p||q)$
+\end_inset
+
+ is the price we pay when we transmit samples generated from 
+\begin_inset Formula $X\sim p$
+\end_inset
+
+ by using an optimal code for 
+\begin_inset Formula $q$
+\end_inset
+
+ rather than for 
+\begin_inset Formula $p$
+\end_inset
+
+, measured in bits wasted.
+ It's intuitively clear that 
+\begin_inset Formula $KL(p||q)\geq0$
+\end_inset
+
+, but maybe we should try to prove it.
+\end_layout
+
+\begin_layout Standard
+Once again, we can use Jensen's Inequality by noticing that 
+\begin_inset Formula $-log(x)$
+\end_inset
+
+ is a convex function:
+\begin_inset Formula 
+\begin{align*}
+KL(p||q) & =\mathbb{E}_{X\sim p}\left[-\log_{2}\frac{p(X)}{q(X)}\right]\\
+ & =-\mathbb{E}_{X\sim p}\left[-\log_{2}\frac{q(X)}{p(X)}\right]\\
+ & \geq\log_{2}\mathbb{E}_{X\sim p}\left[\frac{q(X)}{p(X)}\right]\\
+ & =\log_{2}\sum_{x}p(x)\frac{q(x)}{p(x)}\\
+ & =\log_{2}1\\
+ & =0.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Also, since 
+\begin_inset Formula $-log_{2}(\cdot)$
+\end_inset
+
+ is not linear, the equality holds if and only if 
+\begin_inset Formula $\frac{q(X)}{p(X)}$
+\end_inset
+
+ is a constant random variable, which requires that 
+\begin_inset Formula $q(x)=Kp(x)$
+\end_inset
+
+ for all 
+\begin_inset Formula $x\in X$
+\end_inset
+
+ and some constant 
+\begin_inset Formula $K$
+\end_inset
+
+.
+ By summing up, we get 
+\begin_inset Formula 
+\[
+1=\sum_{x}q(x)=K\sum_{x}p(x)=K
+\]
+
+\end_inset
+
+ and so 
+\begin_inset Formula $q(x)=p(x)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In conclusion, 
+\begin_inset Formula $KL(p||q)\geq0$
+\end_inset
+
+ and 
+\begin_inset Formula $KL(p||q)=0\iff p=q$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Mutual Information
+\end_layout
+
+\begin_layout Subsection
+Definition
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+mutual information
+\emph default
+ between two random variables 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ measures the amount of information we learn about one variable by observing
+ the other.
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $X,Y$
+\end_inset
+
+ be two independent random variables, i.e.
+ 
+\begin_inset Formula $p(x,y)=p(x)p(y)$
+\end_inset
+
+ for all 
+\begin_inset Formula $x\in X,y\in Y$
+\end_inset
+
+.
+ It seems logical to require that the mutual information between 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ is 
+\begin_inset Formula $0$
+\end_inset
+
+, since 
+\begin_inset Formula $X$
+\end_inset
+
+ tells nothing about 
+\begin_inset Formula $Y$
+\end_inset
+
+ and vice versa.
+\end_layout
+
+\begin_layout Standard
+Now consider two random variables 
+\begin_inset Formula $X,Y$
+\end_inset
+
+ where 
+\begin_inset Formula $Y=X$
+\end_inset
+
+.
+ The mutual information between 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ should be maximum because one completely determines the other.
+ Note that, in this case, 
+\begin_inset Formula $p(x,y)=p(x)=p(y)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In other words, if 
+\begin_inset Formula $X,Y$
+\end_inset
+
+ are independent, the distance between the distributions 
+\begin_inset Formula $p(x,y)$
+\end_inset
+
+ and 
+\begin_inset Formula $p(x)p(y)$
+\end_inset
+
+ should be 
+\begin_inset Formula $0$
+\end_inset
+
+, while, if 
+\begin_inset Formula $X=Y$
+\end_inset
+
+, the distance between 
+\begin_inset Formula $p(x,y)$
+\end_inset
+
+ and 
+\begin_inset Formula $p(x)p(y)$
+\end_inset
+
+ should be maximum.
+\end_layout
+
+\begin_layout Standard
+Let's see if we can use the KL Divergence for this.
+ We'll use 
+\begin_inset Formula $I(X;Y)$
+\end_inset
+
+ to denote the mutual information between 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+, and abuse notation a little by specifying the arguments of the three 
+\begin_inset Formula $p(\cdot)$
+\end_inset
+
+ in order to tell them apart: 
+\begin_inset Formula 
+\begin{align*}
+I(X;Y) & =KL(p(x,y)||p(x)p(y))\\
+ & =H(p(x,y),p(x)p(y))-H(p(x,y))\\
+ & =\sum_{x}\sum_{y}p(x,y)\log_{2}\frac{p(x,y)}{p(x)p(y)}.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Let's check whether this definition meets our first requirement, i.e.
+ that if 
+\begin_inset Formula $X,Y$
+\end_inset
+
+ are independent, then 
+\begin_inset Formula $I(X;Y)=0$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{flalign*}
+p(x,y)=p(x)p(y)\implies I(X;Y) & =\sum_{x}\sum_{y}p(x,y)\log_{2}\frac{p(x,y)}{p(x)p(y)}\\
+ & =\sum_{x}\sum_{y}p(x,y)\log_{2}1=0.
+\end{flalign*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+What about the converse? Does zero mutual information implies independence?
+ Yes, it does! We've already proved in section
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Kullback-Leibler-Divergence"
+
+\end_inset
+
+ that 
+\begin_inset Formula 
+\[
+KL(p||q)=0\iff p=q,
+\]
+
+\end_inset
+
+so we must have 
+\begin_inset Formula $p(x,y)=p(x)p(y)$
+\end_inset
+
+ which implies independence.
+\end_layout
+
+\begin_layout Standard
+Now we need to check whether 
+\begin_inset Formula $I(X;Y)$
+\end_inset
+
+ is maximum when 
+\begin_inset Formula $Y=X$
+\end_inset
+
+.
+ Note that if 
+\begin_inset Formula $Y=X$
+\end_inset
+
+ then
+\begin_inset Formula 
+\[
+p(x,y)=\begin{cases}
+p(x) & \text{if }x=y\\
+0 & \text{otherwise}
+\end{cases}
+\]
+
+\end_inset
+
+Therefore
+\begin_inset Formula 
+\begin{align*}
+I(X;Y) & =\sum_{x}\sum_{y}p(x,y)\log_{2}\frac{p(x,y)}{p(x)p(y)}\\
+ & =\sum_{x}\sum_{y:y=x}p(x,y)\log_{2}\frac{p(x,y)}{p(x)p(y)}\\
+ & =\sum_{x}p(x)\log_{2}\frac{p(x)}{p(x)^{2}}\\
+ & =-\sum_{x}p(x)\log_{2}p(x)=H(X).
+\end{align*}
+
+\end_inset
+
+Note that 
+\begin_inset Formula $I(X;Y)=H(X)=H(Y)$
+\end_inset
+
+ because we can repeat the derivation by keeping 
+\begin_inset Formula $y$
+\end_inset
+
+ instead of 
+\begin_inset Formula $x$
+\end_inset
+
+.
+ This means that 
+\begin_inset Formula $X$
+\end_inset
+
+ reveals, 
+\emph on
+on average
+\emph default
+, 
+\begin_inset Formula $H(Y)$
+\end_inset
+
+ bits of information for 
+\begin_inset Formula $Y$
+\end_inset
+
+ which corresponds to 
+\emph on
+all
+\emph default
+ the information contained in 
+\begin_inset Formula $Y$
+\end_inset
+
+.
+ Of course, the same is true for 
+\begin_inset Formula $Y$
+\end_inset
+
+ and 
+\begin_inset Formula $H(X)$
+\end_inset
+
+.
+ In fact, note that 
+\begin_inset Formula $I(X,Y)$
+\end_inset
+
+ is 
+\emph on
+symmetric
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+So it seems our definition is promising; in fact, this is 
+\emph on
+exactly
+\emph default
+ how mutual information is defined in the literature.
+\end_layout
+
+\begin_layout Subsection
+Alternative formulation and interpretation
+\end_layout
+
+\begin_layout Standard
+We saw that 
+\begin_inset Formula $I(X;Y)$
+\end_inset
+
+ is the amount of information about one variable acquired, on average, by
+ observing the other variable.
+ Can't we measure that by using entropy directly?
+\end_layout
+
+\begin_layout Standard
+We know that 
+\begin_inset Formula $H(X)$
+\end_inset
+
+ is the amount of information acquired, on average, by observing 
+\begin_inset Formula $X$
+\end_inset
+
+ and that 
+\begin_inset Formula $H(X|Y)$
+\end_inset
+
+ is the amount of information acquired, on average, by observing 
+\begin_inset Formula $X$
+\end_inset
+
+ when we have already observed 
+\begin_inset Formula $Y$
+\end_inset
+
+.
+ It's as if 
+\begin_inset Formula $X$
+\end_inset
+
+ contained a certain (expected) amount of information and 
+\begin_inset Formula $Y$
+\end_inset
+
+ revealed a portion of that information.
+ Thus, 
+\begin_inset Formula $H(X|Y)$
+\end_inset
+
+ is the information in 
+\begin_inset Formula $X$
+\end_inset
+
+ not revealed by 
+\begin_inset Formula $Y$
+\end_inset
+
+.
+ As a consequence, the expected amount of information about 
+\begin_inset Formula $X$
+\end_inset
+
+ revealed by 
+\begin_inset Formula $Y$
+\end_inset
+
+ should be 
+\begin_inset Formula $H(X)-H(X|Y)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In fact,
+\begin_inset Formula 
+\begin{align*}
+I(X;Y) & =\sum_{x}\sum_{y}p(x,y)\log_{2}\frac{p(x,y)}{p(x)p(y)}\\
+ & =\sum_{x}\sum_{y}p(x,y)\log_{2}\frac{p(x|y)}{p(x)}\\
+ & =\mathbb{E}_{X,Y}[-\log_{2}p(x)]-\mathbb{\mathbb{E}}_{X,Y}[-\log_{2}p(x|y)]\\
+ & =H(X)-H(X|Y).
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Mutual Information VS Correlation
+\end_layout
+
+\begin_layout Standard
+Why do we need mutual information? Can't we use 
+\emph on
+correlation
+\emph default
+ instead?
+\end_layout
+
+\begin_layout Standard
+The correlation between two random variables 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ is defined as
+\begin_inset Formula 
+\[
+\rho_{XY}=\frac{\cov[X,Y]}{\sqrt{\var[X]\var[Y]}}.
+\]
+
+\end_inset
+
+The denominator is just used to normalize the correlation so that it's in
+ 
+\begin_inset Formula $[-1,1]$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+If 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ are independent then 
+\begin_inset Formula $\cov[X,Y]=0$
+\end_inset
+
+.
+ This is easy to prove.
+ First, let's define the covariance and then 
+\begin_inset Quotes eld
+\end_inset
+
+simplify
+\begin_inset Quotes erd
+\end_inset
+
+ it:
+\begin_inset Formula 
+\begin{align*}
+\cov[X,Y] & =\mathbb{E}\left[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])\right]\\
+ & =\mathbb{E}\left[XY-X\mathbb{E}[Y]-\mathbb{E}[X]Y+\mathbb{E}[X]\mathbb{E}[Y]\right]\\
+ & =\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y]-\mathbb{E}[X]\mathbb{E}[Y]+\mathbb{E}[X]\mathbb{E}[Y]\\
+ & =\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y].
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+By corollary
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "corollary-indip-product-mean"
+
+\end_inset
+
+, we know that if 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ are independent then 
+\begin_inset Formula $\mathbb{E}[XY]=\mathbb{E}[X]\mathbb{E}[Y]$
+\end_inset
+
+ and we must also have 
+\begin_inset Formula $\cov[X,Y]=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+So independence implies zero covariance.
+ But what about the converse? Does zero covariance implies independence
+ like mutual information does?
+\end_layout
+
+\begin_layout Standard
+The answer is no and here's a counterexample.
+ Let 
+\begin_inset Formula $X,Y$
+\end_inset
+
+ be two random variables such that 
+\begin_inset Formula $X\in\{-1,1\}$
+\end_inset
+
+ with 
+\begin_inset Formula $p(x)=0.5$
+\end_inset
+
+ for both 
+\begin_inset Formula $x\in X$
+\end_inset
+
+, and such that 
+\begin_inset Formula $Y=X^{2}$
+\end_inset
+
+.
+ Then
+\begin_inset Formula 
+\begin{align*}
+\cov[X,Y] & =\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y]\\
+ & =\mathbb{E}[X^{3}]-\mathbb{E}[X]\mathbb{E}[X^{2}]\\
+ & =0
+\end{align*}
+
+\end_inset
+
+because 
+\begin_inset Formula $X\sim X^{3}$
+\end_inset
+
+ and both have zero mean.
+\end_layout
+
+\begin_layout Standard
+The problem with covariance and correlation is that they only measure 
+\emph on
+linear
+\emph default
+ dependence.
+ In fact, in the counterexample above, 
+\begin_inset Formula $Y$
+\end_inset
+
+ does depend on 
+\begin_inset Formula $X$
+\end_inset
+
+, but not linearly.
+\end_layout
+
+\begin_layout Subsection
+Linear Regression
+\end_layout
+
+\begin_layout Standard
+Here's a way to see why covariance only measures linear dependence.
+ Let 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ be random variables.
+ Let's define 
+\begin_inset Formula $U=X-\mathbb{E}[X]$
+\end_inset
+
+ and 
+\begin_inset Formula $V=Y-\mathbb{E}[Y]$
+\end_inset
+
+ so that 
+\begin_inset Formula $\mathbb{E}[U]=\mathbb{E}[V]=0$
+\end_inset
+
+.
+ This will simplify the computations.
+\end_layout
+
+\begin_layout Standard
+We want to find 
+\begin_inset Formula $a,b$
+\end_inset
+
+ such that the 
+\emph on
+linear
+\emph default
+ function 
+\begin_inset Formula $f(u)=au+b$
+\end_inset
+
+ describes as closely as possible the relation between 
+\begin_inset Formula $U$
+\end_inset
+
+ and 
+\begin_inset Formula $V$
+\end_inset
+
+.
+ To do this, we'll minimize the 
+\emph on
+mean squared error
+\emph default
+:
+\begin_inset Formula 
+\[
+L(a,b)=\mathbb{E}_{U,V}\left[\frac{1}{2}(f(U)-V)^{2}\right].
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can use Calculus to minimize 
+\begin_inset Formula $L(a,b)$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial L(a,b)}{\partial a} & =\frac{\partial}{\partial a}\mathbb{E}\left[\frac{1}{2}(f(U)-V)^{2}\right]\\
+ & =\mathbb{E}\left[\frac{\partial}{\partial a}\frac{1}{2}(f(U)-V)^{2}\right]\\
+ & =\mathbb{E}[(f(U)-V)U]\\
+ & =a\mathbb{E}\left[U^{2}\right]+b\mathbb{E}[U]-\mathbb{E}[UV]\\
+ & =a\mathbb{E}\left[U^{2}\right]-\mathbb{E}[UV]=0
+\end{align*}
+
+\end_inset
+
+therefore
+\begin_inset Formula 
+\[
+a=\frac{\mathbb{E}[UV]}{\mathbb{E}\left[U^{2}\right]}=\frac{\mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])]}{\mathbb{E}\left[(X-\mathbb{E}[X])^{2}\right]}=\frac{\cov[X,Y]}{\var[X]}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If 
+\begin_inset Formula $\var[X]=1$
+\end_inset
+
+ the 
+\emph on
+slope
+\emph default
+ of the line that best captures the linear dependence between 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ is exactly 
+\begin_inset Formula $\cov[X,Y]$
+\end_inset
+
+.
+ Since the regression line isn't capable of capturing 
+\emph on
+nonlinear
+\emph default
+ dependences between 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+, neither is the covariance nor the correlation (note that if 
+\begin_inset Formula $\var[X]=\var[Y]=1$
+\end_inset
+
+ then 
+\begin_inset Formula $a=\rho_{XY}$
+\end_inset
+
+ so, as we said before, the correlation is just a covariance normalized).
+\end_layout
+
+\begin_layout Section
+A Set Theoretic view of Information Theory
+\end_layout
+
+\begin_layout Standard
+During our discussion about entropy and related measures, we used some expressio
+ns such as 
+\begin_inset Quotes eld
+\end_inset
+
+the information contained in [
+\begin_inset Formula $\ldots]$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ which might reminds us of 
+\emph on
+Set Theory
+\emph default
+.
+ Let's see if we can indeed view Information Theory through the eyes of
+ a set theorist.
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $A$
+\end_inset
+
+ be a random variable.
+ We know that 
+\begin_inset Formula $H(A)$
+\end_inset
+
+ measure the information contained in 
+\begin_inset Formula $A$
+\end_inset
+
+, so maybe we could view 
+\begin_inset Formula $A$
+\end_inset
+
+ as a set and 
+\begin_inset Formula $H(A)$
+\end_inset
+
+ as some kind of 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+cardinality
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+ (i.e.
+ number of elements) in 
+\begin_inset Formula $A$
+\end_inset
+
+.
+ In agreement with our intuition, let's adopt the following notation:
+\emph on
+ 
+\emph default
+
+\begin_inset Formula 
+\[
+|A|=H(A)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If two random variables 
+\begin_inset Formula $A,B$
+\end_inset
+
+ are independent, one doesn't tell anything about the other so we could
+ say that they 
+\emph on
+share no information
+\emph default
+, i.e.
+ 
+\begin_inset Formula $|A\cap B|=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+We saw that, in general, 
+\begin_inset Formula $H(A,B)=H(A|B)+H(B)$
+\end_inset
+
+, but, if 
+\begin_inset Formula $A$
+\end_inset
+
+ and 
+\begin_inset Formula $B$
+\end_inset
+
+ are independent, then 
+\begin_inset Formula $H(A,B)=H(A)+H(B)$
+\end_inset
+
+.
+ Doesn't this remind you of the 
+\emph on
+Inclusion Exclusion Principle (IEP)
+\emph default
+?
+\end_layout
+
+\begin_layout Standard
+In its simplest form, the IEP says that 
+\begin_inset Formula 
+\[
+|S\cup T|=|S|+|T|-|S\cap T|,
+\]
+
+\end_inset
+
+where this time 
+\begin_inset Formula $|\cdot|$
+\end_inset
+
+ denotes proper cardinality and 
+\begin_inset Formula $S,T$
+\end_inset
+
+ are two real sets.
+ The idea behind the formula is that if 
+\begin_inset Formula $S$
+\end_inset
+
+ and 
+\begin_inset Formula $T$
+\end_inset
+
+ have elements in common, then 
+\begin_inset Formula $|S\cup T|$
+\end_inset
+
+ will count them only once whereas 
+\begin_inset Formula $|S|+|T|$
+\end_inset
+
+ will count them twice, so we must subtract 
+\begin_inset Formula $|S\cap T|$
+\end_inset
+
+ to compensate for the double counting.
+\end_layout
+
+\begin_layout Standard
+Returning to our random variables 
+\begin_inset Formula $A,B$
+\end_inset
+
+ and entropy, we can say that if 
+\begin_inset Formula $A,B$
+\end_inset
+
+ are independent, i.e.
+ 
+\begin_inset Formula $A\cap B=\emptyset$
+\end_inset
+
+, then 
+\begin_inset Formula 
+\begin{align*}
+H(A,B) & =H(A)+H(B)\\
+ & =|A|+|B|=|A\cup B|.
+\end{align*}
+
+\end_inset
+
+In general, 
+\begin_inset Formula 
+\[
+H(A,B)=|A\cup B|=|A|+|B|-|A\cap B|.
+\]
+
+\end_inset
+
+As a consequence,
+\begin_inset Formula 
+\begin{align*}
+H(A,B) & =H(B)+H(A|B)\\
+ & =|B|+(|A|-|A\cap B|),
+\end{align*}
+
+\end_inset
+
+which means that 
+\begin_inset Formula 
+\[
+H(A|B)=|A|-|A\cap B|=|A\setminus B|,
+\]
+
+\end_inset
+
+which makes a lot of sense because 
+\begin_inset Formula $H(A|B)$
+\end_inset
+
+ is the amount of information in 
+\begin_inset Formula $A$
+\end_inset
+
+ not in 
+\begin_inset Formula $B$
+\end_inset
+
+, i.e.
+ not 
+\emph on
+explained 
+\emph default
+by 
+\begin_inset Formula $B$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Moreover, 
+\begin_inset Formula 
+\begin{align*}
+I(A;B) & =H(A)-H(A|B)\\
+ & =|A|-|A\setminus B|=|A\cap B|,
+\end{align*}
+
+\end_inset
+
+which, again, makes perfect sense! In fact, 
+\begin_inset Formula $I(A;B)$
+\end_inset
+
+ can be seen as the (amount of) information 
+\emph on
+shared
+\emph default
+ by 
+\begin_inset Formula $A$
+\end_inset
+
+ and 
+\begin_inset Formula $B$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In conclusion:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $H(A)=|A|$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $H(A,B)=|A\cup B|$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $H(A|B)=|A\setminus B|$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $I(A;B)=|A\cap B|$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+See figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Information-Diagram-for"
+
+\end_inset
+
+ for a visual depiction of this interpretation.
+\end_layout
+
+\begin_layout Standard
+From this one might think that the generalization to the multivariate case
+ is straightforward.
+ For instance: 
+\begin_inset Formula $I(A;B;C)=|A\cap B\cap C|$
+\end_inset
+
+.
+ Unfortunately, while this is certainly possible, there are problems of
+ interpretation because 
+\begin_inset Formula $I(A;B;C)$
+\end_inset
+
+ may be negative!
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename venn1.eps
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\begin{align*}
+H(A) & =H(A|B)+I(A;B)\\
+H(B) & =H(B|A)+I(A;B)\\
+H(A,B) & =H(A)+H(B|A)\\
+ & =H(B)+H(A|B)\\
+H(A|B) & =H(A)-I(A;B)\\
+H(B|A) & =H(B)-I(A;B)\\
+I(A;B) & =H(A)-H(A|B)\\
+ & =H(A)+H(B)-H(A,B)\\
+ & =H(B)-H(B|A)=I(B;A)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\emph on
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Information-Diagram-for"
+
+\end_inset
+
+Information Diagram
+\emph default
+ for visualizing Information Theory relations.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+The Inclusion Exclusion Principle
+\end_layout
+
+\begin_layout Standard
+Before talking about the multivariate case, it's better to properly introduce
+ the 
+\emph on
+Inclusion Exclusion Principle
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $A,B$
+\end_inset
+
+ be two finite sets and let's indicate the 
+\emph on
+cardinality
+\emph default
+ (i.e.
+ the number of elements) of a set 
+\begin_inset Formula $X$
+\end_inset
+
+ as 
+\begin_inset Formula $|X|$
+\end_inset
+
+.
+ As we saw, 
+\begin_inset Formula $|A\cup B|=|A|+|B|-|A\cap B|$
+\end_inset
+
+ because if 
+\begin_inset Formula $A$
+\end_inset
+
+ and 
+\begin_inset Formula $B$
+\end_inset
+
+ have elements in common, then 
+\begin_inset Formula $|A|+|B|$
+\end_inset
+
+ counts those elements twice.
+ 
+\begin_inset Formula $|A\cap B|$
+\end_inset
+
+ compensate for that.
+\end_layout
+
+\begin_layout Standard
+The case with 3 variables is similar:
+\begin_inset Formula 
+\begin{eqnarray*}
+|A\cup B\cup C| & = & |A|+|B|+|C|\\
+ &  & -|A\cap B|-|A\cap C|-|B\cap C|\\
+ &  & +|A\cap B\cap C|
+\end{eqnarray*}
+
+\end_inset
+
+See picture
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Inclusion-Exclusion-Principle"
+
+\end_inset
+
+ to see the Inclusion Exclusion Principle for 3 sets in action.
+ The generalization to 
+\begin_inset Formula $n$
+\end_inset
+
+ sets is easy:
+\end_layout
+
+\begin_layout Enumerate
+We add the cardinalities of all the 
+\begin_inset Formula $n$
+\end_inset
+
+ sets (i.e.
+ 
+\begin_inset Formula $|X_{1}|,|X_{2}|,\ldots,|X_{n}|$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Enumerate
+We subtract the cardinalities of all the possible intersections of 2 sets
+ (i.e.
+ 
+\begin_inset Formula $|X_{1}\cap X_{2}|,|X_{1}\cap X_{3}|,\ldots,|X_{2}\cap X_{3}|,|X_{2}\cap X_{4}|,\ldots\ldots,|X_{n-1}\cap X_{n}|$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Enumerate
+We add the cardinalities of all the possible intersections of 3 sets (i.e.
+ 
+\begin_inset Formula $|X_{1}\cap X_{2}\cap X_{3}|,|X_{1}\cap X_{2}\cap X_{4}|,\ldots,|X_{n-2}\cap X_{n-1}\cap X_{n}|$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Enumerate
+...
+ and so on...
+\end_layout
+
+\begin_layout Enumerate
+...
+ until we add/subtract 
+\begin_inset Formula $|X_{1}\cap X_{2}\cap\cdots\cap X_{n}|$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Written in formula, it becomes
+\begin_inset Formula 
+\begin{align*}
+\left|\bigcup_{i=1}^{n}X_{i}\right| & =\sum_{i=1}^{n}(-1)^{i+1}\sum_{J:J\subset\{1,\ldots,n\}\wedge|J|=i}\left|\bigcap_{j\in J}X_{j}\right|
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $\wedge$
+\end_inset
+
+ means 
+\begin_inset Quotes eld
+\end_inset
+
+and
+\begin_inset Quotes erd
+\end_inset
+
+.
+ We can also lump the two sums together:
+\begin_inset Formula 
+\begin{align}
+\left|\bigcup_{i=1}^{n}X_{i}\right| & =\sum_{J:\emptyset\neq J\subset\{1,\ldots,n\}}(-1)^{|J|+1}\left|\bigcap_{j\in J}X_{j}\right|.\label{eq:incl-excl-princ-single-sum}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This shouldn't be too hard to prove by induction.
+ First of all, note that the sum in expression
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:incl-excl-princ-single-sum"
+
+\end_inset
+
+ has 
+\begin_inset Formula $2^{n}-1$
+\end_inset
+
+ terms because the subsets of 
+\begin_inset Formula $\{1,\ldots,n\}$
+\end_inset
+
+ are 
+\begin_inset Formula $2^{n}$
+\end_inset
+
+ (i.e.
+ the number of all possible binary strings of length 
+\begin_inset Formula $n$
+\end_inset
+
+ where 
+\begin_inset Formula $1$
+\end_inset
+
+ means 
+\emph on
+taken
+\emph default
+ and 
+\begin_inset Formula $0$
+\end_inset
+
+ means 
+\emph on
+not taken
+\emph default
+) and we're excluding 
+\begin_inset Formula $\emptyset$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $S_{n}$
+\end_inset
+
+ be the collection of all the non empty subsets of 
+\begin_inset Formula $\{1,\ldots,n\}$
+\end_inset
+
+.
+ It's easy to see that
+\begin_inset Formula 
+\begin{align}
+S_{n+1} & =S_{n}\cup\{K\cup\{n+1\}|K\in S_{n}\}\cup\{\{n+1\}\}.\label{eq:S_{n+1}}
+\end{align}
+
+\end_inset
+
+In fact, 
+\begin_inset Formula $|S_{n+1}|=(2^{n}-1)+(2^{n}-1)+1=2^{n+1}-1$
+\end_inset
+
+, as it should.
+\end_layout
+
+\begin_layout Standard
+Let's try to carry out the inductive step:
+\begin_inset Formula 
+\begin{align*}
+\left|\bigcup_{i=1}^{n+1}X_{i}\right| & =\left|\left(\bigcup_{i=1}^{n}X_{i}\right)\cup\{X_{n+1}\}\right|\\
+ & =\left|\bigcup_{i=1}^{n}X_{i}\right|+\left|X_{n+1}\right|-\left|\left(\bigcup_{i=1}^{n}X_{i}\right)\cap X_{n+1}\right|\\
+ & =\left|\bigcup_{i=1}^{n}X_{i}\right|+\left|X_{n+1}\right|-\left|\bigcup_{i=1}^{n}\left(X_{i}\cap X_{n+1}\right)\right|.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Before proceeding, let's simplify the last term:
+\begin_inset Formula 
+\begin{align*}
+\left|\bigcup_{i=1}^{n}\left(X_{i}\cap X_{n+1}\right)\right| & =\sum_{J\in S_{n}}(-1)^{|J|+1}\left|\bigcap_{j\in J}\left(X_{j}\cap X_{n+1}\right)\right|\\
+ & =\sum_{J\in S_{n}}(-1)^{|J|+1}\left|\left(\bigcap_{j\in J}X_{j}\right)\cap X_{n+1}\right|\\
+ & =-\sum_{J\in\{K\cup\{n+1\}|K\in S_{n}\}}(-1)^{|J|+1}\left|\bigcap_{j\in J}X_{j}\right|.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now, by using equality
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:S_{n+1}"
+
+\end_inset
+
+, we can conclude our proof:
+\begin_inset Formula 
+\begin{eqnarray*}
+\left|\bigcup_{i=1}^{n+1}X_{i}\right| & = & \left|\bigcup_{i=1}^{n}X_{i}\right|+\left|X_{n+1}\right|-\left|\bigcup_{i=1}^{n}\left(X_{i}\cap X_{n+1}\right)\right|\\
+ & = & \sum_{J\in S_{n}}(-1)^{|J|+1}\left|\bigcap_{j\in J}X_{j}\right|\\
+ &  & +\left|X_{n+1}\right|\\
+ &  & +\sum_{J\in\{K\cup\{n+1\}|K\in S_{n}\}}(-1)^{|J|+1}\left|\bigcap_{j\in J}X_{j}\right|\\
+ & = & \sum_{J\in S_{n}\cup\{K\cup\{n+1\}|K\in S_{n}\}\cup\{\{n+1\}\}}(-1)^{|J|+1}\left|\bigcap_{j\in J}X_{j}\right|\\
+ & = & \sum_{J\in S_{n+1}}(-1)^{|J|+1}\left|\bigcap_{j\in J}X_{j}\right|.
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Cardinality of Intersections
+\end_layout
+
+\begin_layout Standard
+The Inclusion Exclusion Principle is perfect for evaluating the cardinality
+ of unions, but can we use it for computing 
+\begin_inset Formula $\left|\bigcap_{i=1}^{n}X_{i}\right|$
+\end_inset
+
+ instead? We could transform unions in intersections (and vice versa) by
+ using the two 
+\emph on
+De Morgan's Laws
+\emph default
+:
+\begin_inset Formula 
+\begin{align*}
+\left(\bigcup_{i=1}^{n}X_{i}\right)^{C} & =\bigcap_{i=1}^{n}X_{i}^{C}\\
+\left(\bigcap_{i=1}^{n}X_{i}\right)^{C} & =\bigcup_{i=1}^{n}X_{i}^{C}
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $X^{C}$
+\end_inset
+
+ denotes the 
+\emph on
+set complement
+\emph default
+ of 
+\begin_inset Formula $X$
+\end_inset
+
+, i.e.
+ 
+\begin_inset Formula $\Omega\setminus X$
+\end_inset
+
+, where 
+\begin_inset Formula $\Omega$
+\end_inset
+
+ is the 
+\emph on
+Universe
+\emph default
+, i.e.
+ a set with includes 
+\emph on
+all
+\emph default
+ the elements.
+ Basically, 
+\begin_inset Formula $X^{C}$
+\end_inset
+
+ is the set of all the elements not in 
+\begin_inset Formula $X$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Now we can try to evaluate the cardinality of an intersection:
+\begin_inset Formula 
+\begin{align}
+\left|\bigcap_{i=1}^{n}X_{i}\right|=\left|\left(\bigcup_{i=1}^{n}X_{i}^{C}\right)^{C}\right| & =|\Omega|-\left|\bigcup_{i=1}^{n}X_{i}^{C}\right|\nonumber \\
+ & =|\Omega|-\sum_{J\in S_{n}}(-1)^{|J|+1}\left|\bigcap_{j\in J}X_{j}^{C}\right|\nonumber \\
+ & =|\Omega|-\sum_{J\in S_{n}}(-1)^{|J|+1}\left|\left(\bigcup_{j\in J}X_{j}\right)^{C}\right|\nonumber \\
+ & =|\Omega|-\sum_{J\in S_{n}}(-1)^{|J|+1}\left(|\Omega|-\left|\bigcup_{j\in J}X_{j}\right|\right)\nonumber \\
+ & =|\Omega|-|\Omega|\sum_{J\in S_{n}}(-1)^{|J|+1}+\sum_{J\in S_{n}}(-1)^{|J|+1}\left|\bigcup_{j\in J}X_{j}\right|.\label{eq:inc-exc-princ-inters}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To complete our derivation, we'll need to simplify the first sum:
+\begin_inset Formula 
+\begin{align*}
+\sum_{J\in S_{n}}(-1)^{|J|+1} & =\sum_{J\in S_{n-1}\cup\{K\cup\{n\}|K\in S_{n-1}\}\cup\{\{n\}\}}(-1)^{|J|+1}\\
+ & =\sum_{J\in S_{n-1}}(-1)^{|J|+1}+\sum_{J\in\{K\cup\{n\}|K\in S_{n-1}\}}(-1)^{|J|+1}+(-1)^{1+1}\\
+ & =\sum_{J\in S_{n-1}}(-1)^{|J|+1}+\sum_{J\in S_{n-1}}(-1)^{|J\cup\{n\}|+1}+1\\
+ & =\sum_{J\in S_{n-1}}(-1)^{|J|+1}-\sum_{J\in S_{n-1}}(-1)^{|J|+1}+1=1.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+By substituing back into equation
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:inc-exc-princ-inters"
+
+\end_inset
+
+, we get
+\begin_inset Formula 
+\begin{equation}
+\left|\bigcap_{i=1}^{n}X_{i}\right|=\sum_{J\in S_{n}}(-1)^{|J|+1}\left|\bigcup_{j\in J}X_{j}\right|.\label{eq:card_inters}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename venn_inc_exc_princ.eps
+	scale 60
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\emph on
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Inclusion-Exclusion-Principle"
+
+\end_inset
+
+Inclusion Exclusion Principle
+\emph default
+ for 3 sets in action.
+ The numbers tell how many times each region is counted.
+ Our goal is to compute 
+\begin_inset Formula $|X\cup Y\cup Z|$
+\end_inset
+
+ which requires counting each region exactly once.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Multivariate Mutual Information
+\end_layout
+
+\begin_layout Standard
+There have been various attempts to generalize the concept of Mutual Information
+ to 3 or more random variables.
+\end_layout
+
+\begin_layout Standard
+One generalization defines the 
+\emph on
+Multivariate Mutual Information
+\emph default
+ (
+\emph on
+MMI
+\emph default
+) as follows:
+\begin_inset Formula 
+\begin{equation}
+I(X_{1};\ldots;X_{n};X_{n+1})=I(X_{1};\ldots;X_{n})-I(X_{1};\ldots;X_{n}|X_{n+1})\label{eq:MMI-recursive-def}
+\end{equation}
+
+\end_inset
+
+where
+\begin_inset Formula 
+\begin{eqnarray*}
+I(X_{1};\ldots;X_{n}|X_{n+1}) & = & \mathbb{E}_{X_{n+1}}[I(X_{1};\ldots;X_{n}|X_{n+1})]
+\end{eqnarray*}
+
+\end_inset
+
+There's a subtlety here which we've already come across before.
+ Indeed,
+\begin_inset Formula 
+\[
+\mathbb{E}_{X_{n+1}}[I(X_{1};\ldots;X_{n}|X_{n+1})]=\sum_{x_{n+1}}p(x_{n+1})I(X_{1};\ldots;X_{n}|X_{n+1}=x_{n+1})
+\]
+
+\end_inset
+
+so, 
+\begin_inset Formula $I(X_{1};\ldots;X_{n}|X_{n+1})$
+\end_inset
+
+ inside 
+\begin_inset Formula $\mathbb{E}_{X_{n+1}}[\cdot]$
+\end_inset
+
+ is actually the random variable 
+\begin_inset Formula $f(X_{n+1})$
+\end_inset
+
+ where 
+\begin_inset Formula $f$
+\end_inset
+
+ is the function 
+\begin_inset Formula $x\mapsto I(X_{1};\ldots;X_{n}|X_{n+1}=x)$
+\end_inset
+
+.
+ The same thing happened before when we wrote
+\begin_inset Formula 
+\[
+H(X|Y)=\mathbb{E}_{Y}[H(X|Y)]=\sum_{y}p(y)H(X|Y=y).
+\]
+
+\end_inset
+
+Also, basically, 
+\begin_inset Formula $I(X_{1};\ldots;X_{n}|X_{n+1}=x)$
+\end_inset
+
+ can be obtained from 
+\begin_inset Formula $I(X_{1};\ldots;X_{n})$
+\end_inset
+
+ by replacing any 
+\begin_inset Formula $p(\cdot)$
+\end_inset
+
+ and 
+\begin_inset Formula $p(\cdot|\cdot)$
+\end_inset
+
+ with 
+\begin_inset Formula $p(\cdot|X_{n+1}=x)$
+\end_inset
+
+ and 
+\begin_inset Formula $p(\cdot|\cdot,X_{n+1}=x)$
+\end_inset
+
+, respectively.
+ For instance,
+\begin_inset Formula 
+\begin{align*}
+I(X;Y) & =H(X)-H(X|Y)\\
+ & =-\sum_{x}p(x)\log_{2}p(x)+\sum_{x}\sum_{y}p(x,y)\log_{2}p(x|y) & \implies\\
+I(X;Y|Z=z) & =H(X|Z=z)-H(X|Y,Z=z)\\
+ & =-\sum_{x}p(x|Z=z)\log_{2}p(x|Z=z)\\
+ & \hphantom{=\;}+\sum_{x}\sum_{y}p(x,y|Z=z)\log_{2}p(x|y,Z=z).
+\end{align*}
+
+\end_inset
+
+Let's go one step forwards and write the expression for 
+\begin_inset Formula $I(X;Y|Z)$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align}
+I(X;Y|Z) & =\sum_{z}p(Z=z)I(X;Y;Z=z)\nonumber \\
+ & =-\sum_{z}p(Z=z)\sum_{x}p(x|Z=z)\log_{2}p(x|Z=z)\nonumber \\
+ & \hphantom{=\;}+\sum_{z}p(Z=z)\sum_{x}\sum_{y}p(x,y|Z=z)\log_{2}p(x|y,Z=z)\nonumber \\
+ & =-\sum_{x}\sum_{z}p(x,z)\log_{2}p(x|z)+\sum_{x}\sum_{y}\sum_{z}p(x,y,z)\log_{2}p(x|y,z)\nonumber \\
+ & =H(X|Z)-H(X|Y,Z).\label{eq:I(X;Y|Z)}
+\end{align}
+
+\end_inset
+
+See picture
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:3-circles-venn"
+
+\end_inset
+
+ for a visualization of 
+\begin_inset Formula $I(X;Y|Z)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+If we interpret 
+\begin_inset Formula $I(X)$
+\end_inset
+
+ and 
+\begin_inset Formula $I(X|Y)$
+\end_inset
+
+ as 
+\begin_inset Formula $H(X)$
+\end_inset
+
+ and 
+\begin_inset Formula $H(X|Y)$
+\end_inset
+
+, respectively (which makes perfect sense), then definition
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MMI-recursive-def"
+
+\end_inset
+
+ is also valid for the two-variable case.
+ Note that we defined 
+\begin_inset Formula $I(x)$
+\end_inset
+
+ as the information of 
+\begin_inset Formula $x\in X$
+\end_inset
+
+, so it makes sense to define 
+\begin_inset Formula $I(X)$
+\end_inset
+
+ as 
+\begin_inset Formula $H(X)$
+\end_inset
+
+.
+ Basically, by convention, something of the form 
+\begin_inset Formula $I(X_{1};\ldots;X_{k}|Y_{1},\ldots,Y_{h})$
+\end_inset
+
+ becomes 
+\begin_inset Formula $H(X_{1}|Y_{1},\ldots,Y_{h})$
+\end_inset
+
+ when 
+\begin_inset Formula $k=1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+According to definition
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MMI-recursive-def"
+
+\end_inset
+
+, and by our derivation
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:I(X;Y|Z)"
+
+\end_inset
+
+ of 
+\begin_inset Formula $I(X;Y|Z)$
+\end_inset
+
+, the MMI of three variables is
+\begin_inset Formula 
+\begin{align}
+I(X;Y;Z) & =I(X;Y)-I(X;Y|Z)\nonumber \\
+ & =H(X)-[H(X|Y)]-[H(X|Z)]+[H(X|Y,Z)]\nonumber \\
+ & =H(X)-[H(X,Y)-H(Y)]-[H(X,Z)-H(Z)]\nonumber \\
+ & \hphantom{=\;}+[H(X,Y,Z)-H(Y,Z)]\nonumber \\
+ & =H(X)+H(Y)+H(Z)\nonumber \\
+ & \hphantom{=\;}-H(X,Y)-H(X,Z)-H(Y,Z)\nonumber \\
+ & \hphantom{=\;}+H(X,Y,Z).\label{eq:I(X;Y;Z)}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Let's rewrite all that in the language of set theory:
+\begin_inset Formula 
+\begin{align*}
+|X\cap Y\cap Z| & =|X\cap Y|-|(X\cap Y)\setminus Z|\\
+ & =|X|-[|X\setminus Y|]-[|X\setminus Z|]+[|X\setminus(Y\cup Z)|]\\
+ & =|X|-[|X\cup Y|-|Y|]-[|X\cup Z|-|Z|]\\
+ & \hphantom{=\;}+[|X\cup Y\cup Z|-|Y\cup Z|]\\
+ & =|X|+|Y|+|Z|-|X\cup Y|-|X\cup Z|-|Y\cup Z|+|X\cup Y\cup Z|.
+\end{align*}
+
+\end_inset
+
+This is exactly formula
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:card_inters"
+
+\end_inset
+
+ for 3 sets!
+\end_layout
+
+\begin_layout Standard
+See picture
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:3-circles-venn"
+
+\end_inset
+
+ for a visualization of 
+\begin_inset Formula $I(X;Y;Z)$
+\end_inset
+
+ and the various terms with 3 random variables.
+ Also, look at picture
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:3-circles-counts"
+
+\end_inset
+
+ to see equality
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:I(X;Y;Z)"
+
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+in action
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename venn2.eps
+	scale 60
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{alignat*}{2}
+H(X|Z) & =H(X|Y,Z)+I(X;Y|Z) & \iff\\
+|X\setminus Z| & =|X\setminus(Y\cup Z)|+|(X\cap Y)\setminus Z|\\
+I(X;Y|Z) & =H(X|Z)-H(X|Y,Z) & \iff\\
+|(X\cap Y)\setminus Z| & =|X\setminus Z|-|X\setminus(Y\cup Z)|\\
+I(X;Y;Z) & =I(X;Y)-I(X;Y|Z) & \iff\\
+|X\cap Y\cap Z| & =|X\cap Y|-|(X\cap Y)\setminus Z|
+\end{alignat*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:3-circles-venn"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename venn3.eps
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:3-circles-counts"
+
+\end_inset
+
+The numbers indicate how many times a subset is counted.
+ By adding 
+\begin_inset Formula $H(X),H(Y),H(Z)$
+\end_inset
+
+ we overcount some subsets, so we must compensate by subtracting 
+\begin_inset Formula $H(X,Y),H(X,Z),H(Y,Z)$
+\end_inset
+
+, but now we undercount, so we add 
+\begin_inset Formula $H(X,Y,Z)$
+\end_inset
+
+ and, finally, we get 
+\begin_inset Formula $I(X;Y;Z)$
+\end_inset
+
+, i.e.
+ 
+\begin_inset Formula $|X\cap Y\cap Z|$
+\end_inset
+
+.
+ (Remember that, for any 
+\begin_inset Formula $X,Y,Z$
+\end_inset
+
+, 
+\begin_inset Formula $H(X,Y)=|X\cup Y|$
+\end_inset
+
+ and 
+\begin_inset Formula $H(X,Y,Z)=|X\cup Y\cup Z|$
+\end_inset
+
+.)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+This is not apparent from our discussion, but the MMI of 3 or more variables
+ may be negative, which makes its interpretation less intuitive.
+ That's probably why MMI is not very popular in Machine Learning.
+\end_layout
+
+\begin_layout Standard
+Thanks to equation
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:card_inters"
+
+\end_inset
+
+, we can generalize equation
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:I(X;Y;Z)"
+
+\end_inset
+
+ as
+\begin_inset Formula 
+\[
+I(X_{1};\ldots;X_{n})=\sum_{J:\emptyset\neq J\subset\{1,\ldots,n\}}(-1)^{|J|+1}H(X_{J}),
+\]
+
+\end_inset
+
+where if 
+\begin_inset Formula $J=\{j_{1},\ldots,j_{m}\}$
+\end_inset
+
+, then 
+\begin_inset Formula $H(X_{J})=H(X_{j_{1}},X_{j_{2}},\ldots,X_{j_{m}})$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The mutual information may also be computed between a set of variables 
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+ and another variable 
+\begin_inset Formula $Y$
+\end_inset
+
+.
+ This is called 
+\emph on
+Joint Mutual Information
+\emph default
+ and is defined as
+\begin_inset Formula 
+\begin{align*}
+I(X_{1},\ldots,X_{n};Y) & =H(X_{1},\ldots,X_{n})-H(X_{1},\ldots,X_{n}|Y)\\
+ & =-\sum_{x_{1}}\cdots\sum_{x_{n}}p(x_{1},\ldots,x_{n})\log_{2}p(x_{1},\ldots,x_{n})\\
+ & \hphantom{=\;}+\sum_{x_{1}}\cdots\sum_{x_{n}}\sum_{y}p(x_{1},\ldots,x_{n},y)\log_{2}p(x_{1},\ldots,x_{n}|y).
+\end{align*}
+
+\end_inset
+
+The set theoretic interpretation is
+\begin_inset Formula 
+\[
+|(X_{1}\cup\cdots\cup X_{n})\cap Y|=|X_{1}\cup\cdots\cup X_{n}|-|(X_{1}\cup\cdots\cup X_{n})\setminus Y|.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In general, any 
+\emph on
+union
+\emph default
+ of variables 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ can be represented as a single variable 
+\begin_inset Formula $X$
+\end_inset
+
+ which has the variables 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ as components: 
+\begin_inset Formula $X=(X_{1},\ldots,X_{n})$
+\end_inset
+
+.
+ For instance, with the appropriate definitions,
+\begin_inset Formula 
+\begin{align*}
+H(X_{1},\ldots,X_{n}) & =H(X)\\
+H(X_{1},\ldots,X_{n}|Y) & =H(X|Y)\\
+I(X_{1},\ldots,X_{n};Y) & =I(X;Y)\\
+I(X;Y_{1},\ldots,Y_{n}) & =I(X;Y)\\
+I(X_{1},\ldots,X_{n};Y_{1},\ldots,Y_{m}) & =I(X;Y)\\
+I(X_{1},\ldots,X_{n};Y_{1},\ldots,Y_{m};Z_{1},\ldots,Z_{k}) & =I(X;Y;Z).
+\end{align*}
+
+\end_inset
+
+Basically, we may replace 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ with 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $X$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ wherever they appear inside 
+\begin_inset Formula $H$
+\end_inset
+
+ or 
+\begin_inset Formula $I$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Of course, this implies an analogous simplification of formulas with explicit
+ sums over distributions.
+ For instance, here's the Joint Mutual Information again:
+\begin_inset Formula 
+\begin{align*}
+I(X_{1},\ldots,X_{n};Y) & =I(X;Y)\\
+ & =H(X)-H(X|Y)\\
+ & =-\sum_{x}p(x)\log_{2}p(x)+\sum_{x}\sum_{y}p(x,y)\log_{2}p(x|y).
+\end{align*}
+
+\end_inset
+
+In this case, we replaced 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ with 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $X$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $x_{1},\ldots,x_{n}$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ with 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $x$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ If you're having a 
+\emph on
+deja vu
+\emph default
+, it's because this is related to proposition
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "prop:vector-random-variables"
+
+\end_inset
+
+ and remark
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "rem:vector-random-variable"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Multivariate Mutual Information and KL Divergence
+\end_layout
+
+\begin_layout Standard
+As we saw, the mutual information between 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ is the divergence between 
+\begin_inset Formula $p(x,y)$
+\end_inset
+
+ and 
+\begin_inset Formula $p(x)p(y)$
+\end_inset
+
+.
+ The MMI as defined above, though, loses such a simple interpretation.
+ If we define MMI through the KL Divergence we get something simpler:
+\begin_inset Formula 
+\begin{align*}
+I(X_{1};\ldots;X_{n}) & =KL(p(x_{1},\ldots,x_{n})||p(x_{1})\cdots p(x_{n}))\\
+ & =\sum_{x_{1}}\cdots\sum_{x_{n}}p(x_{1},\ldots,x_{n})\log_{2}\frac{p(x_{1},\ldots,x_{n})}{p(x_{1})\cdots p(x_{n})}\\
+ & =H(X_{1})+\ldots+H(X_{n})-H(X_{1},\ldots,X_{n})
+\end{align*}
+
+\end_inset
+
+which is called 
+\emph on
+Total Correlation
+\emph default
+.
+ This quantity is always non negative and 
+\begin_inset Formula $0$
+\end_inset
+
+ if and only if the variables are all independent, of course.
+ Note that in this formulation 
+\emph on
+
+\begin_inset Formula $k$
+\end_inset
+
+-way
+\emph default
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+interactions
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+, with 
+\begin_inset Formula $1<k<n$
+\end_inset
+
+, are completely ignored.
+\end_layout
+
+\begin_layout Part
+Applications of Information Theory to Machine Learning
+\end_layout
+
+\begin_layout Section
+Loss function: from KL Divergence to Cross Entropy to Log Likelihood
+\end_layout
+
+\begin_layout Subsection
+Supervised Learning
+\end_layout
+
+\begin_layout Standard
+Let's assume we have some 
+\emph on
+data
+\emph default
+ 
+\begin_inset Formula $\mathcal{D}=\{(x_{1},y_{1}),\ldots,(x_{n},y_{n})\}$
+\end_inset
+
+ where each pair 
+\begin_inset Formula $(x_{i},y_{i})$
+\end_inset
+
+ is a sample generated from an 
+\emph on
+unknown
+\emph default
+ distribution 
+\begin_inset Formula $p(x,y)$
+\end_inset
+
+.
+ Note that 
+\begin_inset Formula $\mathcal{D}$
+\end_inset
+
+ is a 
+\emph on
+multiset
+\emph default
+ because it might contain multiple occurrences of the same pair.
+ In 
+\emph on
+Supervised Learning
+\emph default
+ we're mainly interested in determining 
+\begin_inset Formula $p(y|x)$
+\end_inset
+
+ so that we can predict 
+\begin_inset Formula $y$
+\end_inset
+
+ given 
+\begin_inset Formula $x$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+To make things more concrete, let's assume that the 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ are images (
+\emph on
+raw pixels
+\emph default
+) and the 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ are the corresponding 
+\emph on
+labels
+\emph default
+ which describe the content of the images.
+\end_layout
+
+\begin_layout Standard
+Our best bet is to use a 
+\emph on
+convolutional neural network
+\emph default
+ (ConvNet) with a final 
+\emph on
+softmax layer
+\emph default
+.
+ Let 
+\begin_inset Formula $\theta$
+\end_inset
+
+ be the weights of the ConvNet and 
+\begin_inset Formula $f_{\theta}$
+\end_inset
+
+ the function computed by the ConvNet with weights 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Each pair 
+\begin_inset Formula $(x_{i},y_{i})$
+\end_inset
+
+ can be seen as a 
+\emph on
+Multinoulli
+\emph default
+ (or 
+\emph on
+generalized Bernoulli 
+\emph default
+or 
+\emph on
+categorical
+\emph default
+) distribution 
+\begin_inset Formula $d_{i}$
+\end_inset
+
+ over 
+\begin_inset Formula $Y|X=x_{i}$
+\end_inset
+
+ which puts all its probability mass on 
+\begin_inset Formula $Y=y_{i}$
+\end_inset
+
+, whereas 
+\begin_inset Formula $f_{\theta}(x_{i})$
+\end_inset
+
+ is the distribution over 
+\begin_inset Formula $Y|X=x_{i}$
+\end_inset
+
+ computed by the ConvNet.
+\end_layout
+
+\begin_layout Standard
+The optimal value for 
+\begin_inset Formula $\theta$
+\end_inset
+
+ can be computed as follows:
+\begin_inset Formula 
+\begin{align}
+\theta^{*} & =\argmin_{\theta}\sum_{i=1}^{n}KL(d_{i}||f_{\theta}(x_{i}))\nonumber \\
+ & =\argmin_{\theta}\sum_{i=1}^{n}\left[H(d_{i},f_{\theta}(x_{i}))-H(d_{i})\right]\nonumber \\
+ & =\argmin_{\theta}\sum_{i=1}^{n}H(d_{i},f_{\theta}(x_{i}))\label{eq:cross-entropy}
+\end{align}
+
+\end_inset
+
+where we dropped the entropy 
+\begin_inset Formula $H(d_{i})$
+\end_inset
+
+ because it doesn't depend on 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+ So, we're left with just the cross entropy.
+\end_layout
+
+\begin_layout Standard
+Please note that swapping 
+\begin_inset Formula $d_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $f_{\theta}(x_{i})$
+\end_inset
+
+ in the cross entropy would be a 
+\series bold
+\emph on
+mistake
+\series default
+\emph default
+ because we're optimizing with respect to 
+\begin_inset Formula $f_{\theta}(x_{i})$
+\end_inset
+
+.
+ In fact, while we saw that 
+\begin_inset Formula $\min_{q}H(p,q)=H(p,p)=H(p)$
+\end_inset
+
+ and so we're forcing 
+\begin_inset Formula $q$
+\end_inset
+
+ to 
+\begin_inset Quotes eld
+\end_inset
+
+converge
+\begin_inset Quotes erd
+\end_inset
+
+ to 
+\begin_inset Formula $p$
+\end_inset
+
+, we can't do the same with 
+\begin_inset Formula $\min_{q}H(q,p)$
+\end_inset
+
+, which is, in general, 
+\emph on
+not 
+\emph default
+equal to 
+\begin_inset Formula $H(p)$
+\end_inset
+
+.
+ If this isn't obvious to you, you should reread section
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Cross-Entropy"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+As we already said, 
+\begin_inset Formula $d_{i}$
+\end_inset
+
+ puts all the probability mass on 
+\begin_inset Formula $Y=y_{i}$
+\end_inset
+
+, so we can simplify expression
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:cross-entropy"
+
+\end_inset
+
+ as follows:
+\begin_inset Formula 
+\begin{align*}
+\theta^{*} & =\argmin_{\theta}\sum_{i=1}^{n}\left(-\sum_{y}d_{i}(y)\log_{2}f_{\theta}(y|x_{i})\right)\\
+ & =\argmin_{\theta}\sum_{i=1}^{n}\left(-\log_{2}f_{\theta}(y_{i}|x_{i})\right)
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $f_{\theta}(y|x_{i})$
+\end_inset
+
+ is 
+\emph on
+syntactic sugar
+\emph default
+ (again, programming lingo) for 
+\begin_inset Formula $f_{\theta}(x_{i})(y)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+It's easy to see that this corresponds to maximizing the 
+\emph on
+Log Likelihood
+\emph default
+:
+\begin_inset Formula 
+\begin{align*}
+\theta^{*} & =\argmin_{\theta}\sum_{i=1}^{n}\left(-\log_{2}f_{\theta}(y_{i}|x_{i})\right)\\
+ & =\argmax_{\theta}\sum_{i=1}^{n}\log f_{\theta}(y_{i}|x_{i})\\
+ & =\argmax_{\theta}\log\prod_{i=1}^{n}f_{\theta}(y_{i}|x_{i})\\
+ & =\argmax_{\theta}\log\prod_{i=1}^{n}P(y_{i}|x_{i};\theta)\\
+ & =\argmax_{\theta}\log P(y_{1},\ldots,y_{n}|x_{1},\ldots,x_{n};\theta)\\
+ & =\argmax_{\theta}\log L(\theta)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Density Estimation
+\end_layout
+
+\begin_layout Standard
+Now let's consider another case.
+ We have a dataset 
+\begin_inset Formula $\mathcal{D}_{2}=\{x_{1},\ldots,x_{n}\}$
+\end_inset
+
+.
+ Let's assume that the 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ are all samples from a random variable 
+\begin_inset Formula $X$
+\end_inset
+
+.
+ We want to fit a 
+\emph on
+Gaussian
+\emph default
+ to the data.
+ To do this, we define a family of Gaussians: 
+\begin_inset Formula 
+\[
+\mathcal{F}=\left\{ \mathcal{N}\left(x|\mu,\sigma^{2}\right)\mid\mu\in\mathbb{R},\sigma^{2}\in\mathbb{R}_{+}\right\} .
+\]
+
+\end_inset
+
+Let 
+\begin_inset Formula $\hat{p}$
+\end_inset
+
+ be the (empirical) distribution represented by 
+\begin_inset Formula $\mathcal{D}_{2}$
+\end_inset
+
+ and let 
+\begin_inset Formula $p_{\theta}\in\mathcal{F}$
+\end_inset
+
+ where 
+\begin_inset Formula $\theta=\left(\mu,\sigma^{2}\right)$
+\end_inset
+
+.
+ We want to find 
+\begin_inset Formula $\theta$
+\end_inset
+
+ so that 
+\begin_inset Formula $p_{\theta}$
+\end_inset
+
+ is as close as possible to 
+\begin_inset Formula $\hat{p}$
+\end_inset
+
+.
+ We can find the optimal parameters by minimizing the KL Divergence between
+ 
+\begin_inset Formula $\hat{p}$
+\end_inset
+
+ and 
+\begin_inset Formula $p_{\theta}$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+\theta^{*} & =\argmin_{\theta}KL(\hat{p},p_{\theta})\\
+ & =\argmin_{\theta}[H(\hat{p},p_{\theta})-H(\hat{p})]\\
+ & =\argmin_{\theta}H(\hat{p},p_{\theta})\\
+ & =\argmin_{\theta}\mathbb{E}_{X\sim\hat{p}}[I_{p_{\theta}}(X)]\\
+ & =\argmin_{\theta}\sum_{x}\hat{p}(x)(-\log p_{\theta}(x))\\
+ & =\argmax_{\theta}\sum_{i=1}^{n}\frac{1}{n}\log p_{\theta}(x_{i})\\
+ & =\argmax_{\theta}\sum_{i=1}^{n}\log p_{\theta}(x_{i})\\
+ & =\argmax_{\theta}\log\prod_{i=1}^{n}p_{\theta}(x_{i})\\
+ & =\argmax_{\theta}\log P(x_{1},\ldots,x_{n}|\theta)\\
+ & =\argmax_{\theta}\log L(\theta)
+\end{align*}
+
+\end_inset
+
+Once again, the KL Divergence and the cross entropy are equivalent to the
+ maximum log likelihood.
+\end_layout
+
+\begin_layout Standard
+Note that:
+\end_layout
+
+\begin_layout Itemize
+The information 
+\begin_inset Formula $I$
+\end_inset
+
+ contains a 
+\begin_inset Formula $\log$
+\end_inset
+
+ because, as we saw, we want to transform products of probabilities into
+ sums of amounts of information.
+\end_layout
+
+\begin_layout Itemize
+The 
+\begin_inset Formula $\log$
+\end_inset
+
+ is used in the log likelihood because we want to simplify calculations
+ and sums are easier than products.
+\end_layout
+
+\begin_layout Standard
+Different 
+\emph on
+reasons
+\emph default
+, same 
+\emph on
+result
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+The appealing of cross entropy and log likelihood when using a final softmax
+ layer is that they undo the 
+\begin_inset Formula $\exp$
+\end_inset
+
+ of the softmax and so we get a better performance with 
+\emph on
+Stochastic Gradient Descent (SGD)
+\emph default
+ because the risk of 
+\emph on
+saturation
+\emph default
+ (i.e.
+ the gradient becoming 
+\begin_inset Formula $0$
+\end_inset
+
+ and the units stopping learning) is reduced.
+\end_layout
+
+\begin_layout Standard
+Note that while maximum log likelihood and cross entropy are equivalent,
+ from a theoretical point of view, the 
+\begin_inset Formula $\log$
+\end_inset
+
+ in the cross entropy has more 
+\emph on
+justification
+\emph default
+ because it comes from the additivity of the information rather than being
+ just a convenient trick to simplify calculations.
+\end_layout
+
+\begin_layout Section
+Feature selection
+\end_layout
+
+\begin_layout Standard
+There are two ways to 
+\emph on
+reduce
+\emph default
+ the 
+\emph on
+dimensionality
+\emph default
+ of a dataset:
+\end_layout
+
+\begin_layout Description
+feature
+\begin_inset space ~
+\end_inset
+
+selection Only a subset of relevant features is retained and the other features
+ are filtered out.
+\end_layout
+
+\begin_layout Description
+feature
+\begin_inset space ~
+\end_inset
+
+extraction The set of original features is transformed into a 
+\emph on
+reduced
+\emph default
+ set of features.
+\end_layout
+
+\begin_layout Standard
+Here we're going to talk about 
+\emph on
+feature selection
+\emph default
+.
+\end_layout
+
+\begin_layout Subsection
+Information Gain
+\end_layout
+
+\begin_layout Standard
+Let's assume we have a dataset 
+\begin_inset Formula $\mathcal{D}=\{(x^{(1)},y^{(1)}),\ldots(x^{(N)},y^{(N)})\}$
+\end_inset
+
+ where 
+\begin_inset Formula $x^{(i)}\in\mathbb{R}^{n}$
+\end_inset
+
+ and 
+\begin_inset Formula $y^{(i)}\in\mathbb{R}$
+\end_inset
+
+.
+ We want to learn the mapping 
+\begin_inset Formula $x\mapsto y$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The dataset can be seen as generated by 
+\begin_inset Formula $n+1$
+\end_inset
+
+ random variables: 
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+, and 
+\begin_inset Formula $Y$
+\end_inset
+
+.
+ 
+\emph on
+Information Gain 
+\emph default
+represents one of the easiest ways to do 
+\emph on
+feature selection
+\emph default
+.
+ Very simply, we grade each feature 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ according to 
+\begin_inset Formula $I(X_{i};Y)$
+\end_inset
+
+.
+ The more information about the label 
+\begin_inset Formula $Y$
+\end_inset
+
+ we gain, 
+\emph on
+on average
+\emph default
+, by observing 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+, the more useful 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ is deemed.
+\end_layout
+
+\begin_layout Standard
+Let's define
+\begin_inset Formula 
+\[
+\mathcal{D}\{cond\}=\{(x,y)\in\mathcal{D}|cond((x,y)\text{) is true}\},
+\]
+
+\end_inset
+
+i.e.
+ 
+\begin_inset Formula $\mathcal{D}\{cond\}$
+\end_inset
+
+ is the set of all the pairs for which the condition 
+\begin_inset Formula $cond$
+\end_inset
+
+ (about the random variables 
+\begin_inset Formula $X_{1},\ldots,X_{n},Y$
+\end_inset
+
+) is true.
+ In this particular case, the Information Gain is defined as follows: 
+\begin_inset Formula 
+\begin{align*}
+IG(\mathcal{D},s) & =I(X_{s};Y)\\
+ & =H(Y)-H(Y|X_{s})\\
+ & =-\sum_{y\in Y}p(y)\log_{2}p(y)+\sum_{x\in X_{s}}\sum_{y\in Y}p(x,y)\log_{2}p(y|x)\\
+ & =-\sum_{y\in Y}\frac{|\mathcal{D}\{Y=y\}|}{|\mathcal{D}|}\log_{2}\frac{|\mathcal{D}\{Y=y\}|}{|\mathcal{D}|}\\
+ & \hphantom{=\;}+\sum_{x\in X_{s}}\sum_{y\in Y}\frac{|\mathcal{D}\{Y=y\wedge X_{s}=x\}|}{|\mathcal{D}|}\log_{2}\frac{|\mathcal{D}\{Y=y\wedge X_{s}=x\}|}{|\mathcal{D}\{X_{s}=x\}|}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The main advantages of Information Gain are simplicity of implementation
+ and low computational cost.
+ The most obvious drawback is that the dependency between features is completely
+ ignored, so some of the features selected because of their high score may
+ carry 
+\emph on
+redundant 
+\emph default
+information.
+ For instance, if 
+\begin_inset Formula $X_{1}$
+\end_inset
+
+ has one of the highest scores among variables and 
+\begin_inset Formula $X_{2}=X_{1}$
+\end_inset
+
+, then, probably, both variables will be selected even though they contain
+ the exact same information about 
+\begin_inset Formula $Y$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Joint Mutual Information
+\end_layout
+
+\begin_layout Standard
+A better way to choose the best 
+\begin_inset Formula $k$
+\end_inset
+
+ features consists in maximizing the Joint Mutual Information.
+ In theory, we'd like to grade a set of features 
+\begin_inset Formula $F=(F_{1},\ldots,F_{k})$
+\end_inset
+
+ by
+\begin_inset Formula 
+\begin{align*}
+I(F_{1},\ldots,F_{k};Y) & =H(F_{1},\ldots,F_{k})-H(F_{1},\ldots,F_{k}|Y)
+\end{align*}
+
+\end_inset
+
+or, equivalently,
+\begin_inset Formula 
+\[
+I(F;Y)=H(F)-H(F|Y).
+\]
+
+\end_inset
+
+Unfortunately, this requires the calculation of a high-dimensional probability
+ density function, which is very expensive and requires lots of data.
+\end_layout
+
+\begin_layout Standard
+Many methods have been proposed for approximating the Joint MI and using
+ the MI in general
+\begin_inset CommandInset citation
+LatexCommand cite
+key "DBLP:journals/corr/VergaraE15"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+EM Algorithm
+\end_layout
+
+\begin_layout Subsection
+Bonus
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+EM Algorithm
+\emph default
+ seems completely unrelated to Information Theory, but there's an interesting
+ connection that will be revealed at the end.
+ I don't know whether this connection is strong enough to warrant two sections
+ about the EM Algorithm.
+ In case it isn't, take this part as a 
+\emph on
+bonus
+\emph default
+!
+\end_layout
+
+\begin_layout Subsection
+Definition
+\end_layout
+
+\begin_layout Standard
+Let's assume we want to fit a model to some data by maximizing the log likelihoo
+d.
+ We have a sample 
+\begin_inset Formula $x\in X$
+\end_inset
+
+, which represents our dataset, and we want to find
+\begin_inset Formula 
+\[
+\theta^{*}=\argmax_{\theta}L(\theta;x)=\argmax_{\theta}\log p(x|\theta).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Sometimes, the model can be simplified by introducing a 
+\emph on
+latent
+\emph default
+ (i.e.
+ unobservable) random variable 
+\begin_inset Formula $Z$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+L(\theta;X)=\log p(x|\theta)=\log\sum_{z}p(x,z|\theta).\label{eq:L(theta;X)}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We may try to find a 
+\emph on
+closed-form
+\emph default
+ formula for 
+\begin_inset Formula $\theta^{*}$
+\end_inset
+
+ or, if not possible or convenient, we could use an iterative optimization
+ algorithm like (
+\emph on
+Stochastic
+\emph default
+) 
+\emph on
+Gradient Descent
+\emph default
+.
+ The problem is that 
+\begin_inset Formula $L(\theta;X)$
+\end_inset
+
+ and 
+\begin_inset Formula $\nabla_{\theta}L(\theta;X)$
+\end_inset
+
+ may be very difficult to compute.
+ Often, 
+\begin_inset Formula $p(x,z|\theta)$
+\end_inset
+
+ factorizes so the 
+\begin_inset Formula $\log$
+\end_inset
+
+, if only it was inside the sum, would transform the products into sums
+ which would simplify computations considerably.
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+EM Algorithm 
+\emph default
+solve the problem by working with the 
+\emph on
+complete data log likelihood
+\emph default
+:
+\begin_inset Formula 
+\[
+L(\theta;X,Z)=\log p(x,z|\theta).
+\]
+
+\end_inset
+
+This is similar to bringing the 
+\begin_inset Formula $\log$
+\end_inset
+
+ inside the sum in equation
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:L(theta;X)"
+
+\end_inset
+
+ which, as we said, may simplify computations.
+ Since we don't really have a sample 
+\begin_inset Formula $z\in Z$
+\end_inset
+
+, being 
+\begin_inset Formula $Z$
+\end_inset
+
+ unobservable, 
+\begin_inset Formula $L(\theta;X,Z$
+\end_inset
+
+) is really a function of 
+\begin_inset Formula $Z$
+\end_inset
+
+ and 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+ The EM Algorithm gets rid of 
+\begin_inset Formula $Z$
+\end_inset
+
+ by computing the expectation of 
+\begin_inset Formula $L(\theta;X,Z)$
+\end_inset
+
+ with respect to 
+\begin_inset Formula $Z$
+\end_inset
+
+ and then maximizing the resulting function with respect to 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+We set 
+\begin_inset Formula $\theta^{1}$
+\end_inset
+
+ to some initial value and then we repeat two steps, which give the name
+ to the algorithm, until convergence:
+\end_layout
+
+\begin_layout Enumerate
+initialize 
+\begin_inset Formula $\theta^{1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+for
+\series default
+ 
+\begin_inset Formula $t=1,2,\ldots$
+\end_inset
+
+, until 
+\emph on
+convergence
+\emph default
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+
+\series bold
+Expectation (E) Step:
+\begin_inset Newline newline
+\end_inset
+
+
+\series default
+
+\begin_inset Formula $Q(\theta|\theta^{t})=\mathbb{E}_{Z|X,\theta^{t}}[L(\theta;X,Z)]=\sum_{z}p(z|x,\theta^{t})\log p(x,z|\theta)$
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "enu:Expectation-(E)-Step"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Maximization (M) Step:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $\theta^{t+1}=\argmax_{\theta}Q(\theta|\theta^{t})$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Example
+\end_layout
+
+\begin_layout Standard
+Let's try to fit a 
+\emph on
+mixture model
+\emph default
+ to a dataset 
+\begin_inset Formula $\mathcal{D}=\{x_{1},\ldots,x_{n}\}$
+\end_inset
+
+ generated from 
+\begin_inset Formula $n$
+\end_inset
+
+ 
+\emph on
+i.i.d.
+
+\emph default
+ (independent and identically distributed) random variables.
+ In other words, 
+\begin_inset Formula $X=(X_{1},\ldots,X_{n})$
+\end_inset
+
+ where 
+\begin_inset Formula $p(x)=p(x_{1})\cdots p(x_{n})$
+\end_inset
+
+, therefore
+\begin_inset Formula 
+\begin{align*}
+L(\theta;X) & =\log p(x|\theta)\\
+ & =\log\prod_{i=1}^{n}p(x_{i}|\theta)\\
+ & =\sum_{i=1}^{n}\log p(x_{i}|\theta)
+\end{align*}
+
+\end_inset
+
+and, if 
+\begin_inset Formula $Z=(Z_{1},\ldots,Z_{n})$
+\end_inset
+
+,
+\begin_inset Formula 
+\begin{align*}
+L(\theta;X,Z) & =\log p(x,z|\theta)\\
+ & =\log p(x_{1},\ldots,x_{n},z_{1},\ldots,z_{n}|\theta)\\
+ & =\log\prod_{i=1}^{n}p(x_{i},z_{i}|\theta)\\
+ & =\sum_{i=1}^{n}\log p(x_{i},z_{i}|\theta).
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+IMPORTANT:
+\series default
+ From now on, until otherwise indicated, 
+\begin_inset Formula $x$
+\end_inset
+
+ will refer to individual samples and 
+\emph on
+not 
+\emph default
+to the entire dataset.
+\end_layout
+
+\begin_layout Standard
+A mixture model is an 
+\emph on
+average
+\emph default
+ of models:
+\begin_inset Formula 
+\[
+p(x|\theta)=\sum_{z}p(x,z|\theta)=\sum_{z}p(z)p(x|z,\theta)=\mathbb{E}_{Z}[p(x|Z,\theta)].
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Let's assume we're averaging 
+\begin_inset Formula $K$
+\end_inset
+
+ models.
+ Then 
+\begin_inset Formula $Z$
+\end_inset
+
+ must take 
+\begin_inset Formula $K$
+\end_inset
+
+ different values, which means that 
+\begin_inset Formula $Z\sim Multinoulli(\pi_{1},\ldots,\pi_{K})$
+\end_inset
+
+.
+ We can assume that the 
+\begin_inset Formula $K$
+\end_inset
+
+ models have 
+\begin_inset Formula $K$
+\end_inset
+
+ different parameters 
+\begin_inset Formula $\phi_{1},\ldots,\phi_{K}$
+\end_inset
+
+.
+ In other words, for 
+\begin_inset Formula $i=1,\ldots,K$
+\end_inset
+
+, the 
+\begin_inset Formula $i$
+\end_inset
+
+-th model has density 
+\begin_inset Formula $p(x|\phi_{i})$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Let's define 
+\begin_inset Formula $\theta=(\phi,\pi)$
+\end_inset
+
+ and compute 
+\begin_inset Formula $Q(\theta|\theta^{t})$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+Q(\theta|\theta^{t}) & =\mathbb{E}_{Z|X,\theta^{t}}[L(\theta;X,Z)]\\
+ & =\mathbb{E}_{Z|X,\theta^{t}}\left[\log\prod_{i=1}^{n}p(x_{i},Z_{i}|\theta)\right]\\
+ & =\mathbb{E}_{Z|X,\theta^{t}}\left[\sum_{i=1}^{n}\log p(x_{i},Z_{i}|\theta)\right]\\
+ & =\sum_{i=1}^{n}\mathbb{E}_{Z|X,\theta^{t}}\left[\log[p(Z_{i}|\pi)p(x_{i}|Z_{i},\phi)]\right]\\
+ & =\sum_{i=1}^{n}\mathbb{E}_{Z_{i}|X_{i},\theta^{t}}\left[\log[p(Z_{i}|\pi)p(x_{i}|Z_{i},\phi)]\right]\\
+ & =\sum_{i=1}^{n}\sum_{j=1}^{K}p(Z_{i}=j|x_{i},\theta^{t})\log[p(Z_{i}=j|\pi)p(x_{i}|Z_{i}=j,\phi)]\\
+ & =\sum_{i=1}^{n}\sum_{j=1}^{K}p(Z_{i}=j|x_{i},\theta^{t})\log[\pi_{j}p(x_{i}|\phi_{j})].
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Each term 
+\begin_inset Formula $r_{ij}=p(Z_{i}=j|x_{i},\theta^{t})$
+\end_inset
+
+ is called 
+\emph on
+responsibility
+\emph default
+ because it measures how much each of the 
+\begin_inset Formula $K$
+\end_inset
+
+ models is responsible for (generating) 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+.
+ We can compute 
+\begin_inset Formula $r_{ij}$
+\end_inset
+
+ by using 
+\emph on
+Bayes' Rule
+\emph default
+:
+\begin_inset Formula 
+\begin{align*}
+r_{ij} & =p(Z_{i}=j|x_{i},\theta^{t})\\
+ & =\frac{p(Z_{i}=j,x_{i}|\theta^{t})}{\sum_{j=1}^{K}p(Z_{i}=j,x_{i}|\theta^{t})}\\
+ & =\frac{p(x_{i}|Z_{i}=j,\phi^{t})p(Z_{i}=j|\pi^{t})}{\sum_{j=1}^{K}p(x_{i}|Z_{i}=j,\phi^{t})p(Z_{i}=j|\pi^{t})}\\
+ & =\frac{p(x_{i}|\phi_{j}^{t})\pi_{j}^{t}}{\sum_{j=1}^{K}p(x_{i}|\phi_{j}^{t})\pi_{j}^{t}}.
+\end{align*}
+
+\end_inset
+
+Basically, the algorithm is as follows:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+initialize 
+\begin_inset Formula $\phi,\pi$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\series bold
+until
+\series default
+ convergence:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\series bold
+for
+\series default
+ 
+\begin_inset Formula $(i,j)\in\{1,\ldots n\}\times\{1,\ldots,K\}$
+\end_inset
+
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $r_{ij}\leftarrow\frac{p(x_{i}|\phi_{j})\pi_{j}}{\sum_{j=1}^{K}p(x_{i}|\phi_{j})\pi_{j}}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $(\phi,\pi)\leftarrow\argmax_{\phi,\pi}\left[\sum_{i=1}^{n}\sum_{j=1}^{K}r_{ij}\log[\pi_{j}p(x_{i}|\phi_{j})]\right]$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+As we said before, depending on the form of the 
+\begin_inset Formula $K$
+\end_inset
+
+ models, we may be able to find closed-form formulas for the optimal values
+ of the parameters.
+ If that's not possible, we can use an iterative optimization method such
+ as (Stochastic) Gradient Descent.
+ Either way, we'll need to compute or approximate 
+\begin_inset Formula $\nabla_{\theta}Q(\theta|\theta^{t})$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+EM Algorithm: why does it work?
+\end_layout
+
+\begin_layout Standard
+The net effect of the EM Algorithm is to maximize 
+\begin_inset Formula $\mathbb{E}_{Z|X,\theta^{t}}[L(\theta;X,Z)]$
+\end_inset
+
+, but we should be maximizing 
+\begin_inset Formula $L(\theta;X$
+\end_inset
+
+) instead.
+ The reason the EM Algorithm works is that 
+\begin_inset Formula $\mathbb{E}_{Z|X,\theta^{t}}[L(\theta;X,Z)]$
+\end_inset
+
+ is a lower bound of 
+\begin_inset Formula $L(\theta;X)$
+\end_inset
+
+ so maximizing it has the effect of maximizing 
+\begin_inset Formula $L(\theta;X)$
+\end_inset
+
+ as well.
+\end_layout
+
+\begin_layout Standard
+The EM Algorithm is a particular instance of a method called 
+\emph on
+MM Algorithm
+\emph default
+,
+\emph on
+ 
+\emph default
+which stands for 
+\emph on
+Majorization Minimization
+\emph default
+ in case of minimization and 
+\emph on
+Minorization Maximization 
+\emph default
+in case of maximization.
+\end_layout
+
+\begin_layout Subsection
+The MM Algorithm
+\end_layout
+
+\begin_layout Standard
+As we said, the MM Algorithm may be used for both minimization and maximization
+ but since we're interested in maximizing 
+\begin_inset Formula $L(\theta;X)$
+\end_inset
+
+ here, we'll focus on the maximization version which consists of two steps:
+\end_layout
+
+\begin_layout Enumerate
+Minorization
+\end_layout
+
+\begin_layout Enumerate
+Maximization
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $f(\theta)$
+\end_inset
+
+ be the function we want to maximize with respect to 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+ We say that a function 
+\begin_inset Formula $Q(\theta|\theta_{0})$
+\end_inset
+
+ 
+\emph on
+minorizes
+\emph default
+ 
+\begin_inset Formula $f(\theta)$
+\end_inset
+
+ if
+\begin_inset Formula 
+\begin{gather*}
+\forall\theta\in\mathrm{Dom(f),\;\;}Q(\theta|\theta_{0})\leq f(\theta)\\
+Q(\theta_{0}|\theta_{0})=f(\theta_{0}).
+\end{gather*}
+
+\end_inset
+
+In words, 
+\begin_inset Formula $Q$
+\end_inset
+
+ minorizes 
+\begin_inset Formula $f$
+\end_inset
+
+ if 
+\begin_inset Formula $Q$
+\end_inset
+
+ is a lower bound of 
+\begin_inset Formula $f$
+\end_inset
+
+ which touches 
+\begin_inset Formula $f$
+\end_inset
+
+ in one point.
+\end_layout
+
+\begin_layout Standard
+For an example, go back to section
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Jensen's-Inequality"
+
+\end_inset
+
+ and observe that we used minorization to prove Jensen's Inequality.
+ In particular, see picture
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:jensen's inequality"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The MM Algorithm is simple:
+\end_layout
+
+\begin_layout Enumerate
+initialize 
+\begin_inset Formula $\theta$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+until
+\series default
+ convergence:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+
+\series bold
+Minorization Step:
+\begin_inset Newline newline
+\end_inset
+
+
+\series default
+
+\begin_inset Quotes eld
+\end_inset
+
+Compute
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Formula $Q(t|\theta)$
+\end_inset
+
+ such that 
+\begin_inset Formula $Q\leq f$
+\end_inset
+
+ and 
+\begin_inset Formula $Q(\theta|\theta)=f(\theta)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Maximization Step:
+\begin_inset Newline newline
+\end_inset
+
+
+\series default
+
+\begin_inset Formula $\theta\leftarrow\argmax_{t}Q(t|\theta)$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+The maximization step never decreases 
+\begin_inset Formula $f$
+\end_inset
+
+.
+ Indeed, if 
+\begin_inset Formula $\theta^{*}=\argmax_{t}Q(t|\theta)$
+\end_inset
+
+, then
+\begin_inset Formula 
+\[
+f(\theta^{*})\geq Q(\theta^{*}|\theta)\geq Q(\theta|\theta)=f(\theta)
+\]
+
+\end_inset
+
+Moreover, if 
+\begin_inset Formula $Q(\theta^{*}|\theta)>Q(\theta|\theta)$
+\end_inset
+
+, then we have an actual increase in 
+\begin_inset Formula $f$
+\end_inset
+
+.
+ See picture
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Intuition-MM-Method"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename minorization.eps
+	scale 60
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Intuition-MM-Method"
+
+\end_inset
+
+Intuition behind the MM Algorithm.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Let's make two important observations:
+\end_layout
+
+\begin_layout Enumerate
+Each Minorization Step may compute different functions 
+\begin_inset Formula $Q$
+\end_inset
+
+: they don't have to have the same form.
+\end_layout
+
+\begin_layout Enumerate
+The MM Algorithm works even if we don't maximize 
+\begin_inset Formula $Q(t|\theta)$
+\end_inset
+
+ in the Maximization Step, but just increase it.
+\end_layout
+
+\begin_layout Standard
+The second observation is important because, usually, we're only able to
+ find 
+\emph on
+local
+\emph default
+ maxima.
+\end_layout
+
+\begin_layout Subsection
+EM is an instance of MM
+\end_layout
+
+\begin_layout Standard
+By proving that the EM Algorithm is an instance of the MM Algorithm, we
+ prove that the EM Algorithm works.
+\end_layout
+
+\begin_layout Standard
+The E step of the EM Algorithm computes 
+\begin_inset Formula 
+\[
+Q(\theta|\theta^{t})=\mathbb{E}_{Z|X,\theta^{t}}[L(\theta;X,Z]=\sum_{z}p(z|x,\theta^{t})\log p(x,z|\theta)
+\]
+
+\end_inset
+
+and the M step maximizes it with respect to 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+ We can prove that 
+\begin_inset Formula $Q(\theta|\theta^{t})$
+\end_inset
+
+ is a lower bound of 
+\begin_inset Formula $L(\theta;X)$
+\end_inset
+
+, but they don't touch as required by the MM Algorithm.
+ Nonetheless, we can prove that optimizing 
+\begin_inset Formula $Q(\theta|\theta^{t})$
+\end_inset
+
+ is equivalent to optimizing a lower bound 
+\begin_inset Formula $Q(q,\theta|\theta^{t})$
+\end_inset
+
+ that 
+\emph on
+does
+\emph default
+ touch 
+\begin_inset Formula $L(\theta;X)$
+\end_inset
+
+ at 
+\begin_inset Formula $\theta^{t}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Since 
+\begin_inset Formula $\log$
+\end_inset
+
+ is concave (i.e.
+ 
+\begin_inset Formula $-\log$
+\end_inset
+
+ is convex), we can use Jensen's inequality (see section
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Jensen's-Inequality"
+
+\end_inset
+
+) to push the 
+\begin_inset Formula $\log$
+\end_inset
+
+ inside the sum in 
+\begin_inset Formula $L(\theta;X)$
+\end_inset
+
+ by introducing a distribution 
+\begin_inset Formula $q(z|\theta^{t})$
+\end_inset
+
+ which depends on the parameters at time 
+\begin_inset Formula $t$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+L(\theta;X) & =\log p(x|\theta)\\
+ & =\log\sum_{z}p(x,z|\theta)\\
+ & =\log\sum_{z}q(z|\theta^{t})\frac{p(x,z|\theta)}{q(z|\theta^{t})}\\
+ & =\log\mathbb{E}_{Z\sim q}\left[\frac{p(x,Z|\theta)}{q(Z|\theta^{t})}\right]\\
+ & \geq\mathbb{E}_{Z\sim q}\left[\log\frac{p(x,Z|\theta)}{q(Z|\theta^{t})}\right]=Q(q,\theta|\theta^{t}).
+\end{align*}
+
+\end_inset
+
+This derivation is valid for any positive 
+\begin_inset Formula $q$
+\end_inset
+
+ (it must be positive because it appears in the denominator).
+ We saw that Jensen's Inequality becomes an equality when the random variable
+ is constant, i.e.
+ when
+\begin_inset Formula 
+\[
+\frac{p(x,z|\theta)}{q(z|\theta^{t})}=c,
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $c$
+\end_inset
+
+ is constant.
+ Let's assume that 
+\begin_inset Formula $\theta=\theta^{t}$
+\end_inset
+
+ and solve for 
+\begin_inset Formula $q(z|\theta)$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+p(x,z|\theta) & =cq(z|\theta)\\
+\sum_{z}p(x,z|\theta) & =c\sum_{z}q(z|\theta)\\
+p(x|\theta) & =c
+\end{align*}
+
+\end_inset
+
+thus
+\begin_inset Formula 
+\[
+q(z|\theta)=\frac{p(x,z|\theta)}{c}=\frac{p(x,z|\theta)}{p(x|\theta)}=p(z|x,\theta).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It's easy to verify that 
+\begin_inset Formula $Q(q,\theta^{t}|\theta^{t})=L(\theta^{t};X)$
+\end_inset
+
+ for 
+\begin_inset Formula $q=p(z|x,\theta^{t})$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align}
+Q(p(z|x,\theta^{t}),\theta^{t}|\theta^{t}) & =\mathbb{E}_{Z\sim p(z|x,\theta^{t})}\left[\log\frac{p(x,Z|\theta^{t})}{q(Z|\theta^{t})}\right]\nonumber \\
+ & =\mathbb{E}_{Z\sim p(z|x,\theta^{t})}\left[\log\frac{p(x,Z|\theta^{t})}{p(Z|x,\theta^{t})}\right]\label{eq:Q()}\\
+ & =\mathbb{E}_{Z\sim p(z|x,\theta^{t})}\left[\log p(x|\theta^{t})\right]\nonumber \\
+ & =\log p(x|\theta^{t})=L(\theta^{t};X).\nonumber 
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This means that we can optimize 
+\begin_inset Formula $L(\theta;X)$
+\end_inset
+
+ by doing 
+\emph on
+coordinate ascent
+\emph default
+ (i.e.
+ optimizing with respect to one coordinate at a time) on 
+\begin_inset Formula $Q(q,\theta)$
+\end_inset
+
+ (we dropped 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Formula $|\theta^{t}$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Enumerate
+initialize 
+\begin_inset Formula $\theta$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+until
+\series default
+ convergence:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+
+\series bold
+E Step / Minorization:
+\begin_inset Newline newline
+\end_inset
+
+
+\series default
+
+\begin_inset Formula $q\leftarrow\argmax_{q}Q(q,\theta)$
+\end_inset
+
+ [equivalent to: 
+\begin_inset Formula $q\leftarrow p(z|x,\theta)$
+\end_inset
+
+]
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+M Step / Maximization:
+\begin_inset Newline newline
+\end_inset
+
+
+\series default
+
+\begin_inset Formula $\theta\leftarrow\argmax_{\theta}Q(q,\theta)$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+As we can see, the E Step of the EM Algorithm is equivalent to optimizing
+ with respect to 
+\begin_inset Formula $q$
+\end_inset
+
+.
+ In fact, in the EM Algorithm we compute 
+\begin_inset Formula $r_{c}=p(Z=c|x,\theta^{t})$
+\end_inset
+
+, where the vector 
+\begin_inset Formula $r$
+\end_inset
+
+ is the optimum value for 
+\begin_inset Formula $q$
+\end_inset
+
+ under the current parameter 
+\begin_inset Formula $\theta^{t}$
+\end_inset
+
+.
+ This is also equivalent to the Minorization step in the MM Algorithm.
+ In fact, now 
+\begin_inset Formula $Q(r,\theta)$
+\end_inset
+
+ touches 
+\begin_inset Formula $L(\theta;X)$
+\end_inset
+
+ at the point 
+\begin_inset Formula $\theta$
+\end_inset
+
+ (which we also called 
+\begin_inset Formula $\theta^{t}$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+The problem is that the EM Algorithm doesn't seem to use 
+\begin_inset Formula $Q(q,\theta|\theta^{t})$
+\end_inset
+
+.
+ Indeed (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "enu:Expectation-(E)-Step"
+
+\end_inset
+
+),
+\begin_inset Formula 
+\[
+Q(\theta|\theta^{t})=\mathbb{E}_{Z|X,\theta^{t}}[L(\theta;X,Z)]
+\]
+
+\end_inset
+
+is different from 
+\begin_inset Formula 
+\begin{align*}
+Q(r,\theta|\theta^{t}) & =\mathbb{E}_{Z|X,\theta^{t}}\left[\log\frac{p(x,Z|\theta)}{p(Z|x,\theta^{t})}\right]\\
+ & =\mathbb{E}_{Z|X,\theta^{t}}[L(\theta;X,Z)]+H(r).
+\end{align*}
+
+\end_inset
+
+Note that this last equality is different from 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Q()"
+
+\end_inset
+
+ because it's not evaluated at 
+\begin_inset Formula $\theta^{t}$
+\end_inset
+
+ but at the generic point 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+By noticing that 
+\begin_inset Formula $H(r)$
+\end_inset
+
+ doesn't depend on 
+\begin_inset Formula $\theta$
+\end_inset
+
+, we can conclude that
+\begin_inset Formula 
+\[
+\theta^{*}=\argmax_{\theta}Q(\theta|\theta^{t})=\argmax_{\theta}Q(r,\theta|\theta^{t})
+\]
+
+\end_inset
+
+so it's as if the EM Algorithm was using 
+\begin_inset Formula $Q(r,\theta|\theta^{t})$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Information Theory interpretation
+\end_layout
+
+\begin_layout Standard
+We proved that 
+\begin_inset Formula $Q(q,\theta|\theta^{t})\leq L(\theta;X)$
+\end_inset
+
+ and 
+\begin_inset Formula $Q(q,\theta^{t}|\theta^{t})=L(\theta^{t};X)$
+\end_inset
+
+ when 
+\begin_inset Formula $q=p(z|x,\theta^{t})$
+\end_inset
+
+.
+ This last equality has a nice interpretation:
+\begin_inset Formula 
+\begin{align*}
+L(\theta^{t};X)-Q(q,\theta^{t}|\theta^{t}) & =\log p(x|\theta^{t})-\mathbb{E}_{Z\sim q(z|\theta^{t})}\left[\log\frac{p(x,Z|\theta^{t})}{q(Z|\theta^{t})}\right]\\
+ & =\log p(x|\theta^{t})-\mathbb{E}_{Z\sim q(z|\theta^{t})}\left[\log\frac{p(Z|x,\theta^{t})p(x|\theta^{t})}{q(Z|\theta^{t})}\right]\\
+ & =\log p(x|\theta^{t})-\mathbb{E}_{Z\sim q(z|\theta^{t})}\left[\log\frac{p(Z|x,\theta^{t})}{q(Z|\theta^{t})}\right]-\log p(x|\theta^{t})\\
+ & =\mathbb{E}_{Z\sim q(z|\theta^{t})}\left[\log\frac{q(Z|\theta^{t})}{p(Z|x,\theta^{t})}\right]=KL(q(z|\theta^{t})||p(z|x,\theta^{t})),
+\end{align*}
+
+\end_inset
+
+so maximizing the lower bound is equivalent to minimizing the KL Divergence
+ between 
+\begin_inset Formula $q(z|\theta^{t})$
+\end_inset
+
+ and 
+\begin_inset Formula $p(z|x,\theta^{t})$
+\end_inset
+
+.
+ In the E step of the EM Algorithm, we find the optimum 
+\begin_inset Formula $q=p(z|x,\theta^{t})$
+\end_inset
+
+, but in some cases computing 
+\begin_inset Formula $p(z|x,\theta^{t})$
+\end_inset
+
+ is intractable.
+ A practical solution consists in constraining 
+\begin_inset Formula $q$
+\end_inset
+
+ to be of a particular tractable form (e.g.
+ factorized) and then minimizing the KL Divergence or, equivalently, maximizing
+ 
+\begin_inset Formula $Q(q,\theta)$
+\end_inset
+
+ with respect to 
+\begin_inset Formula $q$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The M step can be generalized as well by just increasing 
+\begin_inset Formula $Q(q,\theta)$
+\end_inset
+
+ with respect to 
+\begin_inset Formula $\theta$
+\end_inset
+
+ without necessarily finding the optimum.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "VergaraE15"
+options "plain"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
