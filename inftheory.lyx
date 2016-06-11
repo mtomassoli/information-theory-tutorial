@@ -176,20 +176,13 @@ Information Theory
 \emph default
 through brief tutorials which are too superficial to really understand what's
  going on.
- One could always read a book, but this might prove too much of an effort
- for someone who doesn't intend to specialize in Information Theory.
+ One could always read a specialized book, but this might prove too much
+ of an effort for someone who doesn't intend to become an expert in Information
+ Theory.
 \end_layout
 
 \begin_layout Standard
-This tutorial represents a compromise between 
-\emph on
-brevity 
-\emph default
-and 
-\emph on
-thoroughness
-\emph default
- and wants to be a 
+This tutorial wants to be a 
 \emph on
 reasoned
 \emph default
@@ -198,9 +191,8 @@ reasoned
 \end_layout
 
 \begin_layout Standard
-Because of the intended audience of this tutorial, some theorems are presented
- without a proof but are thoroughly explained to give a solid intuition
- of why they're true.
+Because of the intended audience, some theorems are presented without proof
+ but are thoroughly explained to give a solid intuition of why they're true.
 \end_layout
 
 \begin_layout Standard
@@ -230,6 +222,15 @@ Deep Learning
 .
  I didn't throw in the EM Algorithm just for the fun of it: there's an interesti
 ng, if not strong, connection with Information Theory.
+\end_layout
+
+\begin_layout Standard
+A 
+\series bold
+warning
+\series default
+: every derivation is my own so keep your eyes open and let me know if you
+ find any mistakes!
 \end_layout
 
 \begin_layout Part
@@ -954,6 +955,12 @@ reference "prop_drop_variables"
 \end_layout
 
 \begin_layout Remark
+\begin_inset CommandInset label
+LatexCommand label
+name "rem:E-L-exchange"
+
+\end_inset
+
 Given the notation and the conventions we established, we can easily conclude
  that, if 
 \begin_inset Formula $L$
@@ -2412,7 +2419,15 @@ convex
 \emph on
 concave
 \emph default
- functions.
+ functions so let's talk about 
+\emph on
+convexity
+\emph default
+ first.
+\end_layout
+
+\begin_layout Subsection
+Convexity
 \end_layout
 
 \begin_layout Definition
@@ -2429,14 +2444,14 @@ If
 \emph on
 convex combination
 \emph default
- is any point 
+ of them is any point 
 \begin_inset Formula $x_{\alpha}$
 \end_inset
 
  defined as follows:
 \begin_inset Formula 
 \[
-x_{\alpha}=\sum_{i=1}^{n}\alpha_{i}x_{i},\;\;\alpha>0,\alpha^{T}\alpha=1,
+x_{\alpha}=\sum_{i=1}^{n}\alpha_{i}x_{i},\;\;\alpha>0,\sum_{i=1}^{n}\alpha_{i}=1,
 \]
 
 \end_inset
@@ -2446,10 +2461,10 @@ where
 \end_inset
 
  and 
-\begin_inset Formula $\alpha>0\iff\alpha_{i}>0,\;i=1,\ldots,n$
+\begin_inset Formula $\alpha>0\iff(\alpha_{i}>0,\;i=1,\ldots,n$
 \end_inset
 
-.
+).
  Note that 
 \begin_inset Formula $\alpha$
 \end_inset
@@ -2476,7 +2491,7 @@ A set is
 \emph on
 convex
 \emph default
- if any convex combination of any of its points is in the set.
+ if and only if any convex combination of any of its points is in the set.
 \end_layout
 
 \begin_layout Proposition
@@ -2501,7 +2516,16 @@ reference "fig:Example-of-convex-set"
 \end_layout
 
 \begin_layout Proof
-Basically, we want to prove that definition
+Let's call a convex combination of 
+\begin_inset Formula $n$
+\end_inset
+
+ points an 
+\begin_inset Formula $n$
+\end_inset
+
+-combination.
+ Basically, we want to prove that definition
 \begin_inset space ~
 \end_inset
 
@@ -2512,31 +2536,53 @@ reference "def:convex-set"
 
 \end_inset
 
- doesn't need to consider convex combinations of more than two points.
- To do this, it's enough to prove that any convex combinations of three
- or more points can be expressed as a convex combination of just two points.
- This is easy:
+ doesn't need to consider 
+\begin_inset Formula $n$
+\end_inset
+
+-combinations with 
+\begin_inset Formula $n>2$
+\end_inset
+
+.
+ To do this, it's enough to prove that any 
+\begin_inset Formula $n$
+\end_inset
+
+-combination can be seen as a sequence of 
+\begin_inset Formula $2$
+\end_inset
+
+-combinations.
+\end_layout
+
+\begin_layout Proof
+We can prove this by 
+\emph on
+induction
+\emph default
+.
+ The case for 
+\begin_inset Formula $n=2$
+\end_inset
+
+ is trivial, and assuming this is true for 
+\begin_inset Formula $n$
+\end_inset
+
+, we can prove this is also true for 
+\begin_inset Formula $n+1$
+\end_inset
+
+:
 \begin_inset Formula 
 \[
-\sum_{i=1}^{n}\alpha_{i}x_{i}=\alpha_{1}x_{1}+(1-\alpha_{1})\left[\sum_{i=2}^{n}\frac{\alpha_{i}}{1-\alpha_{1}}x_{i}\right].
+\sum_{i=1}^{n+1}\alpha_{i}x_{i}=(1-\alpha_{n+1})\left[\sum_{i=1}^{n}\frac{\alpha_{i}}{1-\alpha_{n+1}}x_{i}\right]+\alpha_{n+1}x_{n+1}.
 \]
 
 \end_inset
 
-Note that since 
-\begin_inset Formula $\sum_{i=2}^{n}\frac{\alpha_{i}}{1-\alpha_{1}}x_{i}$
-\end_inset
 
- is a convex combination of 
-\begin_inset Formula $x_{2},\ldots,x_{n}$
-\end_inset
-
-, then it's in the convex set and can be used to form a convex combination
- with 
-\begin_inset Formula $x_{1}$
-\end_inset
-
-.
 \end_layout
 
 \begin_layout Proof
@@ -2625,10 +2671,30 @@ reference "fig:jensen's inequality"
 
 \end_inset
 
-.
+ for an example.
 \end_layout
 
 \begin_layout Definition
+A function 
+\begin_inset Formula $f$
+\end_inset
+
+ is 
+\emph on
+concave
+\emph default
+ if and only if 
+\begin_inset Formula $-f$
+\end_inset
+
+ is 
+\emph on
+convex
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -2678,6 +2744,10 @@ unbounded
 
 \end_layout
 
+\begin_layout Subsection
+Definition and proof of Jensen's Inequality
+\end_layout
+
 \begin_layout Standard
 We know that 
 \begin_inset Formula $\var[X]\geq0$
@@ -2715,20 +2785,20 @@ Note that
 \begin_inset Formula $f(x)=x^{2}$
 \end_inset
 
- is a 
-\emph on
-strictly
-\emph default
- convex function (
-\begin_inset Formula $f''(x)=\frac{d^{2}f}{dx^{2}}(x)=2>0)$
-\end_inset
+ is a convex function.
+ In general, we have the following result.
+\end_layout
 
-.
- In general, if 
+\begin_layout Proposition
+(Jensen's Inequality) If 
 \begin_inset Formula $f$
 \end_inset
 
- is convex, then 
+ is a convex function and 
+\begin_inset Formula $X$
+\end_inset
+
+ a random variable, then 
 \begin_inset Formula $\mathbb{E}[f(X)]\geq f(\mathbb{E}[X])$
 \end_inset
 
@@ -2749,14 +2819,10 @@ if and only if
 \begin_inset Formula $X$
 \end_inset
 
- is constant (for instance, 
-\begin_inset Formula $X\sim Ber(1)$
-\end_inset
-
-).
+ is constant.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Proof
 For an intuitive understanding of why the inequality holds, see picture
 \begin_inset space ~
 \end_inset
@@ -2771,15 +2837,156 @@ reference "fig:jensen-idea"
 .
 \end_layout
 
-\begin_layout Standard
+\begin_layout Proof
+Let's consider the unidimensional case first.
+ Let 
+\begin_inset Formula $f:\mathbb{R}\to\mathbb{R}$
+\end_inset
+
+ be a convex function.
+ Let's define a function 
+\begin_inset Formula $L(x)=ax+b$
+\end_inset
+
+, where 
+\begin_inset Formula $a$
+\end_inset
+
+ and 
+\begin_inset Formula $b$
+\end_inset
+
+ are real constants, such that 
+\begin_inset Formula $L(x)\leq f(x)$
+\end_inset
+
+ for all 
+\begin_inset Formula $x\in\mathbb{R}$
+\end_inset
+
+ and 
+\begin_inset Formula $L(\mathbb{E}[X])=f(\mathbb{E}[X])$
+\end_inset
+
+.
+ See figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:jensen's inequality"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+Since 
+\begin_inset Formula $f(x)\geq L(x)$
+\end_inset
+
+ for all 
+\begin_inset Formula $x\in\mathbb{R}$
+\end_inset
+
+, we can take the mean of both sides:
+\begin_inset Formula 
+\begin{flalign*}
+\mathbb{E}[f(X)] & \geq\mathbb{E}[L(X)]\\
+ & =\mathbb{E}[aX+b]\\
+ & =a\mathbb{E}[X]+b\\
+ & =L(\mathbb{E}[X])\\
+ & =f(\mathbb{E}[X]).
+\end{flalign*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proof
+If 
+\begin_inset Formula $X$
+\end_inset
+
+ is constant with 
+\begin_inset Formula $p(x_{0})=1$
+\end_inset
+
+, then 
+\begin_inset Formula $f(x_{0})=\mathbb{E}[f(X)]\geq f(\mathbb{E}[X])=f(x_{0})$
+\end_inset
+
+, therefore the equality holds.
+ Also, if 
+\begin_inset Formula $f$
+\end_inset
+
+ is linear, then 
+\begin_inset Formula $\mathbb{E}$
+\end_inset
+
+ and 
+\begin_inset Formula $f$
+\end_inset
+
+, both linear, can be exchanged (see remark
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "rem:E-L-exchange"
+
+\end_inset
+
+) and the equality holds again.
+\end_layout
+
+\begin_layout Proof
+It's easy to generalize the result to the case of 
+\begin_inset Formula $f:\mathbb{R}^{n}\to\mathbb{R}$
+\end_inset
+
+ by defining 
+\begin_inset Formula $L(x)=a^{T}x+b$
+\end_inset
+
+, where 
+\begin_inset Formula $a$
+\end_inset
+
+ is a fixed 
+\begin_inset Formula $n$
+\end_inset
+
+-dimensional vector and 
+\begin_inset Formula $b$
+\end_inset
+
+ is a fixed scalar:
+\begin_inset Formula 
+\begin{flalign*}
+\mathbb{E}[f(X)] & \geq\mathbb{E}[L(X)]\\
+ & =\mathbb{E}[a^{T}X+b]\\
+ & =\mathbb{E}\left[\sum_{i=1}^{n}a_{i}X_{i}+b\right]\\
+ & =\sum_{i=1}^{n}a_{i}\mathbb{E}[X_{i}]+b\\
+ & =a^{T}\mathbb{E}[X]+b\\
+ & =L(\mathbb{E}[X])\\
+ & =f(\mathbb{E}[X]).
+\end{flalign*}
+
+\end_inset
+
+
 \begin_inset Float figure
 wide false
 sideways false
 status open
-
-\begin_layout Plain Layout
-
-\end_layout
 
 \begin_layout Plain Layout
 \align center
@@ -2934,62 +3141,6 @@ linear
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsection
-Proof of Jensen's Inequality
-\end_layout
-
-\begin_layout Standard
-Let 
-\begin_inset Formula $X$
-\end_inset
-
- be a random variable and 
-\begin_inset Formula $f:\mathbb{R}\to\mathbb{R}$
-\end_inset
-
- a convex function.
- Let's define a function 
-\begin_inset Formula $L(x)=ax+b$
-\end_inset
-
-, where 
-\begin_inset Formula $a$
-\end_inset
-
- and 
-\begin_inset Formula $b$
-\end_inset
-
- are real constants, such that 
-\begin_inset Formula $L(x)\leq f(x)$
-\end_inset
-
- for all 
-\begin_inset Formula $x\in\mathbb{R}$
-\end_inset
-
- and 
-\begin_inset Formula $L(\mathbb{E}[X])=f(\mathbb{E}[X])$
-\end_inset
-
-.
- See figure
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:jensen's inequality"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -3035,97 +3186,6 @@ name "fig:jensen's inequality"
 
 
 \end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Since 
-\begin_inset Formula $f(x)\geq L(x)$
-\end_inset
-
- for all 
-\begin_inset Formula $x\in\mathbb{R}$
-\end_inset
-
-, we can take the mean of both sides:
-\begin_inset Formula 
-\begin{flalign*}
-\mathbb{E}[f(X)] & \geq\mathbb{E}[L(X)]\\
- & =\mathbb{E}[aX+b]\\
- & =a\mathbb{E}[X]+b\\
- & =L(\mathbb{E}[X])\\
- & =f(\mathbb{E}[X]).
-\end{flalign*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-If 
-\begin_inset Formula $X$
-\end_inset
-
- is constant with 
-\begin_inset Formula $p(x_{0})=1$
-\end_inset
-
-, then 
-\begin_inset Formula $f(x_{0})=\mathbb{E}[f(X)]\geq f(\mathbb{E}[X])=f(x_{0})$
-\end_inset
-
-, therefore the equality holds.
- Also, if 
-\begin_inset Formula $f$
-\end_inset
-
- is linear, then 
-\begin_inset Formula $\mathbb{E}$
-\end_inset
-
- and 
-\begin_inset Formula $f$
-\end_inset
-
-, both linear, can be exchanged and the equality holds again.
-\end_layout
-
-\begin_layout Standard
-It's easy to generalize the result to the case of 
-\begin_inset Formula $f:\mathbb{R}^{n}\to\mathbb{R}$
-\end_inset
-
- by defining 
-\begin_inset Formula $L(x)=a^{T}x+b$
-\end_inset
-
-, where 
-\begin_inset Formula $a$
-\end_inset
-
- is a fixed 
-\begin_inset Formula $n$
-\end_inset
-
--dimensional vector and 
-\begin_inset Formula $b$
-\end_inset
-
- is a fixed scalar:
-\begin_inset Formula 
-\begin{flalign*}
-\mathbb{E}[f(X)] & \geq\mathbb{E}[L(X)]\\
- & =\mathbb{E}[a^{T}X+b]\\
- & =\mathbb{E}\left[\sum_{i=1}^{n}a_{i}X_{i}+b\right]\\
- & =\sum_{i=1}^{n}a_{i}\mathbb{E}[X_{i}]+b\\
- & =a^{T}\mathbb{E}[X]+b\\
- & =L(\mathbb{E}[X])\\
- & =f(\mathbb{E}[X]).
-\end{flalign*}
 
 \end_inset
 
@@ -3326,7 +3386,7 @@ I(x,y)=I(x|y)+I(y)=I(y|x)+I(x).
 \end_layout
 
 \begin_layout Standard
-Now we can take the mean of equation
+Now we can take the mean of equality
 \begin_inset space ~
 \end_inset
 
@@ -3443,7 +3503,18 @@ Pay particular attention to the term
 \end_layout
 
 \begin_layout Standard
-In accordance with the product rule for the mean, we must have
+In accordance with the product rule for the mean (see proposition
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "prop:chain-rule-for-the-mean"
+
+\end_inset
+
+), we must have
 \begin_inset Formula 
 \[
 H(X|y)=\mathbb{E}_{X|Y}[I(X|y)]=-\sum_{x}p(x|y)\log_{2}p(x|y).
@@ -3496,7 +3567,8 @@ which tells us the amount of information, after we've already observed the
 \end_inset
 
 .
- Note that this measure doesn't depend on the particular value of 
+ Again, note that this measure doesn't depend on the particular value of
+ 
 \begin_inset Formula $Y$
 \end_inset
 
@@ -3742,7 +3814,7 @@ Kullback-Leibler Divergence (KL Divergence)
 \emph default
  is often used to measure the distance between two distributions, but it's
  not a real distance.
- In fact, it isn't symmetric, as we'll see.
+ In fact, it isn't even symmetric, as we'll see.
 \end_layout
 
 \begin_layout Standard
@@ -3813,17 +3885,17 @@ The final expression,
 
 \begin_layout Standard
 Once again, we can use Jensen's Inequality by noticing that 
-\begin_inset Formula $-log(x)$
+\begin_inset Formula $-log$
 \end_inset
 
  is a convex function:
 \begin_inset Formula 
 \begin{align*}
-KL(p||q) & =\mathbb{E}_{X\sim p}\left[-\log_{2}\frac{p(X)}{q(X)}\right]\\
- & =-\mathbb{E}_{X\sim p}\left[-\log_{2}\frac{q(X)}{p(X)}\right]\\
- & \geq\log_{2}\mathbb{E}_{X\sim p}\left[\frac{q(X)}{p(X)}\right]\\
- & =\log_{2}\sum_{x}p(x)\frac{q(x)}{p(x)}\\
- & =\log_{2}1\\
+KL(p||q) & =\mathbb{E}_{X\sim p}\left[\log_{2}\frac{p(X)}{q(X)}\right]\\
+ & =\mathbb{E}_{X\sim p}\left[-\log_{2}\frac{q(X)}{p(X)}\right]\\
+ & \geq-\log_{2}\mathbb{E}_{X\sim p}\left[\frac{q(X)}{p(X)}\right]\\
+ & =-\log_{2}\sum_{x}p(x)\frac{q(x)}{p(x)}\\
+ & =-\log_{2}1\\
  & =0.
 \end{align*}
 
@@ -3834,7 +3906,7 @@ KL(p||q) & =\mathbb{E}_{X\sim p}\left[-\log_{2}\frac{p(X)}{q(X)}\right]\\
 
 \begin_layout Standard
 Also, since 
-\begin_inset Formula $-log_{2}(\cdot)$
+\begin_inset Formula $-log_{2}$
 \end_inset
 
  is not linear, the equality holds if and only if 
@@ -3863,7 +3935,7 @@ Also, since
 \end_inset
 
  and so 
-\begin_inset Formula $q(x)=p(x)$
+\begin_inset Formula $q=p$
 \end_inset
 
 .
@@ -3929,7 +4001,7 @@ Let
 \begin_inset Formula $Y$
 \end_inset
 
- is 
+ be 
 \begin_inset Formula $0$
 \end_inset
 
@@ -3967,11 +4039,32 @@ Now consider two random variables
 \begin_inset Formula $p(x,y)=p(x)=p(y)$
 \end_inset
 
-.
+ for 
+\begin_inset Formula $x=y$
+\end_inset
+
+, and 
+\begin_inset Formula $0$
+\end_inset
+
+ otherwise.
 \end_layout
 
 \begin_layout Standard
-In other words, if 
+Intuitively, the mutual information should be related to the distance between
+ 
+\begin_inset Formula $p(x,y)$
+\end_inset
+
+ and 
+\begin_inset Formula $p(x)p(y)$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Enumerate
+if 
 \begin_inset Formula $X,Y$
 \end_inset
 
@@ -3987,7 +4080,11 @@ In other words, if
 \begin_inset Formula $0$
 \end_inset
 
-, while, if 
+;
+\end_layout
+
+\begin_layout Enumerate
+if 
 \begin_inset Formula $X=Y$
 \end_inset
 
@@ -4034,30 +4131,7 @@ I(X;Y) & =KL(p(x,y)||p(x)p(y))\\
 \end_layout
 
 \begin_layout Standard
-Let's check whether this definition meets our first requirement, i.e.
- that if 
-\begin_inset Formula $X,Y$
-\end_inset
-
- are independent, then 
-\begin_inset Formula $I(X;Y)=0$
-\end_inset
-
-:
-\begin_inset Formula 
-\begin{flalign*}
-p(x,y)=p(x)p(y)\implies I(X;Y) & =\sum_{x}\sum_{y}p(x,y)\log_{2}\frac{p(x,y)}{p(x)p(y)}\\
- & =\sum_{x}\sum_{y}p(x,y)\log_{2}1=0.
-\end{flalign*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-What about the converse? Does zero mutual information implies independence?
- Yes, it does! We've already proved in section
+In section
 \begin_inset space ~
 \end_inset
 
@@ -4068,7 +4142,7 @@ reference "sec:Kullback-Leibler-Divergence"
 
 \end_inset
 
- that 
+ we proved that 
 \begin_inset Formula 
 \[
 KL(p||q)=0\iff p=q,
@@ -4076,11 +4150,15 @@ KL(p||q)=0\iff p=q,
 
 \end_inset
 
-so we must have 
-\begin_inset Formula $p(x,y)=p(x)p(y)$
+which means that 
+\begin_inset Formula $I(X;Y)=0$
 \end_inset
 
- which implies independence.
+ if and only if 
+\begin_inset Formula $X,Y$
+\end_inset
+
+ are independent, so our first requirement is met.
 \end_layout
 
 \begin_layout Standard
@@ -4093,7 +4171,7 @@ Now we need to check whether
 \end_inset
 
 .
- Note that if 
+ As we've already said, if 
 \begin_inset Formula $Y=X$
 \end_inset
 
@@ -4102,7 +4180,7 @@ Now we need to check whether
 \[
 p(x,y)=\begin{cases}
 p(x) & \text{if }x=y\\
-0 & \text{otherwise}
+0 & \text{otherwise.}
 \end{cases}
 \]
 
@@ -4259,7 +4337,7 @@ We know that
 \end_layout
 
 \begin_layout Standard
-In fact,
+Indeed,
 \begin_inset Formula 
 \begin{align*}
 I(X;Y) & =\sum_{x}\sum_{y}p(x,y)\log_{2}\frac{p(x,y)}{p(x)p(y)}\\
@@ -4325,7 +4403,7 @@ If
 
 .
  This is easy to prove.
- First, let's define the covariance and then 
+ First, let's write the usual definition of the covariance and then 
 \begin_inset Quotes eld
 \end_inset
 
@@ -4421,7 +4499,12 @@ because
 \begin_inset Formula $X\sim X^{3}$
 \end_inset
 
- and both have zero mean.
+ (i.e.
+ they're 
+\emph on
+identically distributed
+\emph default
+) and both have zero mean.
 \end_layout
 
 \begin_layout Standard
@@ -4456,20 +4539,6 @@ Here's a way to see why covariance only measures linear dependence.
 \end_inset
 
  be random variables.
- Let's define 
-\begin_inset Formula $U=X-\mathbb{E}[X]$
-\end_inset
-
- and 
-\begin_inset Formula $V=Y-\mathbb{E}[Y]$
-\end_inset
-
- so that 
-\begin_inset Formula $\mathbb{E}[U]=\mathbb{E}[V]=0$
-\end_inset
-
-.
- This will simplify the computations.
 \end_layout
 
 \begin_layout Standard
@@ -4482,15 +4551,15 @@ We want to find
 linear
 \emph default
  function 
-\begin_inset Formula $f(u)=au+b$
+\begin_inset Formula $f(x)=ax+b$
 \end_inset
 
  describes as closely as possible the relation between 
-\begin_inset Formula $U$
+\begin_inset Formula $X$
 \end_inset
 
  and 
-\begin_inset Formula $V$
+\begin_inset Formula $Y$
 \end_inset
 
 .
@@ -4501,7 +4570,7 @@ mean squared error
 :
 \begin_inset Formula 
 \[
-L(a,b)=\mathbb{E}_{U,V}\left[\frac{1}{2}(f(U)-V)^{2}\right].
+L(a,b)=\mathbb{E}_{X,Y}\left[\frac{1}{2}(f(X)-Y)^{2}\right].
 \]
 
 \end_inset
@@ -4516,20 +4585,42 @@ We can use Calculus to minimize
 
 :
 \begin_inset Formula 
-\begin{align*}
-\frac{\partial L(a,b)}{\partial a} & =\frac{\partial}{\partial a}\mathbb{E}\left[\frac{1}{2}(f(U)-V)^{2}\right]\\
- & =\mathbb{E}\left[\frac{\partial}{\partial a}\frac{1}{2}(f(U)-V)^{2}\right]\\
- & =\mathbb{E}[(f(U)-V)U]\\
- & =a\mathbb{E}\left[U^{2}\right]+b\mathbb{E}[U]-\mathbb{E}[UV]\\
- & =a\mathbb{E}\left[U^{2}\right]-\mathbb{E}[UV]=0
-\end{align*}
+\begin{align}
+\frac{\partial L(a,b)}{\partial a} & =\frac{\partial}{\partial a}\mathbb{E}\left[\frac{1}{2}(f(X)-Y)^{2}\right]\nonumber \\
+ & =\mathbb{E}\left[\frac{1}{2}\frac{\partial}{\partial a}(f(X)-Y)^{2}\right]\nonumber \\
+ & =\mathbb{E}[(f(X)-Y)X]\nonumber \\
+ & =a\mathbb{E}\left[X^{2}\right]+b\mathbb{E}[X]-\mathbb{E}[XY]=0\label{eq:@L/@a}\\
+\nonumber \\
+\frac{\partial L(a,b)}{\partial b} & =\frac{\partial}{\partial b}\mathbb{E}\left[\frac{1}{2}(f(X)-Y)^{2}\right]\nonumber \\
+ & =\mathbb{E}\left[\frac{1}{2}\frac{\partial}{\partial b}(f(X)-Y)^{2}\right]\nonumber \\
+ & =\mathbb{E}\left[f(X)-Y\right]\nonumber \\
+ & =a\mathbb{E}[X]+b-\mathbb{E}[Y]=0.\label{eq:@L/@b}
+\end{align}
 
 \end_inset
 
-therefore
+
+\end_layout
+
+\begin_layout Standard
+By combining equations 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:@L/@a"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:@L/@b"
+
+\end_inset
+
+, we get 
 \begin_inset Formula 
 \[
-a=\frac{\mathbb{E}[UV]}{\mathbb{E}\left[U^{2}\right]}=\frac{\mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])]}{\mathbb{E}\left[(X-\mathbb{E}[X])^{2}\right]}=\frac{\cov[X,Y]}{\var[X]}.
+a=\frac{\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y]}{\mathbb{E}\left[X^{2}\right]-\mathbb{E}[X]^{2}}=\frac{\cov[X,Y]}{\var[X]}.
 \]
 
 \end_inset
@@ -4619,7 +4710,7 @@ Let
 \begin_inset Formula $H(A)$
 \end_inset
 
- measure the information contained in 
+ measures the amount of information contained in 
 \begin_inset Formula $A$
 \end_inset
 
@@ -4643,12 +4734,13 @@ cardinality
 \begin_inset Quotes erd
 \end_inset
 
- (i.e.
- number of elements) in 
+ of 
 \begin_inset Formula $A$
 \end_inset
 
 .
+ The usual cardinality counts the number of elements in a set, while our
+ cardinality might count the number of bits of information in the set.
  In agreement with our intuition, let's adopt the following notation:
 \emph on
  
@@ -4737,11 +4829,11 @@ where this time
 \begin_inset Formula $|S\cup T|$
 \end_inset
 
- will count them only once whereas 
+ counts them only once whereas 
 \begin_inset Formula $|S|+|T|$
 \end_inset
 
- will count them twice, so we must subtract 
+ counts them twice, so we must subtract 
 \begin_inset Formula $|S\cap T|$
 \end_inset
 
@@ -4897,7 +4989,7 @@ reference "fig:Information-Diagram-for"
 \end_layout
 
 \begin_layout Standard
-From this one might think that the generalization to the multivariate case
+From this, one might think that the generalization to the multivariate case
  is straightforward.
  For instance: 
 \begin_inset Formula $I(A;B;C)=|A\cap B\cap C|$
@@ -5023,12 +5115,11 @@ cardinality
 \begin_inset Formula $|A|+|B|$
 \end_inset
 
- counts those elements twice.
- 
+ counts those elements twice and subtracting 
 \begin_inset Formula $|A\cap B|$
 \end_inset
 
- compensate for that.
+ compensates for that.
 \end_layout
 
 \begin_layout Standard
@@ -5108,7 +5199,7 @@ We add the cardinalities of all the possible intersections of 3 sets (i.e.
 \end_layout
 
 \begin_layout Standard
-Written in formula, it becomes
+Written in formula, this becomes
 \begin_inset Formula 
 \begin{align*}
 \left|\bigcup_{i=1}^{n}X_{i}\right| & =\sum_{i=1}^{n}(-1)^{i+1}\sum_{J:J\subset\{1,\ldots,n\}\wedge|J|=i}\left|\bigcap_{j\in J}X_{j}\right|
@@ -5473,9 +5564,9 @@ I(X_{1};\ldots;X_{n};X_{n+1})=I(X_{1};\ldots;X_{n})-I(X_{1};\ldots;X_{n}|X_{n+1}
 
 where
 \begin_inset Formula 
-\begin{eqnarray*}
-I(X_{1};\ldots;X_{n}|X_{n+1}) & = & \mathbb{E}_{X_{n+1}}[I(X_{1};\ldots;X_{n}|X_{n+1})]
-\end{eqnarray*}
+\begin{eqnarray}
+I(X_{1};\ldots;X_{n}|X_{n+1}) & = & \mathbb{E}_{X_{n+1}}[I(X_{1};\ldots;X_{n}|X_{n+1})]\label{eq:I(X_1;...;X_n|X_n+1)}
+\end{eqnarray}
 
 \end_inset
 
@@ -5511,9 +5602,9 @@ so,
 .
  The same thing happened before when we wrote
 \begin_inset Formula 
-\[
-H(X|Y)=\mathbb{E}_{Y}[H(X|Y)]=\sum_{y}p(y)H(X|Y=y).
-\]
+\begin{equation}
+H(X|Y)=\mathbb{E}_{Y}[H(X|Y)]=\sum_{y}p(y)H(X|Y=y).\label{eq:H(X|Y)}
+\end{equation}
 
 \end_inset
 
@@ -5554,14 +5645,14 @@ I(X;Y|Z=z) & =H(X|Z=z)-H(X|Y,Z=z)\\
 
 \end_inset
 
-Let's go one step forwards and write the expression for 
+Let's go one step further and write the expression for 
 \begin_inset Formula $I(X;Y|Z)$
 \end_inset
 
 :
 \begin_inset Formula 
 \begin{align}
-I(X;Y|Z) & =\sum_{z}p(Z=z)I(X;Y;Z=z)\nonumber \\
+I(X;Y|Z) & =\sum_{z}p(Z=z)I(X;Y|Z=z)\nonumber \\
  & =-\sum_{z}p(Z=z)\sum_{x}p(x|Z=z)\log_{2}p(x|Z=z)\nonumber \\
  & \hphantom{=\;}+\sum_{z}p(Z=z)\sum_{x}\sum_{y}p(x,y|Z=z)\log_{2}p(x|y,Z=z)\nonumber \\
  & =-\sum_{x}\sum_{z}p(x,z)\log_{2}p(x|z)+\sum_{x}\sum_{y}\sum_{z}p(x,y,z)\log_{2}p(x|y,z)\nonumber \\
@@ -5644,6 +5735,29 @@ reference "eq:MMI-recursive-def"
 
  when 
 \begin_inset Formula $k=1$
+\end_inset
+
+.
+ Note that this makes definition
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:H(X|Y)"
+
+\end_inset
+
+ a particular case of definition
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:I(X_1;...;X_n|X_n+1)"
+
 \end_inset
 
 .
@@ -5811,6 +5925,10 @@ name "fig:3-circles-venn"
 \end_inset
 
 
+\emph on
+Information Diagram
+\emph default
+ for 3 random variables.
 \end_layout
 
 \end_inset
@@ -5905,7 +6023,7 @@ This is not apparent from our discussion, but the MMI of 3 or more variables
 \end_layout
 
 \begin_layout Standard
-Thanks to equation
+Thanks to equality
 \begin_inset space ~
 \end_inset
 
@@ -5916,7 +6034,7 @@ reference "eq:card_inters"
 
 \end_inset
 
-, we can generalize equation
+, we can generalize equality
 \begin_inset space ~
 \end_inset
 
@@ -6016,7 +6134,7 @@ I(X_{1},\ldots,X_{n};Y_{1},\ldots,Y_{m};Z_{1},\ldots,Z_{k}) & =I(X;Y;Z).
 
 \end_inset
 
-Basically, we may replace 
+Basically, we may replace, for instance, 
 \begin_inset Quotes eld
 \end_inset
 
@@ -6040,7 +6158,7 @@ Basically, we may replace
 \begin_inset Quotes erd
 \end_inset
 
- wherever they appear inside 
+ wherever it appears inside 
 \begin_inset Formula $H$
 \end_inset
 
@@ -6052,7 +6170,7 @@ Basically, we may replace
 \end_layout
 
 \begin_layout Standard
-Of course, this implies an analogous simplification of formulas with explicit
+Of course, this implies an analogous simplification for formulas with explicit
  sums over distributions.
  For instance, here's the Joint Mutual Information again:
 \begin_inset Formula 
@@ -6113,11 +6231,11 @@ In this case, we replaced
 \end_inset
 
 .
- If you're having a 
+ If you think you're having a 
 \emph on
 deja vu
 \emph default
-, it's because this is related to proposition
+, that's because this is related to proposition
 \begin_inset space ~
 \end_inset
 
@@ -6155,7 +6273,7 @@ As we saw, the mutual information between
 \begin_inset Formula $Y$
 \end_inset
 
- is the divergence between 
+ is the KL Divergence between 
 \begin_inset Formula $p(x,y)$
 \end_inset
 
@@ -6165,7 +6283,8 @@ As we saw, the mutual information between
 
 .
  The MMI as defined above, though, loses such a simple interpretation.
- If we define MMI through the KL Divergence we get something simpler:
+ If we generalize mutual information through the KL Divergence we get something
+ simpler:
 \begin_inset Formula 
 \begin{align*}
 I(X_{1};\ldots;X_{n}) & =KL(p(x_{1},\ldots,x_{n})||p(x_{1})\cdots p(x_{n}))\\
@@ -6295,11 +6414,15 @@ labels
 \end_layout
 
 \begin_layout Standard
-Our best bet is to use a 
+We can use a 
 \emph on
 convolutional neural network
 \emph default
- (ConvNet) with a final 
+ (
+\emph on
+ConvNet
+\emph default
+) with a final 
 \emph on
 softmax layer
 \emph default
@@ -6510,7 +6633,7 @@ Log Likelihood
  & =\argmax_{\theta}\log\prod_{i=1}^{n}f_{\theta}(y_{i}|x_{i})\\
  & =\argmax_{\theta}\log\prod_{i=1}^{n}P(y_{i}|x_{i};\theta)\\
  & =\argmax_{\theta}\log P(y_{1},\ldots,y_{n}|x_{1},\ldots,x_{n};\theta)\\
- & =\argmax_{\theta}\log L(\theta)
+ & =\argmax_{\theta}\log L(\theta).
 \end{align*}
 
 \end_inset
@@ -6559,7 +6682,7 @@ Let
 \begin_inset Formula $\mathcal{D}_{2}$
 \end_inset
 
- and let 
+ and let's introduce 
 \begin_inset Formula $p_{\theta}\in\mathcal{F}$
 \end_inset
 
@@ -6593,7 +6716,7 @@ Let
 :
 \begin_inset Formula 
 \begin{align*}
-\theta^{*} & =\argmin_{\theta}KL(\hat{p},p_{\theta})\\
+\theta^{*} & =\argmin_{\theta}KL(\hat{p}||p_{\theta})\\
  & =\argmin_{\theta}[H(\hat{p},p_{\theta})-H(\hat{p})]\\
  & =\argmin_{\theta}H(\hat{p},p_{\theta})\\
  & =\argmin_{\theta}\mathbb{E}_{X\sim\hat{p}}[I_{p_{\theta}}(X)]\\
@@ -6602,7 +6725,7 @@ Let
  & =\argmax_{\theta}\sum_{i=1}^{n}\log p_{\theta}(x_{i})\\
  & =\argmax_{\theta}\log\prod_{i=1}^{n}p_{\theta}(x_{i})\\
  & =\argmax_{\theta}\log P(x_{1},\ldots,x_{n}|\theta)\\
- & =\argmax_{\theta}\log L(\theta)
+ & =\argmax_{\theta}\log L(\theta).
 \end{align*}
 
 \end_inset
@@ -6736,7 +6859,7 @@ Information Gain
 
 \begin_layout Standard
 Let's assume we have a dataset 
-\begin_inset Formula $\mathcal{D}=\{(x^{(1)},y^{(1)}),\ldots(x^{(N)},y^{(N)})\}$
+\begin_inset Formula $\mathcal{D}=\{(x^{(1)},y^{(1)}),\ldots,(x^{(N)},y^{(N)})\}$
 \end_inset
 
  where 
@@ -6836,7 +6959,7 @@ IG(\mathcal{D},s) & =I(X_{s};Y)\\
  & =H(Y)-H(Y|X_{s})\\
  & =-\sum_{y\in Y}p(y)\log_{2}p(y)+\sum_{x\in X_{s}}\sum_{y\in Y}p(x,y)\log_{2}p(y|x)\\
  & =-\sum_{y\in Y}\frac{|\mathcal{D}\{Y=y\}|}{|\mathcal{D}|}\log_{2}\frac{|\mathcal{D}\{Y=y\}|}{|\mathcal{D}|}\\
- & \hphantom{=\;}+\sum_{x\in X_{s}}\sum_{y\in Y}\frac{|\mathcal{D}\{Y=y\wedge X_{s}=x\}|}{|\mathcal{D}|}\log_{2}\frac{|\mathcal{D}\{Y=y\wedge X_{s}=x\}|}{|\mathcal{D}\{X_{s}=x\}|}
+ & \hphantom{=\;}+\sum_{x\in X_{s}}\sum_{y\in Y}\frac{|\mathcal{D}\{Y=y\wedge X_{s}=x\}|}{|\mathcal{D}|}\log_{2}\frac{|\mathcal{D}\{Y=y\wedge X_{s}=x\}|}{|\mathcal{D}\{X_{s}=x\}|}.
 \end{align*}
 
 \end_inset
@@ -6858,12 +6981,20 @@ information.
 \begin_inset Formula $X_{1}$
 \end_inset
 
- has one of the highest scores among variables and 
+ has one of the highest scores among the variables and 
 \begin_inset Formula $X_{2}=X_{1}$
 \end_inset
 
-, then, probably, both variables will be selected even though they contain
- the exact same information about 
+, then, probably, both 
+\begin_inset Formula $X_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $X_{2}$
+\end_inset
+
+ will be selected even though they contain the exact same information about
+ 
 \begin_inset Formula $Y$
 \end_inset
 
@@ -6880,7 +7011,7 @@ A better way to choose the best
 \end_inset
 
  features consists in maximizing the Joint Mutual Information.
- In theory, we'd like to grade a set of features 
+ In theory, we'd like to grade a subset of features 
 \begin_inset Formula $F=(F_{1},\ldots,F_{k})$
 \end_inset
 
@@ -6900,13 +7031,13 @@ I(F;Y)=H(F)-H(F|Y).
 
 \end_inset
 
-Unfortunately, this requires the calculation of a high-dimensional probability
+Unfortunately, this requires the estimation of a high-dimensional probability
  density function, which is very expensive and requires lots of data.
 \end_layout
 
 \begin_layout Standard
-Many methods have been proposed for approximating the Joint MI and using
- the MI in general
+Some methods try to approximate the Joint Mutual Information, while others
+ try to approximate even more general measures
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DBLP:journals/corr/VergaraE15"
@@ -7019,8 +7150,8 @@ Gradient Descent
 \begin_inset Formula $\log$
 \end_inset
 
-, if only it was inside the sum, would transform the products into sums
- which would simplify computations considerably.
+, if only it was inside the sum, would transform multiplications into additions
+ simplifying computations considerably.
 \end_layout
 
 \begin_layout Standard
@@ -7028,7 +7159,7 @@ The
 \emph on
 EM Algorithm 
 \emph default
-solve the problem by working with the 
+solves the problem by working with the 
 \emph on
 complete data log likelihood
 \emph default
@@ -7196,10 +7327,19 @@ i.i.d.
 \end_inset
 
  where 
+\begin_inset Formula $X_{i}\sim X_{j}$
+\end_inset
+
+ for all 
+\begin_inset Formula $i,j$
+\end_inset
+
+ and 
 \begin_inset Formula $p(x)=p(x_{1})\cdots p(x_{n})$
 \end_inset
 
-, therefore
+.
+ Thus,
 \begin_inset Formula 
 \begin{align*}
 L(\theta;X) & =\log p(x|\theta)\\
@@ -7236,7 +7376,11 @@ IMPORTANT:
 \begin_inset Formula $x$
 \end_inset
 
- will refer to individual samples and 
+ will refer to 
+\emph on
+individual
+\emph default
+ samples and 
 \emph on
 not 
 \emph default
@@ -7278,7 +7422,7 @@ Let's assume we're averaging
 \end_inset
 
 .
- We can assume that the 
+ We may assume that the 
 \begin_inset Formula $K$
 \end_inset
 
@@ -7372,16 +7516,7 @@ r_{ij} & =p(Z_{i}=j|x_{i},\theta^{t})\\
 Basically, the algorithm is as follows:
 \end_layout
 
-\begin_layout Itemize
-\begin_inset Argument item:1
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
+\begin_layout Enumerate
 initialize 
 \begin_inset Formula $\phi,\pi$
 \end_inset
@@ -7389,16 +7524,7 @@ initialize
 
 \end_layout
 
-\begin_layout Itemize
-\begin_inset Argument item:1
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
+\begin_layout Enumerate
 
 \series bold
 until
@@ -7407,16 +7533,7 @@ until
 \end_layout
 
 \begin_deeper
-\begin_layout Itemize
-\begin_inset Argument item:1
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
+\begin_layout Enumerate
 
 \series bold
 for
@@ -7429,7 +7546,7 @@ for
 \end_layout
 
 \begin_deeper
-\begin_layout Itemize
+\begin_layout Enumerate
 \begin_inset Argument item:1
 status open
 
@@ -7447,17 +7564,7 @@ status open
 \end_layout
 
 \end_deeper
-\begin_layout Itemize
-\begin_inset Argument item:1
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
+\begin_layout Enumerate
 \begin_inset Formula $(\phi,\pi)\leftarrow\argmax_{\phi,\pi}\left[\sum_{i=1}^{n}\sum_{j=1}^{K}r_{ij}\log[\pi_{j}p(x_{i}|\phi_{j})]\right]$
 \end_inset
 
@@ -7486,7 +7593,7 @@ EM Algorithm: why does it work?
 \end_layout
 
 \begin_layout Standard
-The net effect of the EM Algorithm is to maximize 
+The EM Algorithm maximizes 
 \begin_inset Formula $\mathbb{E}_{Z|X,\theta^{t}}[L(\theta;X,Z)]$
 \end_inset
 
@@ -7598,7 +7705,7 @@ In words,
 \begin_inset Formula $f$
 \end_inset
 
- which touches 
+ and touches 
 \begin_inset Formula $f$
 \end_inset
 
@@ -7822,7 +7929,7 @@ By proving that the EM Algorithm is an instance of the MM Algorithm, we
 The E step of the EM Algorithm computes 
 \begin_inset Formula 
 \[
-Q(\theta|\theta^{t})=\mathbb{E}_{Z|X,\theta^{t}}[L(\theta;X,Z]=\sum_{z}p(z|x,\theta^{t})\log p(x,z|\theta)
+Q(\theta|\theta^{t})=\mathbb{E}_{Z|X,\theta^{t}}[L(\theta;X,Z)]=\sum_{z}p(z|x,\theta^{t})\log p(x,z|\theta)
 \]
 
 \end_inset
@@ -7932,7 +8039,7 @@ where
 \begin_inset Formula $c$
 \end_inset
 
- is constant.
+ is a constant.
  Let's assume that 
 \begin_inset Formula $\theta=\theta^{t}$
 \end_inset
@@ -7973,12 +8080,11 @@ It's easy to verify that
 
 :
 \begin_inset Formula 
-\begin{align}
-Q(p(z|x,\theta^{t}),\theta^{t}|\theta^{t}) & =\mathbb{E}_{Z\sim p(z|x,\theta^{t})}\left[\log\frac{p(x,Z|\theta^{t})}{q(Z|\theta^{t})}\right]\nonumber \\
- & =\mathbb{E}_{Z\sim p(z|x,\theta^{t})}\left[\log\frac{p(x,Z|\theta^{t})}{p(Z|x,\theta^{t})}\right]\label{eq:Q()}\\
- & =\mathbb{E}_{Z\sim p(z|x,\theta^{t})}\left[\log p(x|\theta^{t})\right]\nonumber \\
- & =\log p(x|\theta^{t})=L(\theta^{t};X).\nonumber 
-\end{align}
+\begin{align*}
+Q(p(z|x,\theta^{t}),\theta^{t}|\theta^{t}) & =\mathbb{E}_{Z\sim p(z|x,\theta^{t})}\left[\log\frac{p(x,Z|\theta^{t})}{p(Z|x,\theta^{t})}\right]\\
+ & =\mathbb{E}_{Z\sim p(z|x,\theta^{t})}\left[\log p(x|\theta^{t})\right]\\
+ & =\log p(x|\theta^{t})=L(\theta^{t};X).
+\end{align*}
 
 \end_inset
 
@@ -8011,7 +8117,7 @@ coordinate ascent
 \begin_inset Quotes erd
 \end_inset
 
-):
+ for convenience):
 \end_layout
 
 \begin_layout Enumerate
@@ -8142,25 +8248,6 @@ Q(r,\theta|\theta^{t}) & =\mathbb{E}_{Z|X,\theta^{t}}\left[\log\frac{p(x,Z|\thet
 
 \end_inset
 
-Note that this last equality is different from 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:Q()"
-
-\end_inset
-
- because it's not evaluated at 
-\begin_inset Formula $\theta^{t}$
-\end_inset
-
- but at the generic point 
-\begin_inset Formula $\theta$
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
 By noticing that 
 \begin_inset Formula $H(r)$
 \end_inset
