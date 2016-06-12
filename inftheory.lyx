@@ -5537,24 +5537,32 @@ Inclusion Exclusion Principle
 \end_layout
 
 \begin_layout Subsection
-Multivariate Mutual Information
+Multiple Mutual Information
 \end_layout
 
 \begin_layout Standard
 There have been various attempts to generalize the concept of Mutual Information
- to 3 or more random variables.
+ to 3 or more terms.
 \end_layout
 
 \begin_layout Standard
-One generalization defines the 
+One generalization is the so-called 
 \emph on
-Multivariate Mutual Information
+Multiple Mutual Information
 \emph default
  (
 \emph on
 MMI
 \emph default
-) as follows:
+), 
+\emph on
+Interaction
+\emph default
+, or 
+\emph on
+Co-information
+\emph default
+, defined as follows:
 \begin_inset Formula 
 \begin{equation}
 I(X_{1};\ldots;X_{n};X_{n+1})=I(X_{1};\ldots;X_{n})-I(X_{1};\ldots;X_{n}|X_{n+1})\label{eq:MMI-recursive-def}
@@ -6261,7 +6269,7 @@ reference "rem:vector-random-variable"
 \end_layout
 
 \begin_layout Subsection
-Multivariate Mutual Information and KL Divergence
+KL Divergence and Total Correlation
 \end_layout
 
 \begin_layout Standard
@@ -6282,7 +6290,7 @@ As we saw, the mutual information between
 \end_inset
 
 .
- The MMI as defined above, though, loses such a simple interpretation.
+ The MMI defined above, though, loses such a simple interpretation.
  If we generalize mutual information through the KL Divergence we get something
  simpler:
 \begin_inset Formula 
