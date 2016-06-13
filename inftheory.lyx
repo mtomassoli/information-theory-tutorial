@@ -1344,7 +1344,7 @@ distributions, and
 \end_layout
 
 \begin_layout Definition
-Information
+Self-information
 \end_layout
 
 \begin_layout Definition
@@ -1358,7 +1358,7 @@ If
 
 , the 
 \emph on
-information
+self-information
 \emph default
  of 
 \begin_inset Formula $x$
@@ -1376,8 +1376,8 @@ I(x)=\log_{2}\frac{1}{p(x)}=-\log_{2}p(x).
 \end_layout
 
 \begin_layout Standard
-The formula above says that values with high probability have low information,
- whereas values with low probability have high information.
+The formula above says that values with high probability have low self-informati
+on, whereas values with low probability have high self-information.
  We'll see later why this makes sense.
 \end_layout
 
@@ -1437,15 +1437,15 @@ H(X)=\mathbb{E}_{X}[I(X)]=-\sum_{x}p(x)\log_{2}p(x).
 \begin_layout Standard
 The entropy is the 
 \emph on
-mean 
+expected 
 \emph default
-information of a random variable.
+amount of information contained in a random variable.
  A variable may assume values 
 \begin_inset Formula $x_{1},x_{2},\ldots,x_{n}$
 \end_inset
 
- and each value may have a different information so it makes sense to summarize
- the information contained in all the values with the mean.
+ and each value may have a different self-information so it makes sense
+ to summarize the information contained in all the values with the mean.
 \end_layout
 
 \begin_layout Standard
@@ -1713,7 +1713,7 @@ You should remember that
 \begin_inset Formula $H(X)$
 \end_inset
 
- is the expected information, so we can rewrite the formula above as
+ is the expected self-information, so we can rewrite the formula above as
 \begin_inset Formula 
 \[
 \mathbb{E}_{X}[I(X)]\leq\min_{C}\mathbb{E}_{X}[\length(C(X))]<\mathbb{E}_{X}[H(X)]+1.
@@ -1774,7 +1774,7 @@ continuous
 \end_inset
 
  would be infinitely rare and our reasoning would fall apart!) This explains,
- at least in part, why the information and the entropy contain a logarithm.
+ at least in part, why the self-information and the entropy contain a logarithm.
 \end_layout
 
 \begin_layout Standard
@@ -2112,8 +2112,8 @@ Logarithm and probabilities
 \end_layout
 
 \begin_layout Standard
-Is there a way to justify the logarithm in the definition of the information
- and, as a consequence, of the entropy without having to resort to codes
+Is there a way to justify the logarithm in the definition of the self-informatio
+n and, as a consequence, of the entropy without having to resort to codes
  and lengths of binary strings?
 \end_layout
 
@@ -2247,8 +2247,8 @@ We can make things even simpler and reason about
 \end_layout
 
 \begin_layout Standard
-Another important assumption we must make is that the information of each
- sample only depends on its probability, i.e.
+Another important assumption we must make is that the self-information of
+ each sample only depends on its probability, i.e.
  
 \begin_inset Formula $I(x)=f(p(x))$
 \end_inset
@@ -3348,7 +3348,7 @@ chain rule
  for the entropy is very simple and shouldn't surprise you.
  It derives directly from what we could call the 
 \emph on
-information chain rule
+self-information chain rule
 \emph default
 :
 \begin_inset Formula 
@@ -3632,7 +3632,7 @@ What's the meaning of cross entropy?
 \begin_inset Formula $I_{q}(x)$
 \end_inset
 
- is the information of 
+ is the self-information of 
 \begin_inset Formula $x$
 \end_inset
 
@@ -5720,7 +5720,7 @@ reference "eq:MMI-recursive-def"
 \begin_inset Formula $I(x)$
 \end_inset
 
- as the information of 
+ as the information contained in 
 \begin_inset Formula $x\in X$
 \end_inset
 
@@ -6747,7 +6747,7 @@ Note that:
 \end_layout
 
 \begin_layout Itemize
-The information 
+The self-information 
 \begin_inset Formula $I$
 \end_inset
 
