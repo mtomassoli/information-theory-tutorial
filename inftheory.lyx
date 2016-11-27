@@ -1716,7 +1716,7 @@ You should remember that
  is the expected self-information, so we can rewrite the formula above as
 \begin_inset Formula 
 \[
-\mathbb{E}_{X}[I(X)]\leq\min_{C}\mathbb{E}_{X}[\length(C(X))]<\mathbb{E}_{X}[H(X)]+1.
+\mathbb{E}_{X}[I(X)]\leq\min_{C}\mathbb{E}_{X}[\length(C(X))]<\mathbb{E}_{X}[I(X)]+1.
 \]
 
 \end_inset
